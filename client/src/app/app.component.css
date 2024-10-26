@@ -1,0 +1,32 @@
+/* STILE NAVBAR */
+.navbar {
+  background-color: #4CAF50;
+}
+.navbar-brand {
+  color: #FAFAF5;
+}
+.nav-link {
+  color: #FAFAF5;
+}
+.nav-link:hover {
+  background-color: #2196F3;
+}
+
+/* STILE ICONE NAVBAR */
+.example-icon {
+  background-color: #4CAF50;
+  color: #FAFAF5;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+.example-icon:hover {
+  background-color: #2196F3;
+}
+
+
