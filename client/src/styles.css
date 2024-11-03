@@ -15,5 +15,22 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #F2E8B3;
+  background-color: #FFF;
+  color: #242621;
+}
+
+h1,
+h2,
+h3 {
+  color: #467302;
+}
+
+strong {
+  color: #467302;
+}
+.blockquote{
+  color: #467302;
+}
+:any-link {
+  color: #467302;
 }

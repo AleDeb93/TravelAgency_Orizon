@@ -7,4 +7,9 @@
 /* STILE SLOGAN */
 .slogan > img {
   width: 100vw;
+  padding-bottom: 50px;
+}
+
+.col {
+  padding-bottom: 25px;
 }
