@@ -1,5 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
+/* PALETTE
+#467302 verde scuro
+#72A603 verde chiaro
+#F2E8B3 sabbia chiaro
+#BFA34E marrone chiaro
+#735E38 marrone scuro */
+
 html,
 body {
   height: 100%;
@@ -8,4 +15,5 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #F2E8B3;
 }

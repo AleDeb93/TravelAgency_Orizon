@@ -1,5 +1,5 @@
 <!-- Topbar del sito -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" [ngClass]= "{ transparent: !scrolled, 'scrolled' : scrolled }">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Orizon Travel</a>
 
@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Chi siamo</a>
+          <a class="nav-link" href="" fragment="about">Chi siamo</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Destinazioni</a>
@@ -32,10 +32,6 @@
     </button>
   </div>
 </nav>
-<!-- Immagine a schermo intero -->
-<div class="hero">
-  <img src="hero.png" alt="Hero img" class="hero-img">
-</div>
 
 <router-outlet></router-outlet>
 

@@ -1,0 +1,10 @@
+/* STILE HERO IMG */
+.hero > img {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* STILE SLOGAN */
+.slogan > img {
+  width: 100vw;
+}

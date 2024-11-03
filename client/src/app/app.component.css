@@ -1,20 +1,30 @@
 /* STILE NAVBAR */
 .navbar {
-  background-color: #4CAF50;
+  /* background-color: #4CAF50; */
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+}
+.transapert{
+  background-color: transparent;
+}
+.scrolled{
+  background-image: url("../../public/hero.png");
 }
 .navbar-brand {
   color: #FAFAF5;
 }
+
 .nav-link {
   color: #FAFAF5;
 }
+
 .nav-link:hover {
-  background-color: #2196F3;
+  background-color: #735E38;
 }
 
 /* STILE ICONE NAVBAR */
 .example-icon {
-  background-color: #4CAF50;
   color: #FAFAF5;
   border: none;
   border-radius: 50%;
@@ -25,10 +35,8 @@
   justify-content: center;
   transition: background-color 0.3s ease;
 }
+
 .example-icon:hover {
-  background-color: #2196F3;
+  background-color: #735E38;
 }
-
-/* STILE HERO IMG */
-
 
