@@ -1,5 +1,5 @@
 <!-- Topbar del sito -->
-<nav id="top" class="navbar navbar-expand-lg" [ngClass]= "{ transparent: !scrolled, 'scrolled' : scrolled }">
+<nav id="top" class="navbar navbar-expand-lg" [ngClass]="{ transparent: !scrolled, 'scrolled' : scrolled }">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Orizon Travel</a>
 
@@ -30,6 +30,6 @@
   </div>
 </nav>
 
-<router-outlet></router-outlet>
-
-
+<main>
+  <router-outlet></router-outlet>
+</main>
