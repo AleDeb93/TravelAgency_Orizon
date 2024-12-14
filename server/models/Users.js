@@ -30,7 +30,7 @@ const Users = sequelize.define('Users', {
     },
     preferences: {
         // Usato JSONB in modo da poter eseguire query più velocemente
-        type: DataTypes.JSONB,  
+        type: DataTypes.JSON,  
         allowNull: true
     },
     paymentMethod: {

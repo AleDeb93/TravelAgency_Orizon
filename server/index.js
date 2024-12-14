@@ -1,10 +1,13 @@
 const express = require('express');
 const sequelize = require('./config/database');
-const app = express()
-const port = 3000
+const usersRouting = require('./routes/usersRouting'); // È già corretto
+const app = express();
 
 // Middleware per parsare i JSON
 app.use(express.json());
+
+// Definizione delle rotte
+app.use('/api/v2/users', usersRouting);
 
 // Test connessione al database
 sequelize.authenticate()
@@ -12,7 +15,7 @@ sequelize.authenticate()
         console.log(`Connessione al database riuscita!`);
     })
     .catch(error => {
-        console.log(`Impossibile connettersi al database:`, error)
+        console.log(`Impossibile connettersi al database:`, error);
     });
 
 // Sincronizzazione del database
@@ -24,9 +27,9 @@ sequelize.sync({ force: false })
         console.error(`Errore durante la sincronizzazione:`, err);
     });
 
-
 // Avvio del server
-app.listen(port, () => {
-    console.log(`Servr in ascolto alla porta ${port}`);
-});
+const port = 3000;
 
+app.listen(port, () => {
+    console.log(`Server in ascolto alla porta ${port}`);
+});
