@@ -8,11 +8,27 @@ import { Component, HostListener } from '@angular/core';
 export class AppComponent {
   title = 'client';
 
-  scrolled = false
+  scrolled = false;
+
+
+  threshold: number = 0;
+  constructor() {
+    this.setScrollThreshold();
+  }
+
+  setScrollThreshold() {
+    this.threshold = window.innerHeight * 0.6;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.setScrollThreshold();
+  }
 
   @HostListener('window:scroll', [])
-  onWindowScroll(){
-    this.scrolled = window.scrollY > 600;
+  onWindowScroll() {
+    // Modifica la condizione di scorrimento in base alla soglia calcolata
+    this.scrolled = window.scrollY > this.threshold;
   }
 
 }

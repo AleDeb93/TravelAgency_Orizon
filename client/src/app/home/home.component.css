@@ -1,9 +1,9 @@
 /* STILE HERO IMG */
 .hero > img {
-  height: 100vh;
+  height: 65vh;
   width: 100vw;
+  object-fit: cover;
 }
-
 /* STILE SLOGAN */
 .slogan > img {
   width: 100vw;

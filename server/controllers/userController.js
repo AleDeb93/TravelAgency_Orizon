@@ -32,12 +32,12 @@ const userController = {
             const { name, surname, email, password } = req.body;
             // Genero il salt per l' hashing e poi creo il nuovo user usando la psw criptata 
             const salt = await bcrypt.genSalt(10);
-            const pswHash = await bcrypt.hash(password, salt);
+            const password_hash = await bcrypt.hash(password, salt);
             const newUser = await Users.create({
                 name,
                 surname,
                 email,
-                pswHash
+                password_hash
             })
             res.status(201).json(newUser);
         } catch (error) {

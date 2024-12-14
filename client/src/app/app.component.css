@@ -5,12 +5,17 @@
   z-index: 10;
   width: 100%;
 }
-.transapert{
+
+.transapert {
   background-color: transparent;
 }
-.scrolled{
-  background-image: url("../../public/hero.png");
+
+.scrolled {
+  /* background-image: url("../../public/hero.png"); */
+  background: rgb(33, 55, 1);
+  background: linear-gradient(90deg, rgba(33, 55, 1, 1) 0%, rgba(74, 61, 37, 1) 35%, rgba(33, 55, 1, 1) 100%);
 }
+
 .navbar-brand {
   color: #FAFAF5;
 }
@@ -20,7 +25,9 @@
 }
 
 .nav-link:hover {
-  background-color: #735E38;
+  background-color: #F2E8B3;
+  color: #4a3d25;
+  font-weight: 550;
 }
 
 /* STILE ICONE NAVBAR */
@@ -37,5 +44,6 @@
 }
 
 .example-icon:hover {
-  background-color: #735E38;
+  background-color: #F2E8B3;
+  color: #4a3d25;
 }
