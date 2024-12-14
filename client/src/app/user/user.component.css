@@ -1,0 +1,3 @@
+:host ::ng-deep .transparent {
+  background-color: red;  /* Sovrascrivi il background della classe "transparent" solo in questo componente */
+}

@@ -1,5 +1,5 @@
 <!-- Topbar del sito -->
-<nav id="top" class="navbar navbar-expand-lg" [ngClass]="{ transparent: !scrolled, 'scrolled' : scrolled }">
+<nav id="top" class="navbar navbar-expand-lg" [ngClass]="{ transparent: !scrolled && !isAccountPage(), 'scrolled': scrolled || isAccountPage(), 'user-navbar': isAccountPage() }">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Orizon Travel</a>
 
@@ -22,7 +22,7 @@
     </div>
     <!-- Area personale -->
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-      <mat-icon routerLink="">person</mat-icon>
+      <mat-icon routerLink="account">person</mat-icon>
     </button>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon routerLink="">shopping_cart</mat-icon>
