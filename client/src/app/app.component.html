@@ -1,5 +1,6 @@
 <!-- Topbar del sito -->
-<nav id="top" class="navbar navbar-expand-lg" [ngClass]="{ transparent: !scrolled && !isAccountPage(), 'scrolled': scrolled || isAccountPage(), 'user-navbar': isAccountPage() }">
+<nav id="top" class="navbar navbar-expand-lg"
+  [ngClass]="{ transparent: !scrolled && !isAccountPage(), 'scrolled': scrolled || isAccountPage(), 'user-navbar': isAccountPage() }">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Orizon Travel</a>
 
@@ -30,6 +31,5 @@
   </div>
 </nav>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+
+<router-outlet></router-outlet>

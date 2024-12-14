@@ -1,16 +1,18 @@
+// Funzionamento
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppRoutingModule } from './app-routing.module';
+
+// Componenti
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { UserComponent } from './components/user/user.component';
+import { SharedModule } from '../modules/shared.modules';
 
 // Design
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import { HomeComponent } from './home/home.component';
-import { UserComponent } from './user/user.component';
+import { MaterialModule } from '../modules/material.module';
+
 
 @NgModule({
   declarations: [
@@ -22,9 +24,8 @@ import { UserComponent } from './user/user.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatToolbarModule,
+    MaterialModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
