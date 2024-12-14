@@ -1,4 +1,6 @@
 const Users = require('../models/Users');
+const bcrypt = require('bcrypt');
+const { use } = require('../routes/usersRouting');
 
 const userController = {
     // GET /api/v2/users
@@ -26,10 +28,40 @@ const userController = {
     // POST /api/v2/users
     createUser: async (req, res) => {
         try {
-            const newUser = await User.create(req.body);
+            // Estraggo i dati obbligatori dalla richiesta
+            const { name, surname, email, password } = req.body;
+            // Genero il salt per l' hashing e poi creo il nuovo user usando la psw criptata 
+            const salt = await bcrypt.genSalt(10);
+            const pswHash = await bcrypt.hash(password, salt);
+            const newUser = await Users.create({
+                name,
+                surname,
+                email,
+                pswHash
+            })
             res.status(201).json(newUser);
         } catch (error) {
             res.status(500).json({ error: 'Errore durante la chiamata createUser' });
+        }
+    },
+    // POST /api/v2/login
+    loginUser: async (req, res) => {
+        try {
+            const { email, password } = req.body;
+            // Cerco l' utente nel database
+            const user = await Users.findOne({ where: { email } });
+            // Gestisco se non lo trovo 
+            if (!user)
+                return res.status(404).json({ error: 'Email non registrata' })
+            // Verifico la psw
+            const match = await bcrypt.compare(password, user.pswHash);
+            // Gestisco errori di utente / psw
+            if (!match)
+                return res(401).json({ error: 'Password errata!' })
+            // Login riuscito
+            res.status(200).json({ message: 'Login riuscito', user })
+        } catch (error) {
+            res.status(500).json({ error: 'Errore durante la login' });
         }
     },
     // PUT /api/v2/users/:id
