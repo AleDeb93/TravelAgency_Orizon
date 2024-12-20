@@ -68,7 +68,7 @@ const userController = {
     updateUser: async (req, res) => {
         const { id } = req.params;
         try {
-            const user = await User.findByPk(id);
+            const user = await Users.findByPk(id);
             if (user) {
                 await user.update(req.body);
                 res.status(200).json(user);
@@ -84,7 +84,7 @@ const userController = {
     deleteUser: async (req, res) => {
         const { id } = req.params;
         try {
-            const deleted = await User.destroy({ where: { id } });
+            const deleted = await Users.destroy({ where: { id } });
             if (deleted) {
                 res.status(200).json({ message: 'Utente eliminato' });
             } else {

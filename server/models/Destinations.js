@@ -33,7 +33,7 @@ const Destinations = sequelize.define('Destinations', {
         allowNull: false
     },
     theme: {
-        type: DataTypes.ENUM('Especienial', 'Naturalistic', 'Emotional', 'Cultural', 'Enogastronomic', 'Family'), 
+        type: DataTypes.ENUM('Esperiencial', 'Naturalistic', 'Emotional', 'Cultural', 'Enogastronomic', 'Family'), 
         allowNull: false
     },
     sustainabilityRating: {

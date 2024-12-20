@@ -20,6 +20,10 @@ const Users = sequelize.define('Users', {
         unique: true,
         allowNull: false
     },
+    gender: {
+        type: DataTypes.ENUM('Male', 'Female', 'Nonbinary'), 
+        allowNull: false,
+    },
     password_hash: {
         type: DataTypes.STRING(128),
         allowNull: false

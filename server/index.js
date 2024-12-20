@@ -21,7 +21,7 @@ sequelize.authenticate()
     });
 
 // Sincronizzazione del database
-sequelize.sync({ force: false })
+sequelize.sync({ force: false, alter: true })
     .then(() => {
         console.log(`Tabelle sincronizzate correttamente!`);
     })
