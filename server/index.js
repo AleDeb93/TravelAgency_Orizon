@@ -1,6 +1,7 @@
 const express = require('express');
 const sequelize = require('./config/database');
-const usersRouting = require('./routes/usersRouting'); // È già corretto
+const usersRouting = require('./routes/usersRouting'); 
+const destinationsRouting = require('./routes/destinationsRouting');
 const app = express();
 
 // Middleware per parsare i JSON
@@ -8,6 +9,7 @@ app.use(express.json());
 
 // Definizione delle rotte
 app.use('/api/v2/users', usersRouting);
+app.use('/api/v2/destinations', destinationsRouting);
 
 // Test connessione al database
 sequelize.authenticate()
