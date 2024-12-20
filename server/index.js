@@ -2,10 +2,15 @@ const express = require('express');
 const sequelize = require('./config/database');
 const usersRouting = require('./routes/usersRouting'); 
 const destinationsRouting = require('./routes/destinationsRouting');
+const cors = require('cors');
 const app = express();
 
 // Middleware per parsare i JSON
 app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost:4200'
+}));
+
 
 // Definizione delle rotte
 app.use('/api/v2/users', usersRouting);

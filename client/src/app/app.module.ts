@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
+import {  HttpClientModule } from '@angular/common/http';
+
 
 // Componenti
 import { AppComponent } from './app.component';
@@ -25,7 +27,9 @@ import { MaterialModule } from '../modules/material.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    HttpClientModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
