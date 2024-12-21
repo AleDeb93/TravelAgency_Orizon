@@ -1,6 +1,29 @@
-.hero > img {
+.hero>img {
   height: 70vh;
   width: 100vw;
   object-fit: cover;
 }
 
+#destinations {
+  text-align: center;
+}
+
+.title {
+  font-size: 200px;
+  color: #84bf04;
+  font-weight: bold;
+}
+
+.slogan {
+  font-size: 50px;
+  color: #585959;
+  font-weight: 500;
+}
+
+.spacer {
+  padding: 15px;
+}
+
+#destinationName{
+  color: black;
+}
