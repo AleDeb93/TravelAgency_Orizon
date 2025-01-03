@@ -19,3 +19,6 @@ Per il progetto sono state installate diverse librerie con funzionalita utili al
 - `bcrypt`: per hashare le psw prima di salvarle a database 
 - `Sequelize`: ORM per interagire con il database MySQL, gestire la sincronizzazione e l'accesso ai dati.
 - `nodemon`: Strumento per monitorare i cambiamenti nel codice e riavviare automaticamente il server durante lo sviluppo.
+
+### Avvio del progetto lato backend
+Per iniziare ad utilizzare il progetto lato backend assicurati di aver installato sulla tua macchina [Node.js](https://nodejs.org/en/download) 

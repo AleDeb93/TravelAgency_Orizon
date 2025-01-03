@@ -5,11 +5,15 @@
 ### `/client`
 Contiene tutto ciò che riguarda l'applicazione **Angular**. All'interno della cartella `src` ci sono i componenti, i servizi e le altre risorse necessarie per il funzionamento del frontend.
 
+Assicurati di seguire le istruzioni contenute del file README.md della folder "server" per far funzionare la parte backend di progetto
+
 ### `/server`
 Contiene l'applicazione **Node.js** con **Express**. 
 - `controllers`: gestisce le richieste HTTP.
 - `routes`: definisce le rotte dell'API.
 - `models`: gestisce i modelli dati.
+
+Assicurati di seguire le istruzioni contenute del file README.md della folder "server" per far funzionare la parte backend di progetto
 
 Questo aiuta a mantenere una chiara separazione delle responsabilità nel backend.
 
