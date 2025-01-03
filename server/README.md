@@ -53,3 +53,15 @@ Questo comando avvierà il server utilizzando **nodemon**, monitorando i cambiam
 In alternativa puoi usare il comando `node index.js` questo avvierà una versione "*statica*" del server che non verrà riavviato ad ogni modifica del sorgente.
 
 Il server sarà quindi accessibile su http://localhost:3000.
+
+### Inserimento delle destinazioni nel Database
+
+Poiché l'utente idealmente non ha la possibilità di inserie destinazioni a Database queste devono essere gestite lato server, puoi caricare le destinazioni nel tuo database MySQL utilizzando un semplice script SQL. Questo passaggio ti consente di popolare la tabella Destinations con le destinazioni di esempio.
+
+Accedi a MySQL: Apri il terminale e accedi a MySQL con il comando: `mysql -u root -p`
+
+Dopo esserti connesso, seleziona il database travel_agency (o quello che hai creato per il tuo progetto) con il comando: `USE travel_agency;`
+
+Ora esegui il file SQL che contiene i dati di esempio per le destinazioni. Per fare ciò, devi usare il comando source per eseguire lo script direttamente dal file: `source /percorso/completo/del/file/docs/insert_destinations.sql;`
+
+Assicurati di fornire il percorso corretto del file *insert_destinations.sql* in base al percorso in cui hai copiato il progetto localmente.
