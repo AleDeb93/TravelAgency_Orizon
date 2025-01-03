@@ -47,9 +47,14 @@ const Destinations = sequelize.define('Destinations', {
     startDate: {
         type: DataTypes.DATE,
         allowNull: false
+    },
+    imageUrl: {
+        type: DataTypes.STRING,  
+        allowNull: true
     }
 }, {
     timestamps: false  
 });
 
 module.exports = Destinations;
+
