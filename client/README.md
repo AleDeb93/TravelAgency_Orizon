@@ -7,5 +7,13 @@ Per lo **stile** e il **design** sono stati utilizzati i seguenti framework:
 - [Bootstrap](https://getbootstrap.com/) 
 
 ### Installazione e avvio del progetto
-Prima di tutto, è necessario avere installato [Node.js](https://nodejs.org/en/download) sulla propria macchina, successivamente installa [Angular CLI](https://github.com/angular/angular-cli) globalmente da riga di comando utilizzando il seguente prompt
-- `npm i -g @angular/cli`
+Prima di tutto, è necessario avere installato [Node.js](https://nodejs.org/en/download) sulla propria macchina, successivamente installa [Angular CLI](https://github.com/angular/angular-cli) globalmente da riga di comando utilizzando il seguente prompt: `npm i -g @angular/cli`
+
+Per avviare il server di sviluppo e visualizzare l'applicazione, usa il comando: 
+`ng serve` 
+oppure la sua versione abbreviata: 
+`ng s`
+
+Il progetto sarà disponibile all'indirizzo: http://localhost:4200/
+Assicurati che il server di backend sia avviato correttamente per testare correttamente l'applicazione client.
+
