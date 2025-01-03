@@ -34,3 +34,6 @@ strong {
 :any-link {
   color: #467302;
 }
+.spacer {
+  padding: 15px;
+}

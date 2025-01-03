@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'voyages',
     loadChildren: () => import('./voyages/voyages.module').then(m => m.VoyagesModule)
   },
-  { path: '', redirectTo: 'voyages/destinations', pathMatch: 'full' }
+  { path: '', redirectTo: 'voyages', pathMatch: 'full' }
 ];
 
 
