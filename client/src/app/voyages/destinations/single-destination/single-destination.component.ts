@@ -9,7 +9,7 @@ import { ApiService } from '../../../../services/api.service';
 })
 export class SingleDestinationComponent implements OnInit {
   destinationId: string = '';  // Inizializzazione con una stringa vuota
-  destination: any;	
+  destination: any;
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) { }
 
@@ -17,13 +17,14 @@ export class SingleDestinationComponent implements OnInit {
     // Ottieni l'ID dalla rotta
     this.destinationId = this.route.snapshot.paramMap.get('id')!;
     console.log('Destinazione ID:', this.destinationId);
-    // Qui puoi usare l'ID per fare una richiesta HTTP o caricare i dettagli della destinazione
+    this.searchRecord(0, this.destinationId);
   }
 
-  async searchRecord(n: number, s: string){
+  async searchRecord(n: number, s: string) {
     try {
       const data = await this.apiService.searchRecord(0, this.destinationId).toPromise();
       this.destination = data;
+      console.log('Destinazione:', this.destination);
     } catch {
       console.error('Non è stato possibile ottenere i dati richiesti')
     }
