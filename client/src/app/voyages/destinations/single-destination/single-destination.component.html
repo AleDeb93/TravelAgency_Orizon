@@ -1,21 +1,25 @@
-<div class="hero">
-    <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" alt="Destinations img" class="destinations-img">
-</div>
+<!-- <app-loading *ngIf="loading"></app-loading> -->
+<div class="result" *ngIf="!loading">
+    <div class="hero">
+        <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" alt="Destinations img"
+            class="destinations-img">
+    </div>
 
-<div id="destinations">
-    <p class="title">{{destination.name}}</p>
-    <p class="slogan">{{ destination.description }}</p>
-  </div>
+    <div id="destinations">
+        <p class="title">{{destination.name}}</p>
+        <p class="slogan">{{ destination.description }}</p>
+    </div>
 
-<div class="spacer"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <p>{{ destination.location }}</p>
-            <p>{{ destination.theme }}</p>
-            <p>{{ destination.activity }}</p>
-            <p>{{ destination.tickets }}</p>
-            <p>{{destination.startDate}}</p>
+    <div class="spacer"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p>{{ destination.location }}</p>
+                <p>{{ destination.theme }}</p>
+                <p>{{ destination.activity }}</p>
+                <p>{{ destination.tickets }}</p>
+                <p>{{destination.startDate}}</p>
+            </div>
         </div>
     </div>
 </div>
