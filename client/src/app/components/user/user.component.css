@@ -1,6 +1,12 @@
 .spacer {
-  padding-top: 75px;
+  padding-top: 42px;
   padding-left: 15px;
   padding-right: 15px;
 }
-
+mat-grid-tile{
+  border-style: solid;
+  border-color: #F2E8B3;
+}
+mat-card-title{
+  margin-bottom: 10px;
+}
