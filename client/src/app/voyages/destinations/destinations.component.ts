@@ -8,11 +8,15 @@ import { ApiService } from '../../../services/api.service';
 })
 export class DestinationsComponent {
   destinations: any[] = [];
+  loading: boolean = true;
 
   constructor(private apiService: ApiService) { }
 
   async ngOnInit(): Promise<void>{
     await this.getRecords(0);
+    setTimeout(() => {
+      this.loading = false;
+    }, 500);  
   };
 
   async getRecords(n: number){

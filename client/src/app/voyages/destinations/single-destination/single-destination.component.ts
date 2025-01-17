@@ -18,7 +18,9 @@ export class SingleDestinationComponent implements OnInit {
     // Ottieni l'ID dalla rotta
     this.destinationId = this.route.snapshot.paramMap.get('id')!;
     this.searchRecord(0, this.destinationId);
-    this.loading = false;
+    setTimeout(() => {
+      this.loading = false;
+    }, 500);
   }
 
   async searchRecord(n: number, s: string) {
