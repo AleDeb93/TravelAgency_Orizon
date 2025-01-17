@@ -1,21 +1,61 @@
 <div class="spacer"></div>
-<mat-grid-list cols="3" rowHeight="3:1">
-    <mat-grid-tile>
-      <h3>Informazioni utente</h3>
-        <!-- <mat-card>
-            <mat-card-header>
-              <mat-card-title-group>
-                <mat-card-title>Informazioni utente</mat-card-title>
-              </mat-card-title-group>
-            </mat-card-header>
-            <mat-card-content class="userInfo">
-              <p>Username: <strong>user.name user.surname</strong></p>
-              <p>Contatto: <strong>user.email</strong></p>
-              <p>ID: <strong>user.id</strong></p>
-            </mat-card-content>
-          </mat-card> -->
-    </mat-grid-tile>
-    <mat-grid-tile>Orini in corso</mat-grid-tile>
-    <mat-grid-tile>Tutti i tuoi ordini</mat-grid-tile>
-  </mat-grid-list>
-  
+<div class="container px-4 py-5" id="featured-3">
+  <h2 class="pb-2 border-bottom">I tuoi dati</h2>
+<form class="row g-3">
+  <div class="col-md-4">
+    <label for="validationDefault01" class="form-label">Nome</label>
+    <input type="text" class="form-control" id="validationDefault01" value="user.name" required>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefault02" class="form-label">Cognome</label>
+    <input type="text" class="form-control" id="validationDefault02" value="user.surname" required>
+  </div>
+  <div class="col-md-4">
+    <label for="validationDefaultUsername" class="form-label">Email</label>
+    <div class="input-group" >
+      <span class="input-group-text" id="inputGroupPrepend2"></span>
+      <input type="text" class="form-control" id="validationDefaultUsername" value="user.email" aria-describedby="inputGroupPrepend2" required>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <label for="validationDefault04" class="form-label">Gender</label>
+    <select class="form-select" id="validationDefault04" required>
+      <option selected disabled value="">Scegli...</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label for="validationDefault04" class="form-label">Metodo di pagamento</label>
+    <select class="form-select" id="validationDefault04" required>
+      <option selected disabled value="">Scegli...</option>
+      <option>Credit Card</option>
+      <option>Paypal</option>
+      <option>Bank Transfer</option>
+    </select>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Modifica</button>
+  </div>
+</form>
+</div>
+
+<div class="container px-4 py-5" id="featured-3">
+  <h2 class="pb-2 border-bottom">I tuoi ordini</h2>
+  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <!-- se non ci sono ordini -->
+    <h3 class="fs-2 text-body-emphasis">Non ci sono ordini da mostrare</h3>
+    <!-- altrimenti facciamo un ngFor -->
+    <div class="feature col">
+      <h3 class="fs-2 text-body-emphasis">order.status</h3>
+      <p>order.id</p>
+      <p>order.orderDate</p>
+      <p>order.totalAmount</p>
+      <a href="#" class="icon-link">
+        Tutti i dettagli
+        <svg class="bi"><use xlink:href="#chevron-right"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
