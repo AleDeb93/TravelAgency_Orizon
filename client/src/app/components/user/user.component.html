@@ -1,61 +1,32 @@
 <div class="spacer"></div>
-<div class="container px-4 py-5" id="featured-3">
-  <h2 class="pb-2 border-bottom">I tuoi dati</h2>
-<form class="row g-3">
-  <div class="col-md-4">
-    <label for="validationDefault01" class="form-label">Nome</label>
-    <input type="text" class="form-control" id="validationDefault01" value="user.name" required>
+<div class="user-info">
+  <h2 class="section-title">Informazioni Utente</h2>
+
+  <div class="info">
+    <p><strong>ID:</strong>  user.id</p>
+    <p><strong>Nome:</strong> user.name</p>
+    <p><strong>Cognome:</strong> user.surname </p>
+    <p><strong>Email:</strong> user.email </p>
+    <p><strong>Genere:</strong> user.gender</p>
+    <p><strong>Preferenze:</strong> user.preferences </p>
   </div>
-  <div class="col-md-4">
-    <label for="validationDefault02" class="form-label">Cognome</label>
-    <input type="text" class="form-control" id="validationDefault02" value="user.surname" required>
-  </div>
-  <div class="col-md-4">
-    <label for="validationDefaultUsername" class="form-label">Email</label>
-    <div class="input-group" >
-      <span class="input-group-text" id="inputGroupPrepend2"></span>
-      <input type="text" class="form-control" id="validationDefaultUsername" value="user.email" aria-describedby="inputGroupPrepend2" required>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <label for="validationDefault04" class="form-label">Gender</label>
-    <select class="form-select" id="validationDefault04" required>
-      <option selected disabled value="">Scegli...</option>
-      <option>Male</option>
-      <option>Female</option>
-      <option>Other</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <label for="validationDefault04" class="form-label">Metodo di pagamento</label>
-    <select class="form-select" id="validationDefault04" required>
-      <option selected disabled value="">Scegli...</option>
-      <option>Credit Card</option>
-      <option>Paypal</option>
-      <option>Bank Transfer</option>
-    </select>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary" type="submit">Modifica</button>
-  </div>
-</form>
+
+  <!-- (click)="enableEditing()" -->
+  <button class="edit-button" >Modifica Informazioni</button>
 </div>
 
-<div class="container px-4 py-5" id="featured-3">
-  <h2 class="pb-2 border-bottom">I tuoi ordini</h2>
-  <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-    <!-- se non ci sono ordini -->
-    <h3 class="fs-2 text-body-emphasis">Non ci sono ordini da mostrare</h3>
-    <!-- altrimenti facciamo un ngFor -->
-    <div class="feature col">
-      <h3 class="fs-2 text-body-emphasis">order.status</h3>
-      <p>order.id</p>
-      <p>order.orderDate</p>
-      <p>order.totalAmount</p>
-      <a href="#" class="icon-link">
-        Tutti i dettagli
-        <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-      </a>
+<div class="order-history">
+  <h3 class="section-title">Storico Ordini</h3>
+  <!-- *ngIf="noOrders" -->
+  <h3>Non ci sono ordini da mostrare</h3>
+  <!-- *ngIf="!noOrders" -->
+  <div >
+    <!-- *ngFor="let order of orders" -->
+    <div  class="order-card">
+      <p><strong>Ordine # order.id </strong></p>
+      <p><strong>Data:</strong> order.date </p>
+      <p><strong>Destinazione:</strong> order.destination </p>
+      <p><strong>Stato:</strong>  order.status </p>
     </div>
   </div>
 </div>
