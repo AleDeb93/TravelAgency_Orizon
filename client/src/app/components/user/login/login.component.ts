@@ -10,6 +10,7 @@ import { AuthService } from '../../../../services/auth.service';
 export class LoginComponent implements OnInit {
 
   action: string = '';
+  isValid: boolean = true;
 
   constructor(private route: ActivatedRoute) {}
 
