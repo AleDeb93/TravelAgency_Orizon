@@ -38,7 +38,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Registrati</button>
-                    <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                    <small class="text-danger" *ngIf="!isValid">Controlla i tuoi dati</small>
                     <hr class="my-4">
                 </form>
             </div>
@@ -68,7 +68,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Accedi</button>
-                    <small class="text-danger" *ngIf="!isValid">Bad account name or password</small>
+                    <small class="text-danger" *ngIf="!isValid">Email o passowrd errate</small>
                     <hr class="my-4">
                 </form>
             </div>
