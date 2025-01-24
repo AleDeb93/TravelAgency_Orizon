@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Ottieni il parametro query "action" dalla rotta
+    // Ottengo il parametro query "action" dalla rotta
     this.route.queryParams.subscribe(params => {
       this.action = params['action'] || 'login'; 
     });
