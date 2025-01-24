@@ -11,6 +11,7 @@ export class SingleDestinationComponent implements OnInit {
   destinationId: string = '';  // Inizializzazione con una stringa vuota
   destination: any;
   loading: boolean = true;
+  formattedDate: string = '';
 
   constructor(private route: ActivatedRoute, private apiService: ApiService) { }
 
@@ -27,8 +28,21 @@ export class SingleDestinationComponent implements OnInit {
     try {
       const data = await this.apiService.searchRecord(0, this.destinationId).toPromise();
       this.destination = data;
+      if (this.destination && this.destination.startDate) {
+        this.formattedDate = this.formatDate(this.destination.startDate);
+      } else {
+        console.error('La data di partenza non è disponibile');
+      }
     } catch {
       console.error('Non è stato possibile ottenere i dati richiesti')
     }
+  }
+
+  formatDate(dateString: string): string {
+    // Converto la stringa in una data valida
+    const date = new Date(dateString); 
+    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    // Formatto la data in italiano
+    return date.toLocaleDateString('it-IT', options); 
   }
 }
