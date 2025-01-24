@@ -1,0 +1,77 @@
+<div class="spacer"></div>
+
+<!-- Se abbiamo cliccato registrati, ci apparirà una finestra modale con un form per registrarsi. -->
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog"
+    id="modalSignin" *ngIf="action === 'register'">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2">Registrati gratuitamente</h1>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form class="">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="name">
+                        <label for="floatingInput">Nome</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="surname">
+                        <label for="floatingInput">Cognome</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-control rounded-3" id="floatingGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Nonbinary">Nonbinary</option>
+                        </select>
+                        <label for="floatingGender">Genere</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-3" id="floatingInput"
+                            placeholder="name@example.com">
+                        <label for="floatingInput">Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control rounded-3" id="floatingPassword"
+                            placeholder="Password">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Registrati</button>
+                    <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                    <hr class="my-4">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Se abbiamo cliccato accedi ci apparirà una finestra modale con un form per accedere. -->
+<div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog"
+    id="modalSignin" *ngIf="action === 'login'">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2">Accedi al tuo account</h1>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form class="">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-3" id="floatingInput"
+                            placeholder="name@example.com">
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control rounded-3" id="floatingPassword"
+                            placeholder="Password">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Accedi</button>
+                    <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+                    <hr class="my-4">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

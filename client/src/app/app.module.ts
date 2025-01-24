@@ -13,6 +13,7 @@ import { SharedModule } from '../modules/shared.modules';
 // Design
 import { MaterialModule } from '../modules/material.module';
 import { CartComponent } from './components/cart/cart.component';
+import { LoginComponent } from './components/user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { CartComponent } from './components/cart/cart.component';
     HomeComponent,
     UserComponent,
     CartComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

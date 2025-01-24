@@ -1,5 +1,20 @@
 <div class="spacer"></div>
-<div class="user-info">
+
+<!-- Se utente non loginato -->
+<div class="login" *ngIf="logOff">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100"><use xlink:href="#bootstrap"></use></svg>
+    <h1 class="text-body-emphasis">Accedi o registrati</h1>
+    <p class="col-lg-8 mx-auto fs-5 text-muted">Accedi al tuo account o creane uno per continuare</p>
+    <div class="d-inline-flex gap-2 mb-5">
+      <button class="d-inline-flex align-items-center btn btn-success btn-lg px-4 rounded-pill" type="button" routerLink="login"  [queryParams]="{ action: 'login' }">Accedi</button>
+      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" routerLink="login"  [queryParams]="{ action: 'register' }">Registrati</button>
+    </div>
+  </div>
+</div>
+
+<!-- Se utente loginato -->
+<div class="user-info" *ngIf="!logOff">
   <h2 class="section-title">Informazioni Utente</h2>
 
   <div class="info">
@@ -10,12 +25,11 @@
     <p><strong>Genere:</strong> user.gender</p>
     <p><strong>Preferenze:</strong> user.preferences </p>
   </div>
-
   <!-- (click)="enableEditing()" -->
   <button class="edit-button" >Modifica Informazioni</button>
 </div>
 
-<div class="order-history">
+<div class="order-history" *ngIf="!logOff">
   <h3 class="section-title">Storico Ordini</h3>
   <!-- *ngIf="noOrders" -->
   <h3>Non ci sono ordini da mostrare</h3>

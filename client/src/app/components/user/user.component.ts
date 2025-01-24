@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  logOff: boolean = true;
 
 }

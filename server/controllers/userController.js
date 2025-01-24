@@ -29,7 +29,7 @@ const userController = {
     createUser: async (req, res) => {
         try {
             // Estraggo i dati obbligatori dalla richiesta
-            const { name, surname, email, password } = req.body;
+            const { name, surname, email, gender, password } = req.body;
             // Genero il salt per l' hashing e poi creo il nuovo user usando la psw criptata 
             const salt = await bcrypt.genSalt(10);
             const password_hash = await bcrypt.hash(password, salt);
@@ -37,6 +37,7 @@ const userController = {
                 name,
                 surname,
                 email,
+                gender,
                 password_hash
             })
             res.status(201).json(newUser);

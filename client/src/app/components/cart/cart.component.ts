@@ -9,6 +9,8 @@ import { ApiService } from '../../../services/api.service';
 })
 export class CartComponent implements OnInit {
   loading: boolean = true;
+  logOff: boolean = true;
+
 
   constructor(private apiService: ApiService) { }
 
