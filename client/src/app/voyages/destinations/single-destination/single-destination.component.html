@@ -48,9 +48,11 @@
       <div class="col-md-6">
         <p><strong>Location:</strong> {{ destination.location }}</p>
         <p><strong>Tema del viaggio:</strong> {{ destination.theme }}</p>
+        <p><strong>Attività:</strong> {{ destination.activity }}</p>
       </div>
       <div class="col-md-6">
-        <p><strong>Attività:</strong> {{ destination.activity }}</p>
+        <p><strong>Prezzo a persona:</strong> {{ (destination.price - (destination.price * (destination.discount / 100))) | currency:'EUR' }}</p>
+        <p><strong>Sconto:</strong> {{ destination.discount }}%</p>
         <p><strong>Tickets disponibili:</strong> {{ destination.tickets }}</p>
         <p><strong>Partenza:</strong> {{ formattedDate }}</p>
       </div>

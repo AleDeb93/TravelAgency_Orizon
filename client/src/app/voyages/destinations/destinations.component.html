@@ -22,7 +22,7 @@
 <div *ngIf="!loading" class="album py-5 bg-body-tertiary">
   <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col" *ngFor="let destination of destinations">
+      <div class="col" *ngFor="let destination of destinations" [ngClass]="{'highlighted': destination.discount !== null}">
         <div class="card shadow-sm">
           <img
             [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')"
@@ -34,6 +34,8 @@
           <div class="card-body">
             <h3>{{ destination.name }}</h3>
             <p class="card-text">{{ destination.description }}</p>
+            <p class="card-text" *ngIf="destination.discount == null" >A partire da: {{ destination.price | currency:'EUR' }}</p>
+            <p class="card-text" *ngIf="destination.discount !== null" ><strong>In sconto del {{ destination.discount }}%:</strong> {{ (destination.price - (destination.price * (destination.discount / 100))) | currency:'EUR' }}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button type="button" class="btn btn-sm btn-outline-secondary" [routerLink]="['/voyages/destinations', destination.id]">

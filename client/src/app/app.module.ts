@@ -12,12 +12,14 @@ import { SharedModule } from '../modules/shared.modules';
 
 // Design
 import { MaterialModule } from '../modules/material.module';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     UserComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,

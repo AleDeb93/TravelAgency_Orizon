@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
+import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
   selector: 'app-destinations',
@@ -27,5 +28,4 @@ export class DestinationsComponent {
       console.error('Non è stato possibile ottenere i dati richiesti')
     }
   }
-
 }
