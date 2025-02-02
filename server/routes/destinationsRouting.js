@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Rotte per le destinazioni
 router.get('/', destinationController.getAllDestinations); 
+router.get('/filters', destinationController.getDestinationsByPreferences);
 router.get('/:id', destinationController.getDestinationByID); 
 
 module.exports = router;
