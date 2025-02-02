@@ -15,6 +15,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatStepperModule} from '@angular/material/stepper';
 import {
   MatSnackBarModule,
   MatSnackBarAction,
@@ -45,6 +46,7 @@ import {
     MatSnackBarAction,
     MatSnackBarActions,
     MatSnackBarLabel,
+    MatStepperModule,
   ],
   exports: [
     MatSidenavModule,
@@ -65,6 +67,7 @@ import {
     MatSnackBarAction,
     MatSnackBarActions,
     MatSnackBarLabel,
+    MatStepperModule,
   ]
 })
 export class MaterialModule { }

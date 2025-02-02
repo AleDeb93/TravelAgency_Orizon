@@ -4,6 +4,7 @@ import { DestinationsComponent } from './destinations/destinations.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { SingleDestinationComponent } from './destinations/single-destination/single-destination.component';
 
+
 const routes: Routes = [
   { path: 'destinations', component: DestinationsComponent },
   { path: 'destinations/:id', component: SingleDestinationComponent },

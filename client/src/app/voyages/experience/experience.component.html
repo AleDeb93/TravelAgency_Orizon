@@ -1,3 +1,88 @@
-<div class="hero">
+<!-- Se utente non loginato -->
+<div class="spacer" *ngIf="logOff"></div>
+<div class="login" *ngIf="logOff">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100">
+      <use xlink:href="#bootstrap"></use>
+    </svg>
+    <h1 class="text-body-emphasis">Accedi o registrati</h1>
+    <p class="col-lg-8 mx-auto fs-5 text-muted">Accedi al tuo account o creane uno per continuare</p>
+    <div class="d-inline-flex gap-2 mb-5">
+      <button class="d-inline-flex align-items-center btn btn-success btn-lg px-4 rounded-pill" type="button"
+        routerLink="login" [queryParams]="{ action: 'login' }">Accedi</button>
+      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" routerLink="login"
+        [queryParams]="{ action: 'register' }">Registrati</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="hero" *ngIf="!logOff">
   <img src="experience.png" alt="Experience img" class="esperience-img">
+</div>
+<!-- Slogan pagina destinazioni -->
+<div id="destinations" *ngIf="!logOff">
+  <p class="title">FOR YOU</p>
+  <p class="slogan">OGNI VIAGGIO, UNA SCOPERTA SU MISURA PER TE</p>
+</div>
+<!-- Le destinazioni verranno mostrate da qui getAll -->
+<section class="text-center" *ngIf="!logOff">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <p class="lead text-body-secondary">
+        Crea il viaggio dei tuoi sogni, con esperienze uniche che riflettono i tuoi interessi. Salva le tue preferenze e
+        inizia a vivere un'avventura responsabile.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Questionario per comporre la query -->
+<div class="myStepper" *ngIf="!logOff">
+  <mat-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup" label="Scegli la tua attività!">
+      <form [formGroup]="firstFormGroup">
+        <!-- <ng-template matStepLabel>Quale attività preferisci?</ng-template> -->
+        <mat-form-field>
+          <mat-label>Activity</mat-label>
+          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Fatto</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Quale sarà il tema del tuo viaggio?">
+      <form [formGroup]="secondFormGroup">
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Indietro</button>
+          <button mat-button matStepperNext>Fatto</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" label="Hai un budget prefissato?">
+      <form [formGroup]="thirdFormGroup">
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="thirdCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Indietro</button>
+          <button mat-button matStepperNext>Fatto</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Conferma le preferenze</ng-template>
+      <p>Hai terminato le tue scelte?</p>
+      <div>
+        <button mat-button matStepperPrevious (click)="stepper.reset()">Modifica le tue scelte</button>
+        <button mat-button>Conferma</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </div>
