@@ -29,7 +29,7 @@ const Destinations = sequelize.define('Destinations', {
         allowNull: false
     },
     activity: {
-        type: DataTypes.ENUM('Fotografia', 'Trekking', 'Relax', 'Salute e benessere'), 
+        type: DataTypes.ENUM('Fotografia', 'Trekking', 'Relax', 'Salute e Benessere'), 
         allowNull: false
     },
     theme: {
