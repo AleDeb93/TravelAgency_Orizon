@@ -37,55 +37,7 @@
   </div>
 </section>
 
-<!-- Questionario per comporre la query -->
-<!-- <div class="myStepper" *ngIf="!logOff">
-  <mat-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup" label="Scegli la tua attività!">
-      <form [formGroup]="firstFormGroup"> -->
-<!-- <ng-template matStepLabel>Quale attività preferisci?</ng-template> -->
-<!-- <mat-form-field>
-          <mat-label>Activity</mat-label>
-          <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperNext>Fatto</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup" label="Quale sarà il tema del tuo viaggio?">
-      <form [formGroup]="secondFormGroup">
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Indietro</button>
-          <button mat-button matStepperNext>Fatto</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="thirdFormGroup" label="Hai un budget prefissato?">
-      <form [formGroup]="thirdFormGroup">
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="thirdCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Indietro</button>
-          <button mat-button matStepperNext>Fatto</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Conferma le preferenze</ng-template>
-      <p>Hai terminato le tue scelte?</p>
-      <div>
-        <button mat-button matStepperPrevious (click)="stepper.reset()">Modifica le tue scelte</button>
-        <button mat-button>Conferma</button>
-      </div>
-    </mat-step>
-  </mat-stepper>
-</div> -->
+<!-- Se utente loggato partiamo con la scelta delle preferenze -->
 <button class="btn btn-lg btn-success start-btn" *ngIf="!showQuestionnaire && !logOff" (click)="startQuestionnaire()">
   Costruisci il tuo viaggio
 </button>
@@ -93,11 +45,11 @@
   <div id="step1" class="step" [class.active]="currentStep === 1">
     <h2>Quale attività preferisci?</h2>
     <div class="options">
-      <button (click)="selectOption($event)">Escursione</button>
-      <button (click)="selectOption($event)">Relax</button>
+      <button (click)="selectOption($event)">Fotografia</button>
+      <button (click)="selectOption($event)"></button>
       <button (click)="selectOption($event)">Cultura</button>
     </div>
-    <button class="btn btn-primary" (click)="nextStep()">Avanti</button>
+    <button class="btn btn-primary" (click)="stepsMng('next')">Avanti</button>
   </div>
 
   <div id="step2" class="step" [class.active]="currentStep === 2">
@@ -107,14 +59,14 @@
       <button (click)="selectOption($event)">Romantico</button>
       <button (click)="selectOption($event)">Famiglia</button>
     </div>
-    <button class="btn btn-secondary" (click)="prevStep()">Indietro</button>
-    <button class="btn btn-primary" (click)="nextStep()">Avanti</button>
+    <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
+    <button class="btn btn-primary" (click)="stepsMng('next')">Avanti</button>
   </div>
 
   <div id="step3" class="step" [class.active]="currentStep === 3">
     <h2>Hai un budget prefissato?</h2>
     <input type="number" placeholder="Inserisci il budget" style="width: 100%; padding: 10px; margin-top: 10px;">
-    <button class="btn btn-secondary" (click)="prevStep()">Indietro</button>
+    <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
     <button class="btn btn-primary" (click)="finish()">Termina</button>
   </div>
 </div>

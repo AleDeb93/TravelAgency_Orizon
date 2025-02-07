@@ -8,35 +8,18 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ExperienceComponent {
   logOff: boolean = false;
-  showQuestionnaire: boolean = false; 
+  showQuestionnaire: boolean = false;
   currentStep = 1;
-
-  private _formBuilder = inject(FormBuilder);
-
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
-  thirdFormGroup = this._formBuilder.group({
-    thirdCtrl: ['', Validators.required],
-  });
-
-  isLinear = false;
 
   startQuestionnaire() {
     this.showQuestionnaire = true;
   }
 
-  nextStep() {
-    if (this.currentStep < 3) {
+  // Gestione degli step del questionario
+  stepsMng(direction: string) {
+    if (direction === 'next') {
       this.currentStep++;
-    }
-  }
-
-  prevStep() {
-    if (this.currentStep > 1) {
+    } else if (direction === 'prev') {
       this.currentStep--;
     }
   }
@@ -48,6 +31,7 @@ export class ExperienceComponent {
     target.classList.add('selected');
   }
 
+  // TODO Al finish del questionario implementare una funzione che salva le preferenze dell'utente
   finish() {
     alert('Le tue preferenze sono state salvate!');
   }

@@ -25,15 +25,15 @@ const Destinations = sequelize.define('Destinations', {
         allowNull: true  
     },
     location: {
-        type: DataTypes.ENUM('Asia', 'Europe', 'Africa', 'North-America', 'South-America'), 
+        type: DataTypes.ENUM('Asia', 'Europa', 'Africa', 'Nord America', 'Sud America'), 
         allowNull: false
     },
     activity: {
-        type: DataTypes.ENUM('Photography', 'Long Walks', 'Relax', 'Health and Fitness'), 
+        type: DataTypes.ENUM('Fotografia', 'Trekking', 'Relax', 'Salute e benessere'), 
         allowNull: false
     },
     theme: {
-        type: DataTypes.ENUM('Esperiencial', 'Naturalistic', 'Emotional', 'Cultural', 'Enogastronomic', 'Family'), 
+        type: DataTypes.ENUM('Esperienziale', 'Naturalistico', 'Emozionale', 'Culturale', 'Enogastronomico', 'Famiglia'), 
         allowNull: false
     },
     sustainabilityRating: {
