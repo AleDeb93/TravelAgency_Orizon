@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-user',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
 })
 export class UserComponent {
   logOff: boolean = true;
+  constructor(private apiService: ApiService) {}
+
 
 }

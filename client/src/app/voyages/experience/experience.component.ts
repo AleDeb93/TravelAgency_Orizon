@@ -7,7 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./experience.component.css']
 })
 export class ExperienceComponent {
-  logOff: boolean = false;
+  logOff: boolean = true;
   showQuestionnaire: boolean = false;
   currentStep = 1;
 

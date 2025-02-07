@@ -1,12 +1,15 @@
 const Users = require('../models/Users');
 const bcrypt = require('bcrypt');
-const { use } = require('../routes/usersRouting');
+const jwt = require('jsonwebtoken');
+
+// Variabili d'ambiente
+require('dotenv').config();
 
 const userController = {
     // GET /api/v2/users
     getAllUsers: async (req, res) => {
         try {
-            const users = await Users.findAll();
+            const users = await Users.findAll({ attributes: { exclude: ['password_hash'] } });
             res.status(200).json(users);
         } catch (error) {
             res.status(500).json({ error: 'Errore durante la chiamata getAllUsers' });
@@ -16,7 +19,7 @@ const userController = {
     getUserByID: async (req, res) => {
         const { id } = req.params;
         try {
-            const user = await Users.findByPk(id);
+            const user = await Users.findByPk(id, { attributes: { exclude: ['password_hash'] } });
             if (user)
                 res.status(200).json(user)
             else
@@ -46,25 +49,60 @@ const userController = {
         }
     },
     // POST /api/v2/login
+    // loginUser: async (req, res) => {
+    //     try {
+    //         const { email, password } = req.body;
+    //         // Cerco l' utente nel database
+    //         const user = await Users.findOne({ where: { email } });
+    //         // Gestisco se non lo trovo 
+    //         if (!user)
+    //             return res.status(404).json({ error: 'Email non registrata' })
+    //         // Verifico la psw
+    //         const match = await bcrypt.compare(password, user.password_hash);
+    //         if (!match)
+    //             return res.status(401).json({ error: 'Password errata!' })
+    //         // Login riuscito genero il token
+    //         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    //         res.status(200).json({ message: 'Login riuscito', token, user});
+    //     } catch (error) {
+    //         res.status(500).json({ error: 'Errore durante la login' });
+    //     }
+    // },
     loginUser: async (req, res) => {
         try {
             const { email, password } = req.body;
-            // Cerco l' utente nel database
+            console.log("Email ricevuta:", email);
+            console.log("Password ricevuta:", password);
+    
+            // Cerco l'utente nel database
             const user = await Users.findOne({ where: { email } });
-            // Gestisco se non lo trovo 
-            if (!user)
-                return res.status(404).json({ error: 'Email non registrata' })
-            // Verifico la psw
-            const match = await bcrypt.compare(password, user.pswHash);
-            // Gestisco errori di utente / psw
-            if (!match)
-                return res(401).json({ error: 'Password errata!' })
-            // Login riuscito
-            res.status(200).json({ message: 'Login riuscito', user })
+            if (!user) {
+                console.log("Utente non trovato nel database!");
+                return res.status(404).json({ error: 'Email non registrata' });
+            }
+    
+            console.log("Utente trovato:", user);
+    
+            // Verifico la password
+            const match = await bcrypt.compare(password, user.password_hash);
+            console.log("Risultato bcrypt.compare:", match);
+    
+            if (!match) {
+                console.log("Password errata!");
+                return res.status(401).json({ error: 'Password errata!' });
+            }
+    
+            // Login riuscito, genero il token
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            console.log("Token generato:", token);
+    
+            res.status(200).json({ message: 'Login riuscito', token, user });
         } catch (error) {
+            console.error("Errore durante la login:", error);
             res.status(500).json({ error: 'Errore durante la login' });
         }
     },
+    
     // PUT /api/v2/users/:id
     updateUser: async (req, res) => {
         const { id } = req.params;

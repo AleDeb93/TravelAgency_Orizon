@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
+import { ApiService } from '../../services/api.service';
 import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
