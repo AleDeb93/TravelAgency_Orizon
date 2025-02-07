@@ -45,9 +45,10 @@
   <div id="step1" class="step" [class.active]="currentStep === 1">
     <h2>Quale attività preferisci?</h2>
     <div class="options">
-      <button (click)="selectOption($event)">Fotografia</button>
-      <button (click)="selectOption($event)"></button>
-      <button (click)="selectOption($event)">Cultura</button>
+      <button (click)="selectOption($event)">Fotografia</button> 
+      <button (click)="selectOption($event)">Trekking</button>
+      <button (click)="selectOption($event)">Relax</button>
+      <button (click)="selectOption($event)">Salute e Benessere</button>
     </div>
     <button class="btn btn-primary" (click)="stepsMng('next')">Avanti</button>
   </div>
@@ -55,8 +56,11 @@
   <div id="step2" class="step" [class.active]="currentStep === 2">
     <h2>Quale sarà il tema del tuo viaggio?</h2>
     <div class="options">
-      <button (click)="selectOption($event)">Avventura</button>
-      <button (click)="selectOption($event)">Romantico</button>
+      <button (click)="selectOption($event)">Esperienziale</button>
+      <button (click)="selectOption($event)">Naturalistico</button>
+      <button (click)="selectOption($event)">Emozionale</button>
+      <button (click)="selectOption($event)">Culturale</button>
+      <button (click)="selectOption($event)">Enogastonomico</button>
       <button (click)="selectOption($event)">Famiglia</button>
     </div>
     <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
@@ -64,6 +68,19 @@
   </div>
 
   <div id="step3" class="step" [class.active]="currentStep === 3">
+    <h2>Dove vorresti andare?</h2>
+    <div class="options">
+      <button (click)="selectOption($event)">Asia</button> 
+      <button (click)="selectOption($event)">Europa</button>
+      <button (click)="selectOption($event)">Africa</button>
+      <button (click)="selectOption($event)">Nord America</button>
+      <button (click)="selectOption($event)">Sud America</button>
+    </div>
+    <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
+    <button class="btn btn-primary" (click)="stepsMng('next')">Avanti</button>
+  </div>
+
+  <div id="step4" class="step" [class.active]="currentStep === 4">
     <h2>Hai un budget prefissato?</h2>
     <input type="number" placeholder="Inserisci il budget" style="width: 100%; padding: 10px; margin-top: 10px;">
     <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
