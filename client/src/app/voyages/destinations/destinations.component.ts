@@ -15,6 +15,7 @@ export class DestinationsComponent {
 
   async ngOnInit(): Promise<void>{
     await this.getRecords(0);
+    console.log(localStorage.getItem('token'));
     setTimeout(() => {
       this.loading = false;
     }, 500);  

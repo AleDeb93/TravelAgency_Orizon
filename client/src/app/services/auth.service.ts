@@ -10,7 +10,8 @@ export class AuthService {
   constructor(private apiSerice: ApiService, private router: Router) { }
 
   canActivate(): boolean {
-    if (this.apiSerice.token != '') {	
+    const token = localStorage.getItem('token');
+    if (token) {	
       return true;
     } else {
       this.router.navigate(['/account']);

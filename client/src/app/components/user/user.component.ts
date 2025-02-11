@@ -10,5 +10,14 @@ export class UserComponent {
   logOff: boolean = true;
   constructor(private apiService: ApiService) {}
 
+  async ngOnInit(): Promise<void> {
+    this.logIn();
+  }
+
+  logIn(): void {
+    if(localStorage.getItem('token') != null && localStorage.getItem('token') != '') {
+      this.logOff = false;
+    }
+  }
 
 }

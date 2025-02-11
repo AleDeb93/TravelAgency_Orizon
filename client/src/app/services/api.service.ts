@@ -9,7 +9,7 @@ export class ApiService {
 
   arguments: string[] = ['destinations', 'users', 'orders'];
   private url = 'http://localhost:3000/api/v2/';
-  token: string = '';
+  token: string = localStorage.getItem('token') || '';
 
   constructor(private http: HttpClient) { }
 
@@ -19,6 +19,8 @@ export class ApiService {
     if (this.token && this.token.trim() !== '') { headers = headers.set('Authorization', `Bearer ${this.token}`) }
     return headers;
   }
+
+  // Gestione degli errori
   errorHandling(error: any): Observable<any> {
     console.error(error);
     return throwError(error);
@@ -52,18 +54,42 @@ export class ApiService {
     );
   }
 
+  // loginUser(user: any): Observable<any> {
+  //   // URL per la login
+  //   const url = `${this.url}users/login`;
+  //   const headers = this.getHeaders();
+  //   return this.http.post<any>(url, user, { headers }).pipe(
+  //     catchError(this.errorHandling),
+  //     // Se 200 aggiorno il flag loggedIn
+  //     tap(response => {
+  //       if (response && response.status === 200) {
+  //         this.token = 'Bearer ' + response.token;
+  //         localStorage.setItem('token', this.token);
+  //       }
+  //     })
+  //   );
+  // }
+
   loginUser(user: any): Observable<any> {
-    // URL per la login
     const url = `${this.url}users/login`;
     const headers = this.getHeaders();
+    
     return this.http.post<any>(url, user, { headers }).pipe(
-      catchError(this.errorHandling),
-      // Se 200 aggiorno il flag loggedIn
       tap(response => {
-        if (response && response.status === 200) {
-          this.token = 'Bearer ' + response.token;
+        console.log('Login response:', response); // Debug della risposta dal backend
+        if (response && response.token) {
+          this.token = `Bearer ${response.token}`;
+          localStorage.setItem('token', this.token);
+          console.log('Token salvato:', localStorage.getItem('token')); // Controllo se il token è stato salvato
         }
-      })
+      }),
+      catchError(this.errorHandling)
     );
+  }
+  
+
+  logoutUser(): void {
+    this.token = '';
+    localStorage.removeItem('token');
   }
 }
