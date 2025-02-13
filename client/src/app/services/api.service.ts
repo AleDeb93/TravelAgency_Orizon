@@ -85,8 +85,7 @@ export class ApiService {
       }),
       catchError(this.errorHandling)
     );
-  }
-  
+  } 
 
   logoutUser(): void {
     this.token = '';

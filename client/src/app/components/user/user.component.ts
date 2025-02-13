@@ -19,5 +19,10 @@ export class UserComponent {
       this.logOff = false;
     }
   }
+  logOut(): void {
+    this.apiService.logoutUser();
+    console.log('Logged out');
+    window.location.reload();
+  }
 
 }

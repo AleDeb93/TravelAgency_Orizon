@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
     this.apiService.loginUser(user).subscribe(
       (response) => {
         console.log('Login successo', response);
+        window.location.reload();
       },
       (error) => {
         console.error(error);
