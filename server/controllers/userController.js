@@ -48,61 +48,29 @@ const userController = {
             res.status(500).json({ error: 'Errore durante la chiamata createUser' });
         }
     },
+    
     // POST /api/v2/login
-    // loginUser: async (req, res) => {
-    //     try {
-    //         const { email, password } = req.body;
-    //         // Cerco l' utente nel database
-    //         const user = await Users.findOne({ where: { email } });
-    //         // Gestisco se non lo trovo 
-    //         if (!user)
-    //             return res.status(404).json({ error: 'Email non registrata' })
-    //         // Verifico la psw
-    //         const match = await bcrypt.compare(password, user.password_hash);
-    //         if (!match)
-    //             return res.status(401).json({ error: 'Password errata!' })
-    //         // Login riuscito genero il token
-    //         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
-    //         res.status(200).json({ message: 'Login riuscito', token, user});
-    //     } catch (error) {
-    //         res.status(500).json({ error: 'Errore durante la login' });
-    //     }
-    // },
     loginUser: async (req, res) => {
         try {
             const { email, password } = req.body;
-            console.log("Email ricevuta:", email);
-            console.log("Password ricevuta:", password);
-    
             // Cerco l'utente nel database
             const user = await Users.findOne({ where: { email } });
-            if (!user) {
-                console.log("Utente non trovato nel database!");
+            // Se l'utente non esiste
+            if (!user)
                 return res.status(404).json({ error: 'Email non registrata' });
-            }
-    
-            console.log("Utente trovato:", user);
-    
             // Verifico la password
             const match = await bcrypt.compare(password, user.password_hash);
-            console.log("Risultato bcrypt.compare:", match);
-    
-            if (!match) {
-                console.log("Password errata!");
+            // Se la password non corrisponde
+            if (!match)
                 return res.status(401).json({ error: 'Password errata!' });
-            }
-    
             // Login riuscito, genero il token
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
-            console.log("Token generato:", token);
-    
             res.status(200).json({ message: 'Login riuscito', token, user });
         } catch (error) {
-            console.error("Errore durante la login:", error);
             res.status(500).json({ error: 'Errore durante la login' });
         }
     },
-    
+
     // PUT /api/v2/users/:id
     updateUser: async (req, res) => {
         const { id } = req.params;

@@ -14,33 +14,3 @@
 </div>
 
 <!-- Se utente loginato -->
-<div class="user-info" *ngIf="!logOff">
-  <h2 class="section-title">Informazioni Utente</h2>
-
-  <div class="info">
-    <p><strong>ID:</strong>  user.id</p>
-    <p><strong>Nome:</strong> user.name</p>
-    <p><strong>Cognome:</strong> user.surname </p>
-    <p><strong>Email:</strong> user.email </p>
-    <p><strong>Genere:</strong> user.gender</p>
-    <p><strong>Preferenze:</strong> user.preferences </p>
-  </div>
-  <!-- (click)="enableEditing()" -->
-  <button class="edit-button" >Modifica Informazioni</button>
-</div>
-
-<div class="order-history" *ngIf="!logOff">
-  <h3 class="section-title">Storico Ordini</h3>
-  <!-- *ngIf="noOrders" -->
-  <h3>Non ci sono ordini da mostrare</h3>
-  <!-- *ngIf="!noOrders" -->
-  <div >
-    <!-- *ngFor="let order of orders" -->
-    <div  class="order-card">
-      <p><strong>Ordine # order.id </strong></p>
-      <p><strong>Data:</strong> order.date </p>
-      <p><strong>Destinazione:</strong> order.destination </p>
-      <p><strong>Stato:</strong>  order.status </p>
-    </div>
-  </div>
-</div>
