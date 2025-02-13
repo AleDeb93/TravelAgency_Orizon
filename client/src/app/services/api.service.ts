@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, catchError, throwError, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ApiService {
   private url = 'http://localhost:3000/api/v2/';
   token: string = localStorage.getItem('token') || '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   // Headers e gestione degli errori per chiamate alle API
   getHeaders(): HttpHeaders {
@@ -54,38 +55,33 @@ export class ApiService {
     );
   }
 
-  // loginUser(user: any): Observable<any> {
-  //   // URL per la login
-  //   const url = `${this.url}users/login`;
-  //   const headers = this.getHeaders();
-  //   return this.http.post<any>(url, user, { headers }).pipe(
-  //     catchError(this.errorHandling),
-  //     // Se 200 aggiorno il flag loggedIn
-  //     tap(response => {
-  //       if (response && response.status === 200) {
-  //         this.token = 'Bearer ' + response.token;
-  //         localStorage.setItem('token', this.token);
-  //       }
-  //     })
-  //   );
-  // }
-
   loginUser(user: any): Observable<any> {
     const url = `${this.url}users/login`;
     const headers = this.getHeaders();
     
     return this.http.post<any>(url, user, { headers }).pipe(
       tap(response => {
-        console.log('Login response:', response); // Debug della risposta dal backend
         if (response && response.token) {
           this.token = `Bearer ${response.token}`;
+          // Salvo il token in localStorage
           localStorage.setItem('token', this.token);
-          console.log('Token salvato:', localStorage.getItem('token')); // Controllo se il token è stato salvato
+          // Salvo i dati dell'utente in localStorage
+          localStorage.setItem('user', JSON.stringify(response.user));
+          // Redirect alla pagina account
+          this.router.navigate(['/account']);
         }
       }),
       catchError(this.errorHandling)
     );
   } 
+
+  getUser(id: number): Observable<any> {
+    const url = `${this.url}users/${id}`;
+    const headers = this.getHeaders();
+    return this.http.get<any>(url, { headers }).pipe(
+      catchError(this.errorHandling)
+    );
+  }
 
   logoutUser(): void {
     this.token = '';

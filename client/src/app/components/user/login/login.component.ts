@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   gender: string = '';
   password: string = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService) {}
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
     // Ottengo il parametro query "action" dalla rotta
@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
     this.apiService.loginUser(user).subscribe(
       (response) => {
         console.log('Login avvenuta con successo', response);
-        this.router.navigate(['/account']);
       },
       (error) => {
         console.error(error);
