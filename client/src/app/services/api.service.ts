@@ -58,7 +58,7 @@ export class ApiService {
   loginUser(user: any): Observable<any> {
     const url = `${this.url}users/login`;
     const headers = this.getHeaders();
-    
+
     return this.http.post<any>(url, user, { headers }).pipe(
       tap(response => {
         if (response && response.token) {
@@ -73,7 +73,7 @@ export class ApiService {
       }),
       catchError(this.errorHandling)
     );
-  } 
+  }
 
   getUser(id: number): Observable<any> {
     const url = `${this.url}users/${id}`;
@@ -86,5 +86,11 @@ export class ApiService {
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
+  }
+
+  // Chiamo OpenStreetMap per ottenere suggerimenti per paese, città e via
+  getAddressSuggestions(query: string): Observable<any> {
+    const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1`;
+    return this.http.get(url);
   }
 }

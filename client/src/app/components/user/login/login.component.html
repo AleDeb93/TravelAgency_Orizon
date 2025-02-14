@@ -12,15 +12,18 @@
             <div class="modal-body p-5 pt-0">
                 <form (ngSubmit)="register()">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="floatingName" [(ngModel)]="name" name="name" placeholder="name" required>
+                        <input type="text" class="form-control rounded-3" id="floatingName" [(ngModel)]="name"
+                            name="name" placeholder="name" required>
                         <label for="floatingName">Nome</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-3" id="floatingSurname" [(ngModel)]="surname" name="surname" placeholder="surname" required>
+                        <input type="text" class="form-control rounded-3" id="floatingSurname" [(ngModel)]="surname"
+                            name="surname" placeholder="surname" required>
                         <label for="floatingSurname">Cognome</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select class="form-control rounded-3" id="floatingGender" [(ngModel)]="gender" name="gender" required>
+                        <select class="form-control rounded-3" id="floatingGender" [(ngModel)]="gender" name="gender"
+                            required>
                             <option value="Male">Uomo</option>
                             <option value="Female">Donna</option>
                             <option value="Nonbinary">Altro</option>
@@ -28,18 +31,64 @@
                         <label for="floatingGender">Genere</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" id="floatingEmail" [(ngModel)]="email" name="email" placeholder="name@example.com" required>
+                        <input type="email" class="form-control rounded-3" id="floatingEmail" [(ngModel)]="email"
+                            name="email" placeholder="name@example.com" required>
                         <label for="floatingEmail">Email</label>
                     </div>
+
+                    <!-- Nazione -->
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="text" class="form-control rounded-3" id="floatingCountry" [(ngModel)]="country"
+                            name="country" placeholder="Nazione" required
+                            (input)="getInputValue($event, 'country')">
+                        <label for="floatingCountry">Nazione</label>
+                        <div class="dropdown-menu show w-100" *ngIf="countrySuggestions.length > 0">
+                            <button class="dropdown-item" *ngFor="let suggestion of countrySuggestions"
+                                (mousedown)="selectSuggestion('country', suggestion)">
+                                {{ suggestion }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Città -->
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="text" class="form-control rounded-3" id="floatingCity" [(ngModel)]="city"
+                            name="city" placeholder="Città" required
+                            (input)="getInputValue($event, 'city')">
+                        <label for="floatingCity">Città</label>
+                        <div class="dropdown-menu show w-100" *ngIf="citySuggestions.length > 0">
+                            <button class="dropdown-item" *ngFor="let suggestion of citySuggestions"
+                                (mousedown)="selectSuggestion('city', suggestion)">
+                                {{ suggestion }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Via -->
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="text" class="form-control rounded-3" id="floatingStreet" [(ngModel)]="street"
+                            name="street" placeholder="Via" required
+                            (input)="getInputValue($event, 'street')">
+                        <label for="floatingStreet">Via</label>
+                        <div class="dropdown-menu show w-100" *ngIf="streetSuggestions.length > 0">
+                            <button class="dropdown-item" *ngFor="let suggestion of streetSuggestions"
+                                (mousedown)="selectSuggestion('street', suggestion)">
+                                {{ suggestion }}
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-3" id="floatingPassword" [(ngModel)]="password" name="password" placeholder="Password" required>
+                        <input type="password" class="form-control rounded-3" id="floatingPassword"
+                            [(ngModel)]="password" name="password" placeholder="Password" required>
                         <label for="floatingPassword">Password</label>
                     </div>
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Registrati</button>
                     <small class="text-danger" *ngIf="!isValid">Controlla i tuoi dati</small>
                     <hr class="my-4">
-                    <p>Hai gia un account?</p>
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="button" (click)="toggleForm()">Accedi</button>
+                    <p>Hai già un account?</p>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="button"
+                        (click)="toggleForm()">Accedi</button>
                 </form>
             </div>
         </div>
@@ -58,18 +107,21 @@
             <div class="modal-body p-5 pt-0">
                 <form (ngSubmit)="login()">
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" id="floatingEmailLogin" [(ngModel)]="email" name="email" placeholder="name@example.com" required>
+                        <input type="email" class="form-control rounded-3" id="floatingEmailLogin" [(ngModel)]="email"
+                            name="email" placeholder="name@example.com" required>
                         <label for="floatingEmailLogin">Email address</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-3" id="floatingPasswordLogin" [(ngModel)]="password" name="password" placeholder="Password" required>
+                        <input type="password" class="form-control rounded-3" id="floatingPasswordLogin"
+                            [(ngModel)]="password" name="password" placeholder="Password" required>
                         <label for="floatingPasswordLogin">Password</label>
                     </div>
                     <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="submit">Accedi</button>
-                    <small class="text-danger" *ngIf="!isValid">Email o passowrd errate</small>
+                    <small class="text-danger" *ngIf="!isValid">Email o password errate</small>
                     <hr class="my-4">
                     <p>Non hai un account?</p>
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="button" (click)="toggleForm()">Registrati</button>
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" type="button"
+                        (click)="toggleForm()">Registrati</button>
                 </form>
             </div>
         </div>

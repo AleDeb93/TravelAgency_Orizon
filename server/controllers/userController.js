@@ -32,15 +32,19 @@ const userController = {
     createUser: async (req, res) => {
         try {
             // Estraggo i dati obbligatori dalla richiesta
-            const { name, surname, email, gender, password } = req.body;
+            const { name, surname, email, gender, country, city, street, password } = req.body;
             // Genero il salt per l' hashing e poi creo il nuovo user usando la psw criptata 
             const salt = await bcrypt.genSalt(10);
             const password_hash = await bcrypt.hash(password, salt);
+            // Creo il nuovo utente
             const newUser = await Users.create({
                 name,
                 surname,
                 email,
                 gender,
+                country,
+                city,
+                street,
                 password_hash
             })
             res.status(201).json(newUser);
@@ -48,7 +52,7 @@ const userController = {
             res.status(500).json({ error: 'Errore durante la chiamata createUser' });
         }
     },
-    
+
     // POST /api/v2/login
     loginUser: async (req, res) => {
         try {

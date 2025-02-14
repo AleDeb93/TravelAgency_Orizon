@@ -13,27 +13,34 @@ export class LoginComponent implements OnInit {
   isValid: boolean = true;
 
   // Variabili per login e registrazione
-  name: string = ''; 
+  name: string = '';
   surname: string = '';
   email: string = '';
   gender: string = '';
+  country: string = '';
+  city: string = '';
+  street: string = '';
   password: string = '';
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  // Variabili per suggerimenti di indirizzo
+  countrySuggestions: string[] = [];
+  citySuggestions: string[] = [];
+  streetSuggestions: string[] = [];
+
+  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
 
   ngOnInit(): void {
     // Ottengo il parametro query "action" dalla rotta
     this.route.queryParams.subscribe(params => {
-      this.action = params['action'] || 'login'; 
+      this.action = params['action'] || 'login';
     });
   }
 
   toggleForm() {
-    if (this.action === 'login') {
+    if (this.action === 'login')
       this.action = 'register';
-    } else {    
+    else
       this.action = 'login';
-    }
   }
 
   login() {
@@ -44,7 +51,7 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-        this.isValid = false; 
+        this.isValid = false;
       }
     );
   }
@@ -55,6 +62,9 @@ export class LoginComponent implements OnInit {
       surname: this.surname,
       email: this.email,
       gender: this.gender,
+      country: this.country,
+      city: this.city,
+      street: this.street,
       password: this.password
     };
     this.apiService.createUser(newUser).subscribe(
@@ -65,8 +75,42 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-        this.isValid = false; 
+        this.isValid = false;
       }
     );
+  }
+
+  searchAddress(query: string, type: string) {
+    this.apiService.getAddressSuggestions(query).subscribe((data) => {
+      if (type === 'country') {
+        this.countrySuggestions = data
+          .filter((item: any) => item.address.country)
+          .map((item: any) => item.address.country);
+      } else if (type === 'city') {
+        this.citySuggestions = data
+          .filter((item: any) => item.address.city || item.address.town || item.address.village)
+          .map((item: any) => item.address.city || item.address.town || item.address.village);
+      } else if (type === 'street') {
+        this.streetSuggestions = data
+          .filter((item: any) => item.address.road)
+          .map((item: any) => item.address.road);
+      }
+    });
+  }
+  selectSuggestion(type: string, suggestion: string) {
+    if (type === 'country') {
+      this.country = suggestion;
+      this.countrySuggestions = [];
+    } else if (type === 'city') {
+      this.city = suggestion;
+      this.citySuggestions = [];
+    } else if (type === 'street') {
+      this.street = suggestion;
+      this.streetSuggestions = [];
+    }
+  }
+  getInputValue(event: Event, field: string) {
+    const target = event.target as HTMLInputElement;
+    this.searchAddress(target.value, field);
   }
 }

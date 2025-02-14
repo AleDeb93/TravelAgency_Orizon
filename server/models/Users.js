@@ -28,6 +28,18 @@ const Users = sequelize.define('Users', {
         type: DataTypes.STRING(128),
         allowNull: false
     },
+    country: {
+        type: DataTypes.STRING(64),
+        allowNull: false
+    },
+    city: {
+        type: DataTypes.STRING(64),
+        allowNull: false
+    },
+    street: {
+        type: DataTypes.STRING(128),
+        allowNull: false
+    },
     isLogged: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
