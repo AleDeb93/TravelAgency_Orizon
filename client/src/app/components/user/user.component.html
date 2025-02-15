@@ -3,12 +3,16 @@
 <!-- Se utente non loginato -->
 <div class="login" *ngIf="logOff">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
-    <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100"><use xlink:href="#bootstrap"></use></svg>
+    <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100">
+      <use xlink:href="#bootstrap"></use>
+    </svg>
     <h1 class="text-body-emphasis">Accedi o registrati</h1>
     <p class="col-lg-8 mx-auto fs-5 text-muted">Accedi al tuo account o creane uno per continuare</p>
     <div class="d-inline-flex gap-2 mb-5">
-      <button class="d-inline-flex align-items-center btn btn-success btn-lg px-4 rounded-pill" type="button" routerLink="login"  [queryParams]="{ action: 'login' }">Accedi</button>
-      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" routerLink="login"  [queryParams]="{ action: 'register' }">Registrati</button>
+      <button class="d-inline-flex align-items-center btn btn-success btn-lg px-4 rounded-pill" type="button"
+        routerLink="login" [queryParams]="{ action: 'login' }">Accedi</button>
+      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" routerLink="login"
+        [queryParams]="{ action: 'register' }">Registrati</button>
     </div>
   </div>
 </div>
@@ -24,51 +28,27 @@
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5.webp" alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">{{user.name}} {{user.surname}}</h5>
-            <p class="text-muted mb-1">Codice utente: {{user.id}}</p>
-            <p class="text-muted mb-4">{{user.country}} {{user.city}} {{user.street}}</p>
+            <p class="text-muted mb-1">Codice cliente: {{user.id}}</p>
+            <p class="text-muted mb-4">{{user.city}} {{user.street}}, {{user.country}}</p>
             <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" (click)="logOut()">Logout</button>
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
+              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
+                (click)="logOut()">Logout</button>
+              <button type="button" data-mdb-button-init data-mdb-ripple-init
+                class="btn btn-outline-primary ms-1">Aggiorna i tuoi dati</button>
             </div>
           </div>
         </div>
-        <h2>Preferenze qui</h2>
-        <div class="card mb-4 mb-lg-0">
-          <div class="card-body p-0">
-            <ul class="list-group list-group-flush rounded-3">
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i class="fas fa-globe fa-lg text-warning"></i>
-                <p class="mb-0">https://mdbootstrap.com</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i class="fab fa-github fa-lg text-body"></i>
-                <p class="mb-0">mdbootstrap</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                <p class="mb-0">mdbootstrap</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                <p class="mb-0">mdbootstrap</p>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                <p class="mb-0">mdbootstrap</p>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
+      <!-- Riepilogo dei dati -->
       <div class="col-lg-8">
         <div class="card mb-4">
           <div class="card-body">
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Full Name</p>
+                <p class="mb-0">Nome completo</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Johnatan Smith</p>
+                <p class="text-muted mb-0">{{user.name}} {{user.surname}}</p>
               </div>
             </div>
             <hr>
@@ -77,108 +57,60 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">example example.com</p>
+                <p class="text-muted mb-0">{{user.email}}</p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Phone</p>
+                <p class="mb-0">Nazione</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">(097) 234-5678</p>
+                <p class="text-muted mb-0">{{user.country}}</p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
+                <p class="mb-0">Città</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">(098) 765-4321</p>
+                <p class="text-muted mb-0">{{user.city}}</p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Address</p>
+                <p class="mb-0">Indirizzo</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                <p class="text-muted mb-0">{{user.street}}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <h1>Ordini qui</h1>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
-                </p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Metodo di pagamento</p>
               </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card mb-4 mb-md-0">
-              <div class="card-body">
-                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
-                </p>
-                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                <div class="progress rounded" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                <div class="progress rounded mb-2" style="height: 5px;">
-                  <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.paymentMethod}}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <!-- Riepilogo degli ordini -->
+  <h3>I tuoi ordini</h3>
+  <div class="card mb-4 mb-lg-0">
+    <div class="card-body p-0">
+      <ul class="list-group list-group-flush rounded-3">
+        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+          <i class="fas fa-globe fa-lg text-warning"></i>
+          <p class="mb-0">user.orders</p>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
