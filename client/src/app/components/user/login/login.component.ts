@@ -80,37 +80,41 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  searchAddress(query: string, type: string) {
-    this.apiService.getAddressSuggestions(query).subscribe((data) => {
-      if (type === 'country') {
-        this.countrySuggestions = data
-          .filter((item: any) => item.address.country)
-          .map((item: any) => item.address.country);
-      } else if (type === 'city') {
-        this.citySuggestions = data
-          .filter((item: any) => item.address.city || item.address.town || item.address.village)
-          .map((item: any) => item.address.city || item.address.town || item.address.village);
-      } else if (type === 'street') {
-        this.streetSuggestions = data
-          .filter((item: any) => item.address.road)
-          .map((item: any) => item.address.road);
-      }
-    });
-  }
-  selectSuggestion(type: string, suggestion: string) {
-    if (type === 'country') {
-      this.country = suggestion;
-      this.countrySuggestions = [];
-    } else if (type === 'city') {
-      this.city = suggestion;
-      this.citySuggestions = [];
-    } else if (type === 'street') {
-      this.street = suggestion;
-      this.streetSuggestions = [];
-    }
-  }
-  getInputValue(event: Event, field: string) {
-    const target = event.target as HTMLInputElement;
-    this.searchAddress(target.value, field);
-  }
+  /*
+   * Volevo implementare la ricerca di indirizzi tramite nominatim ma le risorse gratuite non sono abbastanza performanti rispetto al mio desiderato.
+   * Lascio il codice commentato per lasciare traccia del tentativo.
+   */
+  // searchAddress(query: string, type: string) {
+  //   this.apiService.getAddressSuggestions(query).subscribe((data) => {
+  //     if (type === 'country') {
+  //       this.countrySuggestions = data
+  //         .filter((item: any) => item.address.country)
+  //         .map((item: any) => item.address.country);
+  //     } else if (type === 'city') {
+  //       this.citySuggestions = data
+  //         .filter((item: any) => item.address.city || item.address.town || item.address.village)
+  //         .map((item: any) => item.address.city || item.address.town || item.address.village);
+  //     } else if (type === 'street') {
+  //       this.streetSuggestions = data
+  //         .filter((item: any) => item.address.road)
+  //         .map((item: any) => item.address.road);
+  //     }
+  //   });
+  // }
+  // selectSuggestion(type: string, suggestion: string) {
+  //   if (type === 'country') {
+  //     this.country = suggestion;
+  //     this.countrySuggestions = [];
+  //   } else if (type === 'city') {
+  //     this.city = suggestion;
+  //     this.citySuggestions = [];
+  //   } else if (type === 'street') {
+  //     this.street = suggestion;
+  //     this.streetSuggestions = [];
+  //   }
+  // }
+  // getInputValue(event: Event, field: string) {
+  //   const target = event.target as HTMLInputElement;
+  //   this.searchAddress(target.value, field);
+  // }
 }

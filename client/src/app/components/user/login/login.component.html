@@ -35,49 +35,21 @@
                             name="email" placeholder="name@example.com" required>
                         <label for="floatingEmail">Email</label>
                     </div>
-
-                    <!-- Nazione -->
-                    <div class="form-floating mb-3 position-relative">
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control rounded-3" id="floatingCountry" [(ngModel)]="country"
-                            name="country" placeholder="Nazione" required
-                            (input)="getInputValue($event, 'country')">
+                            name="country" placeholder="Italia" required>
                         <label for="floatingCountry">Nazione</label>
-                        <div class="dropdown-menu show w-100" *ngIf="countrySuggestions.length > 0">
-                            <button class="dropdown-item" *ngFor="let suggestion of countrySuggestions"
-                                (mousedown)="selectSuggestion('country', suggestion)">
-                                {{ suggestion }}
-                            </button>
-                        </div>
                     </div>
-
-                    <!-- Città -->
-                    <div class="form-floating mb-3 position-relative">
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control rounded-3" id="floatingCity" [(ngModel)]="city"
-                            name="city" placeholder="Città" required
-                            (input)="getInputValue($event, 'city')">
+                            name="city" placeholder="Genova" required>
                         <label for="floatingCity">Città</label>
-                        <div class="dropdown-menu show w-100" *ngIf="citySuggestions.length > 0">
-                            <button class="dropdown-item" *ngFor="let suggestion of citySuggestions"
-                                (mousedown)="selectSuggestion('city', suggestion)">
-                                {{ suggestion }}
-                            </button>
-                        </div>
                     </div>
-
-                    <!-- Via -->
-                    <div class="form-floating mb-3 position-relative">
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control rounded-3" id="floatingStreet" [(ngModel)]="street"
-                            name="street" placeholder="Via" required
-                            (input)="getInputValue($event, 'street')">
-                        <label for="floatingStreet">Via</label>
-                        <div class="dropdown-menu show w-100" *ngIf="streetSuggestions.length > 0">
-                            <button class="dropdown-item" *ngFor="let suggestion of streetSuggestions"
-                                (mousedown)="selectSuggestion('street', suggestion)">
-                                {{ suggestion }}
-                            </button>
-                        </div>
+                            name="street" placeholder="Via Roma" required>
+                        <label for="floatingStreet">Via / Piazza</label>
                     </div>
-
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control rounded-3" id="floatingPassword"
                             [(ngModel)]="password" name="password" placeholder="Password" required>

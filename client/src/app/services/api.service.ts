@@ -88,9 +88,12 @@ export class ApiService {
     localStorage.removeItem('token');
   }
 
-  // Chiamo OpenStreetMap per ottenere suggerimenti per paese, città e via
-  getAddressSuggestions(query: string): Observable<any> {
-    const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1`;
-    return this.http.get(url);
-  }
+  /*
+   * Implementazione di una funzione per ottenere suggerimenti di indirizzo tramite OpenStreetMap
+   * Questa funzione non è utilizzata nel progetto causa performance non soddisfacenti che inficiavano l'esperienza utente 
+   */
+  // getAddressSuggestions(query: string): Observable<any> {
+  //   const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1`;
+  //   return this.http.get(url);
+  // }
 }
