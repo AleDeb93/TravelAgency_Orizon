@@ -29,9 +29,8 @@
 <div class="result" *ngIf="!loading">
   <!-- Hero Section -->
   <div class="hero">
-    <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" 
-         alt="Destinations img" 
-         class="destinations-img">
+    <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" alt="Destinations img"
+      class="destinations-img">
   </div>
 
   <!-- Destination Info -->
@@ -55,9 +54,9 @@
         <p><strong>Prezzo a persona:</strong>
           <span *ngIf="destination.discount != null" style="text-decoration: line-through; color: gray;">
             {{ destination.price | currency:'EUR' }}
-          </span>  
+          </span>
           {{ (destination.price - (destination.price * (destination.discount / 100))) | currency:'EUR' }}
-        </p>        
+        </p>
         <p *ngIf="destination.discount !== null"><strong>Sconto:</strong> {{ destination.discount }}%</p>
         <p><strong>Tickets disponibili:</strong> {{ destination.tickets }}</p>
         <p><strong>Partenza:</strong> {{ formattedDate }}</p>

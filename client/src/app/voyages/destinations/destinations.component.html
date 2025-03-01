@@ -11,7 +11,8 @@
   <div class="row py-lg-5">
     <div class="col-lg-6 col-md-8 mx-auto">
       <p class="lead text-body-secondary">
-        Scopri tutte le destinazioni disponibili senza filtri, scopri il mondo con occhi diversi nel rispetto della natura e dei popoli.
+        Scopri tutte le destinazioni disponibili senza filtri, scopri il mondo con occhi diversi nel rispetto della
+        natura e dei popoli.
       </p>
     </div>
   </div>
@@ -22,27 +23,24 @@
 <div *ngIf="!loading" class="album py-5 bg-body-tertiary">
   <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      <div class="col" *ngFor="let destination of destinations" [ngClass]="{'highlighted': destination.discount !== null}">
+      <div class="col" *ngFor="let destination of destinations"
+        [ngClass]="{'highlighted': destination.discount !== null}">
         <div class="card shadow-sm">
-          <img
-            [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')"
-            class="card-img-top"
-            alt="Destinations img"
-            width="100%"
-            height="225"
-          />
+          <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" class="card-img-top"
+            alt="Destinations img" width="100%" height="225" />
           <div class="card-body">
             <h3>{{ destination.name }}</h3>
             <p class="card-text">{{ destination.description }}</p>
             <p class="card-text"><strong>A partire da:</strong>
               <span *ngIf="destination.discount != null" style="text-decoration: line-through; color: gray;">
                 {{ destination.price | currency:'EUR' }}
-              </span>  
+              </span>
               {{ (destination.price - (destination.price * (destination.discount / 100))) | currency:'EUR' }}
-            </p> 
+            </p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary" [routerLink]="['/voyages/destinations', destination.id]">
+                <button type="button" class="btn btn-sm btn-outline-secondary"
+                  [routerLink]="['/voyages/destinations', destination.id]">
                   Scopri di più
                 </button>
                 <button type="button" class="btn btn-sm btn-outline-secondary">
@@ -57,5 +55,3 @@
     </div>
   </div>
 </div>
-
-
