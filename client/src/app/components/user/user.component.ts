@@ -20,7 +20,6 @@ export class UserComponent {
       // Recuperare i dati dell'utente loggato
       const storedUser = localStorage.getItem('user');
       this.user = storedUser ? JSON.parse(storedUser) : {};
-      console.log(this.user);
       this.logOff = false;
     }
   }
@@ -29,6 +28,16 @@ export class UserComponent {
     this.apiService.logoutUser();
     console.log('Logged out');
     window.location.reload();
+  }
+
+  getUserAvatar(gender: string): string {
+    const avatars: Record<string, string> = {
+      Male: 'https://cdn-icons-png.flaticon.com/128/1216/1216774.png',
+      Female: 'https://cdn-icons-png.flaticon.com/128/15567/15567994.png',
+      Nonbinary: 'https://cdn-icons-png.flaticon.com/128/5436/5436228.png'
+    };
+
+    return avatars[gender] ?? 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png'; // Default avatar
   }
 
 }

@@ -40,10 +40,6 @@ const Users = sequelize.define('Users', {
         type: DataTypes.STRING(128),
         allowNull: false
     },
-    isLogged: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
     preferences: {
         // Usato JSONB in modo da poter eseguire query più velocemente
         type: DataTypes.JSON,  

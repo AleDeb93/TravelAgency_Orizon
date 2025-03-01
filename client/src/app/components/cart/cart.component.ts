@@ -10,8 +10,11 @@ import { ApiService } from '../../services/api.service';
 export class CartComponent implements OnInit {
   loading: boolean = true;
   logOff: boolean = true;
-
-
+  items: any[] = [];
+  
+  // type: DataTypes.ENUM('credit_card', 'paypal', 'bank_transfer'),
+  paymentMethod: string = ''; // Metodo di pagamento selezionato
+  
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {

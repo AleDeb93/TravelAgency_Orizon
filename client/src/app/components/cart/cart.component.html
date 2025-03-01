@@ -1,4 +1,110 @@
-<div class="spacer"></div>
+<div class="spacer" *ngIf="items.length > 0"></div> 
 
-<!-- Se utente loginato -->
+<!-- Se uteten loginato ma cart.count === 0 -->
+<section class="empty-cart" *ngIf="items.length > 0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <!-- Image -->
+                <img src="assets/images/icon/empty-cart.svg" class="h-200 h-md-300 mb-3" alt="">
+                <!-- Subtitle -->
+                <h2>Il tuo carello al momento è vuoto</h2>
+                <!-- info -->
+                <p class="mb-0">Se vuoi esplorare le nostre proposte usa il bottone qui sotto per tornare allo "Shop"
+                </p>
+                <!-- Button -->
+                <button class="btn btn-success" routerLink="/voyages/destinations">Torna alle destinazioni</button>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- Se utente loginato e con prodotti nel carrello -->
+<!-- *ngIf="items.length > 0" -->
+
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-8">
+                  <div class="p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                      <h1 class="fw-bold mb-0">Riepilogo ordine</h1>
+                      <h6 class="mb-0 text-muted">XX viaggi nel carrello</h6>
+                    </div>
+                    <hr class="my-4">
+  
+                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img
+                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+                          class="img-fluid rounded-3" alt="Cotton T-shirt">
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-muted">Shirt</h6>
+                        <h6 class="mb-0">Cotton T-shirt</h6>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                          onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                          <i class="fas fa-minus"></i>
+                        </button>
+  
+                        <input id="form1" min="0" name="quantity" value="1" type="number"
+                          class="form-control form-control-sm" />
+  
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                          onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 class="mb-0">€ 44.00</h6>
+                      </div>
+                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+                      </div>
+                      <hr class="my-4">
+                    </div>
+  
+                    <div class="pt-1">
+                        <button class="btn btn-success" routerLink="/voyages/destinations">Torna alle destinazioni</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 bg-body-tertiary">
+                  <div class="p-5">
+                    <h3 class="fw-bold mb-5 mt-2 pt-1">Completa l'ordine</h3>
+                    <hr class="my-4">
+  
+                    <h5 class="mb-3">Metodo di pagamento</h5>
+  
+                    <div class="mb-4 pb-2">
+                      <select data-mdb-select-init>
+                        <option value="1">Carta di pagamento</option>
+                        <option value="2">PayPal</option>
+                        <option value="3">Bonifico bancario</option>
+                      </select>
+                    </div>
+  
+                    <hr class="my-4">
+  
+                    <div class="d-flex justify-content-between mb-5">
+                      <h5>Totale ordine</h5>
+                      <h5>€ XX.XX</h5>
+                    </div>
+                    
+                  <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-block btn-lg">Chekout</button>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

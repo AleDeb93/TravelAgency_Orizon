@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     const user = { email: this.email, password: this.password };
     this.apiService.loginUser(user).subscribe(
       (response) => {
-        console.log('Login avvenuta con successo', response);
+        console.log('Login avvenuta con successo');
       },
       (error) => {
         console.error(error);
