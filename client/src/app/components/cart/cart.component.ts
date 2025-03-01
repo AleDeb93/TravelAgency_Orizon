@@ -9,7 +9,6 @@ import { ApiService } from '../../services/api.service';
 })
 export class CartComponent implements OnInit {
   loading: boolean = true;
-  logOff: boolean = true;
   items: any[] = [];
   
   // type: DataTypes.ENUM('credit_card', 'paypal', 'bank_transfer'),
@@ -20,5 +19,11 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.loading = false;
   }
+
+  onPaymentMethodChange(): void {
+    console.log('Metodo di pagamento selezionato:', this.paymentMethod);
+    // Puoi fare altre azioni qui, come inviare il dato al server tramite il tuo ApiService
+  }
+
 
 }

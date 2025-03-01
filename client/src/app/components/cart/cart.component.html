@@ -83,10 +83,10 @@
                     <h5 class="mb-3">Metodo di pagamento</h5>
   
                     <div class="mb-4 pb-2">
-                      <select data-mdb-select-init>
-                        <option value="1">Carta di pagamento</option>
-                        <option value="2">PayPal</option>
-                        <option value="3">Bonifico bancario</option>
+                      <select data-mdb-select-init [(ngModel)]="paymentMethod" class="form-select" (change)="onPaymentMethodChange()">
+                        <option value="credit_card">Carta di pagamento</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank_transfer">Bonifico bancario</option>
                       </select>
                     </div>
   
