@@ -93,7 +93,7 @@
 
                                     <div class="form-check form-switch">
                                         <input class="form-check-input is-valid" type="checkbox"
-                                            id="flexSwitchCheckDefault">
+                                            id="flexSwitchCheckedDefault" [(ngModel)]="savePaymentData" (change)="onPaymentMethodChange()">
                                         <label>Salva i dati di pagamento</label>
                                     </div>
 

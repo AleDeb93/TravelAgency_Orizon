@@ -10,7 +10,9 @@ const path = require('path');
 // Middleware per parsare i JSON
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:4200'
+    origin: 'http://localhost:4200',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
 }));
 
 

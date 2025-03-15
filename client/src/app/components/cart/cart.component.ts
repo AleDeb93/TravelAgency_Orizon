@@ -10,9 +10,11 @@ import { ApiService } from '../../services/api.service';
 export class CartComponent implements OnInit {
   loading: boolean = true;
   items: any[] = [];
+  user = JSON.parse(localStorage.getItem('user') || '{}');  
   
   // type: DataTypes.ENUM('credit_card', 'paypal', 'bank_transfer'),
-  paymentMethod: string = ''; // Metodo di pagamento selezionato
+  paymentMethod: string = this.user.paymentMethod || ''; 
+  savePaymentData: boolean = false; 
   
   constructor(private apiService: ApiService) { }
 
@@ -22,8 +24,29 @@ export class CartComponent implements OnInit {
 
   onPaymentMethodChange(): void {
     console.log('Metodo di pagamento selezionato:', this.paymentMethod);
-    // Puoi fare altre azioni qui, come inviare il dato al server tramite il tuo ApiService
+    if(this.savePaymentData) {
+      this.user.paymentMethod = this.paymentMethod;
+      this.apiService.updateUser(this.user).subscribe(
+        (response) => {});
+      console.log('Dati di pagamento salvati');
+    }
   }
 
+  createNewOrder() {
+    const order = {
+      userId: this.user.id,  
+      destinationId: 2,  
+      buyedTickets: 3  
+    };
+    // Chiamo ApiService per creare l'ordine
+    this.apiService.createOrder(order).subscribe(
+      (response) => {
+        console.log('Ordine creato con successo:', response);
+      },
+      (error) => {
+        console.error(`Errore durante la creazione dell'ordine:`, error);
+      }
+    );
+  }
 
 }

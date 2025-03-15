@@ -1,4 +1,4 @@
-const Users = require('../');
+const Users = require('../models/Users');   
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -12,9 +12,13 @@ const userController = {
             const users = await Users.findAll({ attributes: { exclude: ['password_hash'] } });
             res.status(200).json(users);
         } catch (error) {
-            res.status(500).json({ error: 'Errore durante la chiamata getAllUsers' });
+            console.error("Errore durante la chiamata getAllUsers:", error.message); // Log dell'errore con il messaggio
+            console.error("Stack Trace:", error.stack); // Log della stack trace dell'errore
+            res.status(500).json({ error: 'Errore durante la chiamata getAllUsers', details: error.message });
         }
     },
+    
+    
     // GET /api/v2/users/:id
     getUserByID: async (req, res) => {
         const { id } = req.params;

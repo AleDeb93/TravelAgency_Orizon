@@ -17,7 +17,8 @@ export class ApiService {
   // Headers e gestione degli errori per chiamate alle API
   getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    if (this.token && this.token.trim() !== '') { headers = headers.set('Authorization', `Bearer ${this.token}`) }
+    console.log('Token:', this.token);
+    if (this.token && this.token.trim() !== '') { headers = headers.set('Authorization', `${this.token}`) }
     return headers;
   }
 
@@ -55,6 +56,14 @@ export class ApiService {
     );
   }
 
+  updateUser(user: any): Observable<any> {
+    const url = `${this.url}users/${user.id}`;
+    const headers = this.getHeaders();
+    return this.http.put<any>(url, user, { headers }).pipe(
+        catchError(this.errorHandling)
+    );
+}
+
   loginUser(user: any): Observable<any> {
     const url = `${this.url}users/login`;
     const headers = this.getHeaders();
@@ -88,6 +97,14 @@ export class ApiService {
     );
   }
 
+  createOrder(order: any): Observable<any> {
+    const url = `${this.url}orders`;
+    const headers = this.getHeaders();
+    return this.http.post<any>(url, order, { headers }).pipe(
+      catchError(this.errorHandling)
+    );
+  }
+
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
@@ -106,7 +123,8 @@ export class ApiService {
       }
     }
   }
-  
+
+
   /*
    * Implementazione di una funzione per ottenere suggerimenti di indirizzo tramite OpenStreetMap
    * Questa funzione non è utilizzata nel progetto causa performance non soddisfacenti che inficiavano l'esperienza utente 

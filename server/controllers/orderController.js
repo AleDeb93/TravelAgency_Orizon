@@ -4,7 +4,7 @@ const Destinations = require('../models/Destinations');
 
 const orderController = {
     // POST /api/v2/orders/items
-    addItemToOrder: async (req, res) => {
+    createOrder: async (req, res) => {
         try {
             const { userId, destinationId, buyedTickets } = req.body;
             // Verifco se l'utente ha già un ordine 'pending'

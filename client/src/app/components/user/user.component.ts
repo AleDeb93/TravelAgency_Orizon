@@ -18,6 +18,8 @@ export class UserComponent {
   isUserLogged(): void {
     if(localStorage.getItem('token') != null && localStorage.getItem('token') != '') {
       // Recuperare i dati dell'utente loggato
+      // TODO
+      // Fare la GetUserByID non basarsi sullo storage (al massimo lo storage lo aggiorno dopo)
       const storedUser = localStorage.getItem('user');
       this.user = storedUser ? JSON.parse(storedUser) : {};
       this.logOff = false;
