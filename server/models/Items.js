@@ -14,14 +14,16 @@ const Items = sequelize.define('Items', {
         references: {
             model: Orders,
             key: 'id'
-        }
+        },
+        allowNull: false
     },
     destination: {
         type: DataTypes.INTEGER,
         references: {
             model: Destinations,
             key: 'id'
-        }
+        },
+        allowNull: false
     }
 }, {
     tableName: 'items',
