@@ -67,6 +67,11 @@ export class ApiService {
           localStorage.setItem('token', this.token);
           // Salvo i dati dell'utente in localStorage
           localStorage.setItem('user', JSON.stringify(response.user));
+
+          // Salvo la data di scadenza del token
+          const expiresAt = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 ore
+          localStorage.setItem('token_expiry', expiresAt.toString());
+
           // Redirect alla pagina account
           this.router.navigate(['/account']);
         }
@@ -86,8 +91,22 @@ export class ApiService {
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
+    localStorage.removeItem('token_expiry');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']); 
   }
 
+  checkTokenExpiration(): void {
+    // Controllo se il token è scaduto se scaduto faccio logout dello user
+    const expiry = localStorage.getItem('token_expiry');
+    if (expiry) {
+      const now = new Date().getTime();
+      if (now > parseInt(expiry, 10)) {
+        this.logoutUser();
+      }
+    }
+  }
+  
   /*
    * Implementazione di una funzione per ottenere suggerimenti di indirizzo tramite OpenStreetMap
    * Questa funzione non è utilizzata nel progetto causa performance non soddisfacenti che inficiavano l'esperienza utente 

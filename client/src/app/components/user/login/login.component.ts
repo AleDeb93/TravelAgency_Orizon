@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
     };
     this.apiService.createUser(newUser).subscribe(
       (response) => {
-        console.log(response);
         // Gestire la login automatica
         this.login();
       },
