@@ -12,7 +12,7 @@ export class DestinationsComponent {
   destinations: any[] = [];
   loading: boolean = true;
 
-  constructor(private apiService: ApiService, rivate cartService: CartService) { }
+  constructor(private apiService: ApiService, private cartService: CartService) { }
 
   async ngOnInit(): Promise<void>{
     await this.getRecords(0);
