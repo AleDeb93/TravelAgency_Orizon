@@ -20,6 +20,14 @@
 
 <app-loading *ngIf="loading"></app-loading>
 
+<div class="text-center" *ngIf="destinations.length === 0">
+  <div *ngIf="!loading" class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <h3>Non ci sono destinazioni da mostrare</h3>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="!loading" class="album py-5 bg-body-tertiary">
   <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
