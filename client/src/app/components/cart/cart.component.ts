@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+//import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { CartService } from '../../services/cart.service';
+
 
 @Component({
   selector: 'app-cart',
@@ -16,12 +18,19 @@ export class CartComponent implements OnInit {
   paymentMethod: string = this.user.paymentMethod || ''; 
   savePaymentData: boolean = false; 
   
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
+    this.cartService.loadCartFromStorage();
+    this.items = this.cartService.getItems();
     this.loading = false;
   }
 
+  clearCart(){
+    this.cartService.clearCart();
+    this.items = [];
+  }
+  
   onPaymentMethodChange(): void {
     console.log('Metodo di pagamento selezionato:', this.paymentMethod);
     if(this.savePaymentData) {
