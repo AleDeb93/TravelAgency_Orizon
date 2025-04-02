@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { LoadingComponent } from '../../components/loading/loading.component';
+//import { LoadingComponent } from '../../components/loading/loading.component';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-destinations',
@@ -11,7 +12,7 @@ export class DestinationsComponent {
   destinations: any[] = [];
   loading: boolean = true;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, rivate cartService: CartService) { }
 
   async ngOnInit(): Promise<void>{
     await this.getRecords(0);
@@ -27,5 +28,10 @@ export class DestinationsComponent {
     } catch {
       console.error('Non è stato possibile ottenere i dati richiesti')
     }
+  }
+
+  addToCart(destination: any){
+    this.cartService.addToCart(destination);
+    alert(`Il viaggio ${destination.name} è stato aggiunto al carrello`);
   }
 }
