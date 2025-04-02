@@ -1,7 +1,7 @@
 <div class="spacer" *ngIf="items.length > 0"></div>
 
 <!-- Se uteten loginato ma cart.count === 0 -->
-<section class="empty-cart" *ngIf="items.length > 0">
+<section class="empty-cart" *ngIf="items.length === 0">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center">
@@ -33,18 +33,18 @@
                                 <div class="p-5">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <h1 class="fw-bold mb-0">Riepilogo ordine</h1>
-                                        <h6 class="mb-0 text-muted">item.lenght viaggi nel carrello</h6>
+                                        <h6 class="mb-0 text-muted">{{items.length}} viaggi nel carrello</h6>
                                     </div>
                                     <hr class="my-4">
 
-                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                    <div *ngFor="let item of items" class="row mb-4 d-flex justify-content-between align-items-center">
                                         <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                                                class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                            <!-- <img [src]="'http://localhost:3000/' + destination.imageUrl.replace('docs/', '')" class="card-img-top"
+                                                    alt="Destinations img" width="100%" height="225" /> -->
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <h6 class="text-muted">destination.name</h6>
-                                            <h6 class="mb-0">destination.description</h6>
+                                            <h6 class="text-muted">{{item.name}}</h6>
+                                            <h6 class="mb-0">{{item.description}}</h6>
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                                             <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
@@ -61,10 +61,10 @@
                                             </button>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h6 class="mb-0">destination.price</h6>
+                                            <h6 class="mb-0">{{item.price | currency:'EUR'}}</h6>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+                                            <!-- <p-button icon="pi pi-delete" aria-label="Save" /> --> Installare prime NG
                                         </div>
                                         <hr class="my-4">
                                     </div>
