@@ -32,6 +32,12 @@ export class DestinationsComponent {
 
   addToCart(destination: any){
     this.cartService.addToCart(destination);
-    alert(`Il viaggio ${destination.name} è stato aggiunto al carrello`);
+    // alert(`Il viaggio ${destination.name} è stato aggiunto al carrello`);
+    window['Swal'].fire({
+      text: `Il viaggio ${destination.name} è stato aggiunto al carrello`,
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }

@@ -14,14 +14,11 @@ export class CartService {
   }
 
   getItems() {
-    return this.items;
-  }
-
-  loadCartFromStorage() {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       this.items = JSON.parse(storedCart);
     }
+    return this.items;
   }
 
   clearCart() {
@@ -31,7 +28,7 @@ export class CartService {
 
   removeItem(id: number) {
     this.items = this.items.filter(item => item.id !== id);
-    if (this.items = []) 
+    if (this.items.length === 0) 
       localStorage.removeItem('cart');
     else
       localStorage.setItem('cart', JSON.stringify(this.items)); 

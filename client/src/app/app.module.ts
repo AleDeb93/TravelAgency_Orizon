@@ -15,6 +15,14 @@ import { SharedModule } from '../modules/shared.modules';
 import { MaterialModule } from '../modules/material.module';
 import { CartComponent } from './components/cart/cart.component';
 import { LoginComponent } from './components/user/login/login.component';
+import Swal from 'sweetalert2';
+
+declare global {
+  interface Window {
+    Swal: any;
+  }
+}
+
 
 @NgModule({
   declarations: [
@@ -36,4 +44,8 @@ import { LoginComponent } from './components/user/login/login.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(){
+    window['Swal'] = Swal;
+  }
+}

@@ -21,7 +21,6 @@ export class CartComponent implements OnInit {
   constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.loadCartFromStorage();
     this.items = this.cartService.getItems();
     this.loading = false;
   }
@@ -34,10 +33,15 @@ export class CartComponent implements OnInit {
   removeItem(id: number) {
     this.cartService.removeItem(id);
     this.items = this.cartService.getItems();
+    window['Swal'].fire({
+      text: 'Il viaggio è stato rimosso dal carrello',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
   
   onPaymentMethodChange(): void {
-    console.log('Metodo di pagamento selezionato:', this.paymentMethod);
     if(this.savePaymentData) {
       this.user.paymentMethod = this.paymentMethod;
       this.apiService.updateUser(this.user).subscribe(
