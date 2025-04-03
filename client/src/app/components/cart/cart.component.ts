@@ -22,7 +22,14 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = this.cartService.getItems();
+    console.log(this.items);
+    if(this.items.length > 0)
+      this.getTotalPrice(); 
     this.loading = false;
+  }
+
+  ngDoCheck(){
+    this.getTotalPrice();
   }
 
   clearCart(){
@@ -39,6 +46,21 @@ export class CartComponent implements OnInit {
       showConfirmButton: false,
       timer: 1500,
     });
+  }
+
+  getTotalPrice(): number {
+    let total: number = 0;  
+    this.items.forEach(item => {
+       // Ho dovuto forzare il valore numerico altrimenti concatenava due string 
+       // // Ad esempio 1080 + 2000 risultava 10802000 e non 3080
+      const itemPrice = Number(item.discount !== null
+        ? item.price - (item.price * (item.discount / 100))  
+        : item.price) 
+  
+      total = total + itemPrice; 
+    });
+  
+    return total;
   }
   
   onPaymentMethodChange(): void {
