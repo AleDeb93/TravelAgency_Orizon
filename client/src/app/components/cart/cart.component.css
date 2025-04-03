@@ -1,4 +1,10 @@
 .empty-cart {
-  margin-top: 25px;
+  padding-top: 250px;
+}
+#itemName{
+  cursor: pointer;
+}
+.btn-danger{
+  margin-left: 10px;
 }
 

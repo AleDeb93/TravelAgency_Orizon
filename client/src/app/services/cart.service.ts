@@ -28,4 +28,12 @@ export class CartService {
     this.items = [];
     localStorage.removeItem('cart');
   }
+
+  removeItem(id: number) {
+    this.items = this.items.filter(item => item.id !== id);
+    if (this.items = []) 
+      localStorage.removeItem('cart');
+    else
+      localStorage.setItem('cart', JSON.stringify(this.items)); 
+  }
 }

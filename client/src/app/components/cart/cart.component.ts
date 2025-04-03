@@ -30,6 +30,11 @@ export class CartComponent implements OnInit {
     this.cartService.clearCart();
     this.items = [];
   }
+
+  removeItem(id: number) {
+    this.cartService.removeItem(id);
+    this.items = this.cartService.getItems();
+  }
   
   onPaymentMethodChange(): void {
     console.log('Metodo di pagamento selezionato:', this.paymentMethod);
@@ -44,8 +49,8 @@ export class CartComponent implements OnInit {
   createNewOrder() {
     const order = {
       userId: this.user.id,  
-      destinationId: 2,  
-      buyedTickets: 3  
+      destinationId: this.items.forEach((item) => item.id),  
+      buyedTickets: 0,  
     };
     // Chiamo ApiService per creare l'ordine
     this.apiService.createOrder(order).subscribe(
