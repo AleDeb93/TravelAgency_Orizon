@@ -72,14 +72,16 @@ export class ApiService {
       tap(response => {
         if (response && response.token) {
           this.token = `Bearer ${response.token}`;
-          // Salvo il token in localStorage
+          // Salvo il token e la data del token in localStorage
           localStorage.setItem('token', this.token);
+          let tokenDate = new Date().getTime();
+          localStorage.setItem('tokenDate', tokenDate.toString());
           // Salvo i dati dell'utente in localStorage
           localStorage.setItem('user', JSON.stringify(response.user));
 
-          // Salvo la data di scadenza del token
-          const expiresAt = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 ore
-          localStorage.setItem('token_expiry', expiresAt.toString());
+          // // Salvo la data di scadenza del token
+          // const expiresAt = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 ore
+          // localStorage.setItem('token_expiry', expiresAt.toString());
 
           // Redirect alla pagina account
           this.router.navigate(['/account']);
@@ -108,7 +110,6 @@ export class ApiService {
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
-    localStorage.removeItem('token_expiry');
     localStorage.removeItem('user');
     this.router.navigate(['/login']); 
   }

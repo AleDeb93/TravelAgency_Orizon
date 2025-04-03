@@ -9,20 +9,31 @@ import { ApiService } from '../../services/api.service';
 export class UserComponent {
   logOff: boolean = true;
   user: any = {};
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
 
   async ngOnInit(): Promise<void> {
     this.isUserLogged();
   }
 
-  isUserLogged(): void {
-    if(localStorage.getItem('token') != null && localStorage.getItem('token') != '') {
+  async isUserLogged(): Promise<void> {
+    if (localStorage.getItem('token') != null && localStorage.getItem('token') != '') {
       // Recuperare i dati dell'utente loggato
       // TODO
       // Fare la GetUserByID non basarsi sullo storage (al massimo lo storage lo aggiorno dopo)
       const storedUser = localStorage.getItem('user');
-      this.user = storedUser ? JSON.parse(storedUser) : {};
-      this.logOff = false;
+      if (storedUser){
+        const parsedUser = JSON.parse(storedUser)
+        try{
+          const data = await this.apiService.getUser(parsedUser.id).toPromise()
+          this.user = data;
+        }
+        catch (error) {
+          console.error('Non è stato possibile ottenere i dati richiesti');
+          this.logOff = true;
+        }
+      } else {
+        this.logOff = true;
+      }
     }
   }
 

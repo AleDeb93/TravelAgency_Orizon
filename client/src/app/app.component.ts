@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { AuthService } from './services/auth.service';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -12,19 +14,27 @@ export class AppComponent {
   isAccountPageFlag = false;
 
   threshold: number = 0;
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService, private apiService: ApiService) {
     this.setScrollThreshold();
     this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd){
+      if (event instanceof NavigationEnd) {
         this.isAccountPageFlag = event.url.includes('account')
       }
     });
   }
 
+  ngOnInit() {
+    if (this.authService.isTokenExpired()) {
+      console.log('Token scaduto');
+      this.apiService.logoutUser();
+    }
+  }
+
+
   setScrollThreshold() {
     this.threshold = window.innerHeight * 0.6;
   }
-  isAccountPage(){
+  isAccountPage() {
     return this.isAccountPage;
   }
 
