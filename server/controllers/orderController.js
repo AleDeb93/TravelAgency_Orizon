@@ -4,53 +4,57 @@ const Destinations = require('../models/Destinations');
 
 const orderController = {
     // POST /api/v2/orders/items
+    // POST /api/v2/orders/items
     createOrder: async (req, res) => {
         try {
-            const { userId, destinationId, buyedTickets, } = req.body;
-            // Verifco se l'utente ha già un ordine 'pending'
-            const order = await Orders.findOne({
-                where: { user: userId, status: 'pending' }
-            });
-            // Se esiste un ordine 'pending', aggiungo l'articolo a quell'ordine
-            if (order) {
-                // Verifico se l'articolo è già presente nel carrello
-                const item = await Items.findOne({
-                    where: { order: order.id, destination: destinationId }
-                });
-                if (item) {
-                    return res.status(400).json({ error: 'Articolo già presente nel carrello' });
+            const { userId, items } = req.body;
+
+            if (!Array.isArray(items) || items.length === 0) {
+                return res.status(400).json({ error: 'Nessun articolo fornito per l\'ordine' });
+            }
+
+            // Calcola totali
+            let totalAmount = 0;
+            let totalTickets = 0;
+
+            // Calcolo totale e verifico le destinazioni
+            for (const item of items) {
+                const destination = await Destinations.findByPk(item.destinationId);
+                if (!destination) {
+                    return res.status(404).json({ error: `Destinazione con ID ${item.destinationId} non trovata` });
                 }
-            } else {
-                // Se non esiste un ordine 'pending', creo un nuovo ordine
-                order = await Orders.create({
-                    user: userId,
-                    status: 'pending',
-                    buyedTickets: 0,
-                    totalAmount: 0,
-                });
+                totalAmount += destination.price * item.buyedTickets;
+                totalTickets += item.buyedTickets;
             }
-            // Verifico se la destinazione esiste
-            const destination = await Destinations.findOne({ where: { id: destinationId } });
-            if (!destination) {
-                return res.status(404).json({ error: 'Destinazione non trovata' });
-            }
-            // Aggiungo la destinazione al carrello (creazione di un item)
-            const item = await Items.create({
-                order: order.id,
-                destination: destinationId,
-                buyedTickets: buyedTickets
+
+            // Crea nuovo ordine già completato
+            const order = await Orders.create({
+                user: userId,
+                status: 'completed',
+                buyedTickets: totalTickets,
+                totalAmount: totalAmount,
             });
-            // Calcolo il totale dell'ordine aggiornato
-            const destinationPrice = destination.price;
-            const totalAmount = destinationPrice * buyedTickets;
-            order.totalAmount += totalAmount;
-            order.buyedTickets += buyedTickets;
-            // Salvo l'ordine con il nuovo totale e metto l'articolo nel carrello
-            await order.save();
-            res.status(201).json(item);
+
+            // Aggiungi tutti gli items all’ordine
+            const createdItems = [];
+            for (const item of items) {
+                const created = await Items.create({
+                    order: order.id,
+                    destination: item.destinationId,
+                    buyedTickets: item.buyedTickets,
+                });
+                createdItems.push(created);
+            }
+
+            res.status(201).json({
+                message: 'Ordine completato con successo',
+                order,
+                items: createdItems,
+            });
+
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: `Errore durante l'aggiunta dell'articolo al carrello` });
+            res.status(500).json({ error: `Errore durante la creazione dell'ordine` });
         }
     },
 
