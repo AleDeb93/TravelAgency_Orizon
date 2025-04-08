@@ -10,7 +10,7 @@ const orderController = {
             const { userId, items } = req.body;
 
             if (!Array.isArray(items) || items.length === 0) {
-                return res.status(400).json({ error: 'Nessun articolo fornito per l\'ordine' });
+                return res.status(400).json({ error: `Nessun articolo fornito per l'ordine` });
             }
 
             // Calcola totali
