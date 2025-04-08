@@ -6,7 +6,7 @@ const orderController = {
     // POST /api/v2/orders/items
     createOrder: async (req, res) => {
         try {
-            const { userId, destinationId, buyedTickets } = req.body;
+            const { userId, destinationId, buyedTickets, } = req.body;
             // Verifco se l'utente ha già un ordine 'pending'
             const order = await Orders.findOne({
                 where: { user: userId, status: 'pending' }
@@ -26,7 +26,7 @@ const orderController = {
                     user: userId,
                     status: 'pending',
                     buyedTickets: 0,
-                    totalAmount: 0
+                    totalAmount: 0,
                 });
             }
             // Verifico se la destinazione esiste

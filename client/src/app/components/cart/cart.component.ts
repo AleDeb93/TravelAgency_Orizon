@@ -52,14 +52,13 @@ export class CartComponent implements OnInit {
     let total: number = 0;  
     this.items.forEach(item => {
        // Ho dovuto forzare il valore numerico altrimenti concatenava due string 
-       // // Ad esempio 1080 + 2000 risultava 10802000 e non 3080
+       // Ad esempio 1080 + 2000 risultava 10802000 e non 3080
       const itemPrice = Number(item.discount !== null
         ? item.price - (item.price * (item.discount / 100))  
         : item.price) 
   
       total = total + itemPrice; 
     });
-  
     return total;
   }
   
@@ -73,20 +72,33 @@ export class CartComponent implements OnInit {
   }
 
   createNewOrder() {
-    const order = {
-      userId: this.user.id,  
-      destinationId: this.items.forEach((item) => item.id),  
-      buyedTickets: 0,  
-    };
-    // Chiamo ApiService per creare l'ordine
-    this.apiService.createOrder(order).subscribe(
-      (response) => {
-        console.log('Ordine creato con successo:', response);
-      },
-      (error) => {
-        console.error(`Errore durante la creazione dell'ordine:`, error);
-      }
-    );
+    this.items.forEach(item => {
+      const order = {
+        userId: this.user.id,
+        destinationId: item.id,
+        buyedTickets: 0, //TODO: implementare il numero di biglietti acquistati
+      };
+  
+      this.apiService.createOrder(order).subscribe(
+        (response) => {
+          console.log('Ordine creato con successo:', response);
+          window['Swal'].fire({
+            text: 'Ordine creato con successo',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        (error) => {
+          console.error('Errore durante la creazione dell\'ordine:', error);
+          window['Swal'].fire({
+            text: 'Errore durante la creazione dell\'ordine',
+            icon: 'error',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      );
+    });
   }
-
 }

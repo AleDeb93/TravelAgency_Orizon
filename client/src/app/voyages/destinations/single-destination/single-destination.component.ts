@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-single-destination',
@@ -13,7 +14,7 @@ export class SingleDestinationComponent implements OnInit {
   loading: boolean = true;
   formattedDate: string = '';
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
     // Ottieni l'ID dalla rotta
@@ -44,5 +45,16 @@ export class SingleDestinationComponent implements OnInit {
     const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
     // Formatto la data in italiano
     return date.toLocaleDateString('it-IT', options); 
+  }
+
+  addToCart(destination: any){
+    this.cartService.addToCart(destination);
+    // alert(`Il viaggio ${destination.name} è stato aggiunto al carrello`);
+    window['Swal'].fire({
+      text: `Il viaggio ${destination.name} è stato aggiunto al carrello`,
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
