@@ -33,4 +33,16 @@ export class CartService {
     else
       localStorage.setItem('cart', JSON.stringify(this.items)); 
   }
+
+  updateItemQuantity(id: number, quantity: number) {
+    this.items = this.items.map(item =>
+      item.id === id ? { ...item, buyedTickets: quantity } : item
+    );
+    // Se la quantità arriva a 0 rimuovo l'elemento dal carrello 
+    if (quantity <= 0) {
+      this.removeItem(id);
+    } else {
+      localStorage.setItem('cart', JSON.stringify(this.items));
+    }
+  }
 }

@@ -12,27 +12,32 @@ import { CartService } from '../../services/cart.service';
 export class CartComponent implements OnInit {
   loading: boolean = true;
   items: any[] = [];
-  user = JSON.parse(localStorage.getItem('user') || '{}');  
-  
+  user = JSON.parse(localStorage.getItem('user') || '{}');
+
   // type: DataTypes.ENUM('credit_card', 'paypal', 'bank_transfer'),
-  paymentMethod: string = this.user.paymentMethod || ''; 
-  savePaymentData: boolean = false; 
-  
+  paymentMethod: string = this.user.paymentMethod || '';
+  savePaymentData: boolean = false;
+
   constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.items = this.cartService.getItems();
-    console.log(this.items);
-    if(this.items.length > 0)
-      this.getTotalPrice(); 
+    if (this.items.length > 0){
+      this.getTotalPrice();
+      this.items.forEach(item => {
+        if(item.buyedTickets <= 0 || item.buyedTickets == null)
+          item.buyedTickets = 1;
+      })
+    }
     this.loading = false;
   }
 
-  ngDoCheck(){
+  ngDoCheck() {
     this.getTotalPrice();
+    // this.items = this.cartService.getItems();
   }
 
-  clearCart(){
+  clearCart() {
     this.cartService.clearCart();
     this.items = [];
   }
@@ -48,25 +53,35 @@ export class CartComponent implements OnInit {
     });
   }
 
+  updateItemQuantity(id: number, quantity: number) {
+    if (quantity <= 0) {
+      this.cartService.removeItem(id);
+    }
+    else {
+      this.cartService.updateItemQuantity(id, quantity);
+      this.items = this.cartService.getItems();
+    }
+  }
+
   getTotalPrice(): number {
-    let total: number = 0;  
+    let total: number = 0;
     this.items.forEach(item => {
-       // Ho dovuto forzare il valore numerico altrimenti concatenava due string 
-       // Ad esempio 1080 + 2000 risultava 10802000 e non 3080
+      // Ho dovuto forzare il valore numerico altrimenti concatenava due string 
+      // Ad esempio 1080 + 2000 risultava 10802000 e non 3080
       const itemPrice = Number(item.discount !== null
-        ? item.price - (item.price * (item.discount / 100))  
-        : item.price) 
-  
-      total = total + itemPrice; 
+        ? item.price - (item.price * (item.discount / 100))
+        : item.price)
+
+      total = total + itemPrice;
     });
     return total;
   }
-  
+
   onPaymentMethodChange(): void {
-    if(this.savePaymentData) {
+    if (this.savePaymentData) {
       this.user.paymentMethod = this.paymentMethod;
       this.apiService.updateUser(this.user).subscribe(
-        (response) => {});
+        (response) => { });
       console.log('Dati di pagamento salvati');
     }
   }
@@ -78,7 +93,7 @@ export class CartComponent implements OnInit {
         destinationId: item.id,
         buyedTickets: 0, //TODO: implementare il numero di biglietti acquistati
       };
-  
+
       this.apiService.createOrder(order).subscribe(
         (response) => {
           console.log('Ordine creato con successo:', response);
