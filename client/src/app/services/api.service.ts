@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap } from 'rxjs';
+import { Observable, catchError, throwError, tap, of, map } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -60,9 +60,9 @@ export class ApiService {
     const url = `${this.url}users/${user.id}`;
     const headers = this.getHeaders();
     return this.http.put<any>(url, user, { headers }).pipe(
-        catchError(this.errorHandling)
+      catchError(this.errorHandling)
     );
-}
+  }
 
   loginUser(user: any): Observable<any> {
     const url = `${this.url}users/login`;
@@ -99,19 +99,31 @@ export class ApiService {
     );
   }
 
-  createOrder(order: any): Observable<any> {
+  createOrder(userID: number, items: any[]): Observable<any> {
     const url = `${this.url}orders`;
     const headers = this.getHeaders();
-    return this.http.post<any>(url, order, { headers }).pipe(
-      catchError(this.errorHandling)
+    return this.http.post<any>(url, { userId: userID, items }, { headers });
+  }
+
+  getPendingOrderByUserId(userId: number): Observable<any> {
+    const url = `${this.url}orders?userId=${userId}&status=pending`;
+    return this.http.get<any[]>(url).pipe(
+      map(orders => orders.length > 0 ? orders[0] : null)
     );
   }
+
+  updateOrder(orderId: number, item: { destinationId: number, buyedTickets: number }): Observable<any> {
+    const url = `${this.url}orders/${orderId}`;
+    const headers = this.getHeaders();
+    return this.http.put<any>(url, item, { headers });
+  }
+
 
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
   }
 
   checkTokenExpiration(): void {

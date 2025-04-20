@@ -4,11 +4,13 @@ const Destinations = require('../models/Destinations');
 
 const orderController = {
     // POST /api/v2/orders/items
-    // POST /api/v2/orders/items
     createOrder: async (req, res) => {
         try {
             const { userId, items } = req.body;
 
+            if (!userId) {
+                return res.status(400).json({ error: `ID utente non fornito` });
+            }
             if (!Array.isArray(items) || items.length === 0) {
                 return res.status(400).json({ error: `Nessun articolo fornito per l'ordine` });
             }
@@ -27,15 +29,15 @@ const orderController = {
                 totalTickets += item.buyedTickets;
             }
 
-            // Crea nuovo ordine già completato
+            // Creo nuovo ordine già completato
             const order = await Orders.create({
                 user: userId,
-                status: 'completed',
+                status: 'pending', // in attesa di pagamento
                 buyedTickets: totalTickets,
                 totalAmount: totalAmount,
             });
 
-            // Aggiungi tutti gli items all’ordine
+            // Aggiungo tutti gli items all’ordine
             const createdItems = [];
             for (const item of items) {
                 const created = await Items.create({
@@ -86,29 +88,10 @@ const orderController = {
         }
     },
 
-    // PUT /api/v2/orders/:orderId
-    completeOrder: async (req, res) => {
-        try {
-            const { orderId } = req.params;
-            // Recupero l'ordine specifico
-            const order = await Orders.findOne({ where: { id: orderId } });
-            // Se l'ordine non esiste
-            if (!order) {
-                return res.status(404).json({ error: 'Ordine non trovato' });
-            }
-            // Cambio lo stato dell'ordine a 'completed'
-            order.status = 'completed';
-            await order.save();
-            res.status(200).json(order);
-        } catch (error) {
-            res.status(500).json({ error: `Errore durante la chiamta completeOrder` });
-        }
-    },
-
     // GET /api/v2/orders
-    getAllOrders: async (req, res) => {
+    getOrders: async (req, res) => {
         try {
-            const {userId, status} = req.query;
+            const { userId, status } = req.query;
 
             const where = {};
             if (userId) where.user = userId;
@@ -144,7 +127,104 @@ const orderController = {
         } catch (error) {
             res.status(500).json({ error: 'Errore durante la chiamata getAllOrders' });
         }
-    }
+    },
+
+    // PUT /api/v2/orders/:orderId
+    updateOrder: async (req, res) => {
+        try {
+            const { orderId } = req.params;
+            const { destinationId, buyedTickets } = req.body;
+            // Trovo l'ordine
+            const order = await Orders.findByPk(orderId);
+            if (!order) return res.status(404).json({ error: 'Ordine non trovato' });
+            // Trovo la destinazione
+            const destination = await Destinations.findByPk(destinationId);
+            if (!destination) return res.status(404).json({ error: 'Destinazione non trovata' });
+            // Trovo l'item associato all'ordine e alla destinazione
+            let item = await Items.findOne({
+                where: {
+                    order: orderId,
+                    destination: destinationId
+                }
+            });
+            if (item) {
+                // Caso 1: Aggiornamento quantità
+                const ticketDiff = buyedTickets - item.buyedTickets;
+                // Se la nuova quantità è 0, rimuovo l'item
+                if (buyedTickets === 0) {
+                    await item.destroy();
+                    // Aggiorno i totali dell'ordine
+                    order.buyedTickets -= item.buyedTickets;
+                    order.totalAmount -= destination.price * item.buyedTickets;
+                    await order.save();
+
+                    return res.status(200).json({
+                        message: 'Item rimosso con successo',
+                        order
+                    });
+                }
+                // Altrimenti aggiorno la quantità
+                item.buyedTickets = buyedTickets;
+                await item.save();
+                // Aggiorno i totali dell'ordine
+                order.buyedTickets += ticketDiff;
+                order.totalAmount += destination.price * ticketDiff;
+                await order.save();
+
+                return res.status(200).json({
+                    message: 'Item aggiornato con successo',
+                    order,
+                    item
+                });
+            } else {
+                // Caso 2: Aggiunta nuovo item
+                if (buyedTickets > 0) {
+                    // Aggiungo l'item
+                    item = await Items.create({
+                        order: orderId,
+                        destination: destinationId,
+                        buyedTickets
+                    });
+
+                    // Aggiorno l’ordine
+                    order.buyedTickets += buyedTickets;
+                    order.totalAmount += destination.price * buyedTickets;
+                    await order.save();
+
+                    return res.status(201).json({
+                        message: 'Item aggiunto con successo',
+                        order,
+                        item
+                    });
+                } else {
+                    return res.status(400).json({ error: 'La quantità di biglietti deve essere maggiore di 0' });
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: `Errore durante l'aggiunta o aggiornamento dell'item nell'ordine` });
+        }
+    },
+
+    // PUT /api/v2/orders/:orderId
+    completeOrder: async (req, res) => {
+        try {
+            const { orderId } = req.params;
+            // Recupero l'ordine specifico
+            const order = await Orders.findOne({ where: { id: orderId } });
+            // Se l'ordine non esiste
+            if (!order) {
+                return res.status(404).json({ error: 'Ordine non trovato' });
+            }
+            // Cambio lo stato dell'ordine a 'completed'
+            order.status = 'completed';
+            await order.save();
+            res.status(200).json(order);
+        } catch (error) {
+            res.status(500).json({ error: `Errore durante la chiamta completeOrder` });
+        }
+    },
 };
 
 

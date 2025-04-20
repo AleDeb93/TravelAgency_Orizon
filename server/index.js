@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./config/database');
 const usersRouting = require('./routes/usersRouting'); 
 const destinationsRouting = require('./routes/destinationsRouting');
+const ordersRouting = require('./routes/ordersRouting');
 const cors = require('cors');
 const app = express();
 const path = require('path');
@@ -19,6 +20,7 @@ app.use(cors({
 // Definizione delle rotte
 app.use('/api/v2/users', usersRouting);
 app.use('/api/v2/destinations', destinationsRouting);
+app.use('/api/v2/orders', ordersRouting);
 app.use('/destinationsIMG', express.static(path.join(__dirname, '../docs/destinationsIMG')));
 
 

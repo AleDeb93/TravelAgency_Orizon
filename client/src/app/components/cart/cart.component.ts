@@ -88,34 +88,35 @@ export class CartComponent implements OnInit {
     }
   }
 
+  // TODO da implementare
   createNewOrder() {
-    this.items.forEach(item => {
-      const order = {
-        userId: this.user.id,
-        destinationId: item.id,
-        // buyedTickets: 0, //TODO: verifica che server riceva correttamente i tickets
-      };
+    // this.items.forEach(item => {
+    //   const order = {
+    //     userId: this.user.id,
+    //     destinationId: item.id,
+    //     // buyedTickets: 0, //TODO: verifica che server riceva correttamente i tickets
+    //   };
 
-      this.apiService.createOrder(order).subscribe(
-        (response) => {
-          console.log('Ordine creato con successo:', response);
-          window['Swal'].fire({
-            text: 'Ordine creato con successo',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        },
-        (error) => {
-          console.error(`Errore durante la creazione dell'ordine:`, error);
-          window['Swal'].fire({
-            text: `Errore durante la creazione dell'ordine`,
-            icon: 'error',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      );
-    });
+    //   this.apiService.createOrder(order).subscribe(
+    //     (response) => {
+    //       console.log('Ordine creato con successo:', response);
+    //       window['Swal'].fire({
+    //         text: 'Ordine creato con successo',
+    //         icon: 'success',
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //       });
+    //     },
+    //     (error) => {
+    //       console.error(`Errore durante la creazione dell'ordine:`, error);
+    //       window['Swal'].fire({
+    //         text: `Errore durante la creazione dell'ordine`,
+    //         icon: 'error',
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //       });
+    //     }
+    //   );
+    // });
   }
 }
