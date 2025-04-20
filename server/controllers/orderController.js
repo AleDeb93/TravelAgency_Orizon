@@ -85,6 +85,7 @@ const orderController = {
             res.status(500).json({ error: `Errore durante il recupero dell'ordine` });
         }
     },
+
     // PUT /api/v2/orders/:orderId
     completeOrder: async (req, res) => {
         try {
@@ -100,13 +101,21 @@ const orderController = {
             await order.save();
             res.status(200).json(order);
         } catch (error) {
-            res.status(500).json({ error: 'Errore durante il completamento dell\'ordine' });
+            res.status(500).json({ error: `Errore durante la chiamta completeOrder` });
         }
     },
+
     // GET /api/v2/orders
     getAllOrders: async (req, res) => {
         try {
+            const {userId, status} = req.query;
+
+            const where = {};
+            if (userId) where.user = userId;
+            if (status) where.status = status;
+
             const orders = await Orders.findAll({
+                where,
                 include: [
                     {
                         model: Destinations, // Includo destinazioni tramite la relazione many-to-many
@@ -123,7 +132,7 @@ const orderController = {
                 return {
                     ...order.toJSON(),
                     destinations: order.destinations.map(destination => {
-                        const item = destination.Items[0];
+                        const item = destination.Items?.[0]; // Ottengo il primo elemento associato alla destinazione
                         return {
                             ...destination,
                             buyedTickets: item.buyedTickets // Numero di biglietti acquistati
@@ -131,7 +140,6 @@ const orderController = {
                     })
                 };
             });
-
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Errore durante la chiamata getAllOrders' });

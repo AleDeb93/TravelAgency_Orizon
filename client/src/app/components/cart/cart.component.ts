@@ -34,6 +34,7 @@ export class CartComponent implements OnInit {
 
   ngDoCheck() {
     this.getTotalPrice();
+    console.log('ngDoCheck cart', this.items);
     // this.items = this.cartService.getItems();
   }
 
@@ -60,6 +61,7 @@ export class CartComponent implements OnInit {
     else {
       this.cartService.updateItemQuantity(id, quantity);
       this.items = this.cartService.getItems();
+      this.getTotalPrice();
     }
   }
 
@@ -71,7 +73,7 @@ export class CartComponent implements OnInit {
       const itemPrice = Number(item.discount !== null
         ? item.price - (item.price * (item.discount / 100))
         : item.price)
-
+        * Number(item.buyedTickets);
       total = total + itemPrice;
     });
     return total;
@@ -91,7 +93,7 @@ export class CartComponent implements OnInit {
       const order = {
         userId: this.user.id,
         destinationId: item.id,
-        buyedTickets: 0, //TODO: implementare il numero di biglietti acquistati
+        // buyedTickets: 0, //TODO: verifica che server riceva correttamente i tickets
       };
 
       this.apiService.createOrder(order).subscribe(
@@ -105,9 +107,9 @@ export class CartComponent implements OnInit {
           });
         },
         (error) => {
-          console.error('Errore durante la creazione dell\'ordine:', error);
+          console.error(`Errore durante la creazione dell'ordine:`, error);
           window['Swal'].fire({
-            text: 'Errore durante la creazione dell\'ordine',
+            text: `Errore durante la creazione dell'ordine`,
             icon: 'error',
             showConfirmButton: false,
             timer: 1500,
