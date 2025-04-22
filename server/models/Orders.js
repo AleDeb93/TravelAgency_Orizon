@@ -18,10 +18,6 @@ const Orders = sequelize.define('Orders', {
         type: DataTypes.ENUM('pending', 'completed', 'cancelled'),
         defaultValue: 'pending'
     },
-    buyedTickets: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false

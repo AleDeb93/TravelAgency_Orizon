@@ -24,7 +24,11 @@ const Items = sequelize.define('Items', {
             key: 'id'
         },
         allowNull: false
-    } 
+    },
+    buyedTickets: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
 }, {
     tableName: 'items',
     timestamps: false
