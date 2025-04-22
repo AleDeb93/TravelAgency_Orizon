@@ -14,21 +14,26 @@ const orderController = {
             if (!Array.isArray(items) || items.length === 0) {
                 return res.status(400).json({ error: `Nessun articolo fornito per l'ordine` });
             }
-
             // Calcola totali
             let totalAmount = 0;
             let totalTickets = 0;
-
             // Calcolo totale e verifico le destinazioni
+            console.log(items);  // Aggiungi questo per vedere cosa viene passato
+
             for (const item of items) {
                 const destination = await Destinations.findByPk(item.destinationId);
                 if (!destination) {
                     return res.status(404).json({ error: `Destinazione con ID ${item.destinationId} non trovata` });
                 }
+
+                // Aggiungi il controllo su buyedTickets
+                if (!item.buyedTickets || isNaN(item.buyedTickets)) {
+                    return res.status(400).json({ error: `Numero di biglietti non valido per la destinazione ${item.destinationId}` });
+                }
+
                 totalAmount += destination.price * item.buyedTickets;
                 totalTickets += item.buyedTickets;
             }
-
             // Creo nuovo ordine già completato
             const order = await Orders.create({
                 user: userId,
@@ -36,17 +41,15 @@ const orderController = {
                 buyedTickets: totalTickets,
                 totalAmount: totalAmount,
             });
-
-            // Aggiungo tutti gli items all’ordine
-            const createdItems = [];
-            for (const item of items) {
-                const created = await Items.create({
+            // Aggiungo gli items all'ordine
+            // Aggiungo gli items all'ordine usando bulkCreate
+            const createdItems = await Items.bulkCreate(
+                items.map(item => ({
                     order: order.id,
                     destination: item.destinationId,
                     buyedTickets: item.buyedTickets,
-                });
-                createdItems.push(created);
-            }
+                }))
+            );                 
 
             res.status(201).json({
                 message: 'Ordine completato con successo',

@@ -4,7 +4,7 @@ const authMiddleware = require('../middlewares/authMiddlewares');
 const router = express.Router();
 
 // Rotte per gli ordini
-router.post('/', orderController.createOrder);  
+router.post('/items', orderController.createOrder);  
 router.get('/', orderController.getOrders);
 router.get('/:id', orderController.getOrderByID);
 router.delete('/:id', orderController.updateOrder);
