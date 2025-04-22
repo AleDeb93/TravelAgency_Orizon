@@ -84,6 +84,7 @@ const orderController = {
             // Restituisco i dettagli dell'ordine
             res.status(200).json(order);
         } catch (error) {
+            console.error(error);
             res.status(500).json({ error: `Errore durante il recupero dell'ordine` });
         }
     },
@@ -92,11 +93,9 @@ const orderController = {
     getOrders: async (req, res) => {
         try {
             const { userId, status } = req.query;
-
             const where = {};
             if (userId) where.user = userId;
             if (status) where.status = status;
-
             const orders = await Orders.findAll({
                 where,
                 include: [
@@ -109,7 +108,6 @@ const orderController = {
                     }
                 ]
             });
-
             // Modifico i dati degli ordini per includere il numero di biglietti per destinazione
             const result = orders.map(order => {
                 return {
@@ -125,7 +123,8 @@ const orderController = {
             });
             res.status(200).json(result);
         } catch (error) {
-            res.status(500).json({ error: 'Errore durante la chiamata getAllOrders' });
+            console.error(error);
+            res.status(500).json({ error: 'Errore durante la chiamata getOrders' });
         }
     },
 

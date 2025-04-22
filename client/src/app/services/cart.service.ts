@@ -11,12 +11,17 @@ export class CartService {
 
   constructor(private apiService: ApiService) { }
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // CREAZIONE E GESTIONE ORDINE PENDING
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
   addToCart(item: any) {
-    // Otteniamo l'ordine pending dell'utente loggato
-    // Se non c'è un ordine pending, lo creiamo
+    // Ottengo i dati dell'utente loggato
     const storedUser = localStorage.getItem('user');
     if (!storedUser) return; // Se non c'è un utente loggato, non possiamo procedere
     const userID = JSON.parse(storedUser).id;
+    // Ottengo l'ordine pending dell'utente loggato
+    // Se non c'è un ordine pending, lo creo nuovo
     this.apiService.getPendingOrderByUserId(userID).subscribe(order => {
       if (order) {
         // Ordine pending esiste già → aggiungiamo l'item
@@ -30,7 +35,8 @@ export class CartService {
           buyedTickets: 1
         };
         this.apiService.createOrder(userID, [itemWrapped]).subscribe(response => {
-          this.pendingOrder = response.order; // salvo ordine per uso futuro
+          this.pendingOrder = response.order;
+          console.log('Nuovo ordine creato:', this.pendingOrder);
         });
       }
     });
@@ -53,6 +59,11 @@ export class CartService {
     return this.apiService.getPendingOrderByUserId(userID);
   }
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // GESTIONE DEGLI ITEMS NEL CARRELLO
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // TODO ELIMINA
   getItems() {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -87,9 +98,5 @@ export class CartService {
   }
 
   clearCart() {
-  //   if (!this.pendingOrder) return;
-  //   this.apiService.clearOrderItems(this.pendingOrder.id).subscribe(updated => {
-  //     this.pendingOrder = updated.order;
-  //   });
   }
 }

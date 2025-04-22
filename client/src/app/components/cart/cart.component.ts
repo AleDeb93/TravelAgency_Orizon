@@ -21,48 +21,49 @@ export class CartComponent implements OnInit {
   constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.items = this.cartService.getItems();
-    if (this.items.length > 0){
-      this.getTotalPrice();
-      this.items.forEach(item => {
-        if(item.buyedTickets <= 0 || item.buyedTickets == null)
-          item.buyedTickets = 1;
-      })
-    }
-    this.loading = false;
+    this.cartService.getPendingOrder().subscribe(order => {
+      if (order && order.items) {
+        this.items = order.items;
+        this.items.forEach(item => {
+          if (item.buyedTickets <= 0 || item.buyedTickets == null) {
+            item.buyedTickets = 1;
+          }
+        });
+        this.getTotalPrice();
+      } else {
+        this.items = [];
+      }
+  
+      this.loading = false;
+    });
   }
+  
 
   ngDoCheck() {
     this.getTotalPrice();
     console.log('ngDoCheck cart', this.items);
-    // this.items = this.cartService.getItems();
   }
 
-  clearCart() {
-    this.cartService.clearCart();
-    this.items = [];
-  }
-
-  removeItem(id: number) {
-    this.cartService.removeItem(id);
-    this.items = this.cartService.getItems();
-    window['Swal'].fire({
-      text: 'Il viaggio è stato rimosso dal carrello',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500,
+  createNewOrder() {
+    // Se non ci sono elementi nel carrello non posso procedere
+    if (!this.items || this.items.length === 0)
+      return;
+    // Recupero i dati dell'utente loggato
+    const userID = this.user.id;
+    // Mappo gli oggetti per creare il payload da inviare al server
+    const itemsPayload = this.items.map(item => ({
+      destinationID: item.id,
+      buyedTickets: item.buyedTickets
+    }));
+    
+    this.apiService.createOrder(userID, itemsPayload).subscribe({
+      next: (response) => {
+        console.log('Nuovo ordine inserito:', response);
+      },
+      error: (error) => {
+        console.error(`Errore nella creazione dell'ordine: `, error);
+      },
     });
-  }
-
-  updateItemQuantity(id: number, quantity: number) {
-    if (quantity <= 0) {
-      this.cartService.removeItem(id);
-    }
-    else {
-      this.cartService.updateItemQuantity(id, quantity);
-      this.items = this.cartService.getItems();
-      this.getTotalPrice();
-    }
   }
 
   getTotalPrice(): number {
@@ -79,6 +80,17 @@ export class CartComponent implements OnInit {
     return total;
   }
 
+  updateItemQuantity(id: number, quantity: number) {
+    if (quantity <= 0) {
+      this.cartService.removeItem(id);
+    }
+    else {
+      this.cartService.updateItemQuantity(id, quantity);
+      this.items = this.cartService.getItems();
+      this.getTotalPrice();
+    }
+  }
+
   onPaymentMethodChange(): void {
     if (this.savePaymentData) {
       this.user.paymentMethod = this.paymentMethod;
@@ -88,35 +100,18 @@ export class CartComponent implements OnInit {
     }
   }
 
-  // TODO da implementare
-  createNewOrder() {
-    // this.items.forEach(item => {
-    //   const order = {
-    //     userId: this.user.id,
-    //     destinationId: item.id,
-    //     // buyedTickets: 0, //TODO: verifica che server riceva correttamente i tickets
-    //   };
+  removeItem(id: number) {
+    this.cartService.removeItem(id);
+    this.items = this.cartService.getItems();
+    window['Swal'].fire({
+      text: 'Il viaggio è stato rimosso dal carrello',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 
-    //   this.apiService.createOrder(order).subscribe(
-    //     (response) => {
-    //       console.log('Ordine creato con successo:', response);
-    //       window['Swal'].fire({
-    //         text: 'Ordine creato con successo',
-    //         icon: 'success',
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     },
-    //     (error) => {
-    //       console.error(`Errore durante la creazione dell'ordine:`, error);
-    //       window['Swal'].fire({
-    //         text: `Errore durante la creazione dell'ordine`,
-    //         icon: 'error',
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   );
-    // });
+  clearCart() {
+    this.cartService.clearCart();
   }
 }

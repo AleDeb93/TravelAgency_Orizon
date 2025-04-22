@@ -38,7 +38,7 @@ const Orders = sequelize.define('Orders', {
     timestamps: false
 });
 
-// 🔹 Relazioni
+// Relazioni
 Orders.belongsTo(Users, { foreignKey: 'user' });
 Orders.belongsToMany(Destinations, { through: Items, foreignKey: 'order', as: 'destinations' });
 

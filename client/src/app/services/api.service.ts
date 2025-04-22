@@ -14,6 +14,10 @@ export class ApiService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // API PARTE GENERICA
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
   // Headers e gestione degli errori per chiamate alle API
   getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -39,6 +43,8 @@ export class ApiService {
   }
 
   // Chiamata per recuperare un record usando un id
+  // Inizialmente pensata per una chiamata generale, serarchRecord è usata ormai solo per le destinazioni
+  // Questo mi permette di dividere le dipendenze e le chiamate in base al controller 
   searchRecord(arg: number, id: string): Observable<any> {
     const url = `${this.url}${this.arguments[arg]}/${id}`;
     const headers = this.getHeaders();
@@ -47,7 +53,11 @@ export class ApiService {
     );
   }
 
-  // Chiamata per creare un nuovo utente
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // INIZIO API SPECIFICHE PER USERS
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // Chiamata per creare un utente
   createUser(user: any): Observable<any> {
     const url = `${this.url}users`;
     const headers = this.getHeaders();
@@ -55,7 +65,7 @@ export class ApiService {
       catchError(this.errorHandling)
     );
   }
-
+  // Chiamata per aggiornare un utente
   updateUser(user: any): Observable<any> {
     const url = `${this.url}users/${user.id}`;
     const headers = this.getHeaders();
@@ -63,11 +73,10 @@ export class ApiService {
       catchError(this.errorHandling)
     );
   }
-
+  // Chiamata per effettuare la login
   loginUser(user: any): Observable<any> {
     const url = `${this.url}users/login`;
     const headers = this.getHeaders();
-
     return this.http.post<any>(url, user, { headers }).pipe(
       tap(response => {
         if (response && response.token) {
@@ -78,11 +87,6 @@ export class ApiService {
           localStorage.setItem('tokenDate', tokenDate.toString());
           // Salvo i dati dell'utente in localStorage
           localStorage.setItem('user', JSON.stringify(response.user));
-
-          // // Salvo la data di scadenza del token
-          // const expiresAt = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 ore
-          // localStorage.setItem('token_expiry', expiresAt.toString());
-
           // Redirect alla pagina account
           this.router.navigate(['/account']);
         }
@@ -90,7 +94,7 @@ export class ApiService {
       catchError(this.errorHandling)
     );
   }
-
+  // Chiamata per ottenere le informazioni di un utente
   getUser(id: number): Observable<any> {
     const url = `${this.url}users/${id}`;
     const headers = this.getHeaders();
@@ -98,34 +102,14 @@ export class ApiService {
       catchError(this.errorHandling)
     );
   }
-
-  createOrder(userID: number, items: any[]): Observable<any> {
-    const url = `${this.url}orders`;
-    const headers = this.getHeaders();
-    return this.http.post<any>(url, { userId: userID, items }, { headers });
-  }
-
-  getPendingOrderByUserId(userId: number): Observable<any> {
-    const url = `${this.url}orders?userId=${userId}&status=pending`;
-    return this.http.get<any[]>(url).pipe(
-      map(orders => orders.length > 0 ? orders[0] : null)
-    );
-  }
-
-  updateOrder(orderId: number, item: { destinationId: number, buyedTickets: number }): Observable<any> {
-    const url = `${this.url}orders/${orderId}`;
-    const headers = this.getHeaders();
-    return this.http.put<any>(url, item, { headers });
-  }
-
-
+  // Logout dell'utente DA MODIFICARE
   logoutUser(): void {
     this.token = '';
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
-
+  // Controllo del Token
   checkTokenExpiration(): void {
     // Controllo se il token è scaduto se scaduto faccio logout dello user
     const expiry = localStorage.getItem('token_expiry');
@@ -137,11 +121,40 @@ export class ApiService {
     }
   }
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // INIZIO API SPECIFICHE PER ORDERS
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-  /*
-   * Implementazione di una funzione per ottenere suggerimenti di indirizzo tramite OpenStreetMap
-   * Questa funzione non è utilizzata nel progetto causa performance non soddisfacenti che inficiavano l'esperienza utente 
-   */
+  // Chiamata per creare un nuovo ordine
+  createOrder(userID: number, items: any[]): Observable<any> {
+    const url = `${this.url}orders`;
+    const headers = this.getHeaders();
+    return this.http.post<any>(url, { userId: userID, items }, { headers });
+  }
+  // Chiamata per verificare se l'utente ha un ordine in corso (carrello)
+  getPendingOrderByUserId(userId: number): Observable<any> {
+    const url = `${this.url}orders?userId=${userId}&status=pending`;
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(url, { headers }).pipe(
+      map(orders => orders.length > 0 ? orders[0] : null)
+    );
+  }
+  // Chiamata per aggiornare l'ordine pending
+  updateOrder(orderId: number, item: { destinationId: number, buyedTickets: number }): Observable<any> {
+    const url = `${this.url}orders/${orderId}`;
+    const headers = this.getHeaders();
+    return this.http.put<any>(url, item, { headers });
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // GESTIONI ESTERNE RIMOSSE
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // Implementazione di una funzione per ottenere suggerimenti di indirizzo tramite OpenStreetMap
+  // Questa funzione non è utilizzata nel progetto causa performance non soddisfacenti che inficiavano l'esperienza utente 
+  // Avevo trovato altri metodi per ottenere gli indirizzi tramite API su servizi esterni ma i piani free erano limitati / poco effcienti
+  // I metodi a pagamento sono stati ovviamente scartati
+
   // getAddressSuggestions(query: string): Observable<any> {
   //   const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&addressdetails=1`;
   //   return this.http.get(url);
