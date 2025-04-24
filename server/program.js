@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require('./config/database');
+require('./models/initModel'); 
 const usersRouting = require('./routes/usersRouting'); 
 const destinationsRouting = require('./routes/destinationsRouting');
 const ordersRouting = require('./routes/ordersRouting');
@@ -36,7 +37,7 @@ sequelize.authenticate()
 // Sincronizzazione del database
 sequelize.sync({ force: false, alter: true })
     .then(() => {
-        console.log(`Tabelle sincronizzate correttamente!`);
+        console.log(`Sincronizzazione effettuata!`);
     })
     .catch(err => {
         console.error(`Errore durante la sincronizzazione:`, err);

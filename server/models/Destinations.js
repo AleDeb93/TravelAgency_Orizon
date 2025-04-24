@@ -56,5 +56,6 @@ const Destinations = sequelize.define('Destinations', {
     timestamps: false  
 });
 
+
 module.exports = Destinations;
 

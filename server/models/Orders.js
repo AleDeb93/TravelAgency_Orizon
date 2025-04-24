@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Users = require('./Users');
-const Destinations = require('./Destinations');
-const Items = require('./Items'); // Importato per la relazione
 
 const Orders = sequelize.define('Orders', {
     id: {
@@ -33,9 +31,5 @@ const Orders = sequelize.define('Orders', {
 }, {
     timestamps: false
 });
-
-// Relazioni
-Orders.belongsTo(Users, { foreignKey: 'user' });
-Orders.belongsToMany(Destinations, { through: Items, foreignKey: 'order', as: 'destinations' });
 
 module.exports = Orders;

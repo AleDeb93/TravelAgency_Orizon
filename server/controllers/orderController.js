@@ -37,8 +37,7 @@ const orderController = {
             // Creo nuovo ordine già completato
             const order = await Orders.create({
                 user: userId,
-                status: 'pending', // in attesa di pagamento
-                buyedTickets: totalTickets,
+                status: 'pending', 
                 totalAmount: totalAmount,
             });
             // Aggiungo gli items all'ordine
@@ -58,37 +57,8 @@ const orderController = {
             });
 
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: `Errore durante la creazione dell'ordine` });
-        }
-    },
-
-    // GET /api/v2/orders/:orderId
-    getOrderByID: async (req, res) => {
-        try {
-            const { orderId } = req.params;
-            // Recupero l'ordine specifico, inclusi gli articoli (destinazioni)
-            const order = await Orders.findOne({
-                where: { id: orderId },
-                include: [
-                    {
-                        model: Destinations,
-                        as: 'destinations',
-                        through: {
-                            attributes: ['order', 'destination', 'buyedTickets']
-                        }
-                    }
-                ]
-            });
-            // Se l'ordine non esiste
-            if (!order) {
-                return res.status(404).json({ error: 'Ordine non trovato' });
-            }
-            // Restituisco i dettagli dell'ordine
-            res.status(200).json(order);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: `Errore durante il recupero dell'ordine` });
+            console.error('Errore: ', error);
+            res.status(500).json({ error: `Errore durante la creazione dell'ordine`, details: error.message });
         }
     },
 
@@ -115,19 +85,51 @@ const orderController = {
             const result = orders.map(order => {
                 return {
                     ...order.toJSON(),
-                    destinations: order.destinations.map(destination => {
-                        const item = destination.Items?.[0]; // Ottengo il primo elemento associato alla destinazione
-                        return {
-                            ...destination,
-                            buyedTickets: item.buyedTickets // Numero di biglietti acquistati
-                        };
-                    })
+                    destinations: order.destinations.map(destination => ({
+                        ...destination.toJSON(),
+                        buyedTickets: destination.Items?.buyedTickets ?? 0
+                    }))
                 };
             });
             res.status(200).json(result);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Errore durante la chiamata getOrders' });
+        }
+    },
+
+    // GET /api/v2/orders/:orderId
+    getOrderByID: async (req, res) => {
+        try {
+            const { orderId } = req.params;
+            // Recupero l'ordine specifico, inclusi gli articoli (destinazioni)
+            const order = await Orders.findOne({
+                where: { id: orderId },
+                include: [
+                    {
+                        model: Destinations,
+                        as: 'destinations',
+                        through: {
+                            attributes: ['order', 'destination', 'buyedTickets']
+                        }
+                    }
+                ]
+            });
+            // Se l'ordine non esiste
+            if (!order) 
+                return res.status(404).json({ error: 'Ordine non trovato' });
+            const result = {
+                ...order.toJSON(),
+                destinations: order.destinations.map(destination => ({
+                    ...destination.toJSON(),
+                    buyedTickets: destination.Items?.buyedTickets ?? 0
+                }))
+            };
+            // Restituisco i dettagli dell'ordine
+            res.status(200).json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: `Errore durante il recupero dell'ordine` });
         }
     },
 
