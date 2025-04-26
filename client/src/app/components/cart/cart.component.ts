@@ -22,27 +22,31 @@ export class CartComponent implements OnInit {
   constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.cartService.getPendingOrder().subscribe(order => {
-      if (order && order.destinations) {
-        this.items = order.destinations;
-        this.pendingOrder = order;
-        // this.items.forEach(item => {
-        //   if (item.buyedTickets <= 0 || item.buyedTickets == null) {
-        //     item.buyedTickets = 1;
-        //   }
-        // });
-        this.getTotalPrice();
-      }
-      // else {
-      //   this.items = [];
-      // }
-      this.loading = false;
-    });
+    this.reloadPage();
+    // this.cartService.getPendingOrder().subscribe(order => {
+    //   if (order && order.destinations) {
+    //     this.items = order.destinations;
+    //     this.pendingOrder = order;
+    //     this.getTotalPrice();
+    //   }
+    //   this.loading = false;
+    // });
+    this.loading = false;
   }
 
   ngDoCheck() {
     // this.getTotalPrice();
     // console.log('ngDoCheck cart', this.items);
+  }
+
+  reloadPage() {
+    this.cartService.getPendingOrder().subscribe(order => {
+      if (order && order.destinations) {
+        this.items = order.destinations;
+        this.pendingOrder = order;
+        this.getTotalPrice();
+      }
+    });
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,34 +79,30 @@ export class CartComponent implements OnInit {
     if (!this.pendingOrder) return;
     // Avvio la chiamata per rimuovere l'item dall'ordine pending
     this.apiService.updateOrder(this.pendingOrder.id, { destinationId, buyedTickets: 0 }).subscribe(response => {
-        // Modifico l'ordine pending con la risposta del server
-        this.pendingOrder = response.order;
-        console.log('Ordine aggiornato:', this.pendingOrder);
-        // Aggiorno gli items nel carrello
-        // this.items = this.pendingOrder.items;
-        this.cartService.getPendingOrder().subscribe(order => {
-          if (order && order.destinations) {
-            this.items = order.destinations;
-            this.pendingOrder = order;
-            // this.items.forEach(item => {
-            //   if (item.buyedTickets <= 0 || item.buyedTickets == null) {
-            //     item.buyedTickets = 1;
-            //   }
-            // });
-            this.getTotalPrice();
-          }});
+      // Modifico l'ordine pending con la risposta del server
+      this.pendingOrder = response.order;
+      console.log('Ordine aggiornato:', this.pendingOrder);
+      // Aggiorno gli items nel carrello
+      this.reloadPage();
+      // this.cartService.getPendingOrder().subscribe(order => {
+      //   if (order && order.destinations) {
+      //     this.items = order.destinations;
+      //     this.pendingOrder = order;
+      //     this.getTotalPrice();
+      //   }
+      // });
 
-        // Informo l'utente che l'item è stato rimosso
-        window['Swal'].fire({
-          text: 'Il viaggio è stato rimosso dal carrello',
-          icon: 'success',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }, error => {
-        // In caso di errore
-        console.error(`Errore nella rimozione dell'item:`, error);
+      // Informo l'utente che l'item è stato rimosso
+      window['Swal'].fire({
+        text: 'Il viaggio è stato rimosso dal carrello',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
       });
+    }, error => {
+      // In caso di errore
+      console.error(`Errore nella rimozione dell'item:`, error);
+    });
   }
 
   updateItemQuantity(id: number, quantity: number) {
@@ -111,9 +111,10 @@ export class CartComponent implements OnInit {
     }
     else {
       this.cartService.updateItemQuantity(id, quantity);
-      this.items = this.cartService.getItems();
-      this.getTotalPrice();
+      // this.items = this.cartService.getItems();
+      // this.getTotalPrice();
     }
+    // this.reloadPage();
   }
 
   clearCart() {
