@@ -11,6 +11,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class CartComponent implements OnInit {
   loading: boolean = true;
+  pendingOrder: any = null; // Ordine pending dell'utente loggato
   items: any[] = [];
   user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -22,27 +23,31 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartService.getPendingOrder().subscribe(order => {
-      if (order && order.items) {
-        this.items = order.items;
-        this.items.forEach(item => {
-          if (item.buyedTickets <= 0 || item.buyedTickets == null) {
-            item.buyedTickets = 1;
-          }
-        });
+      if (order && order.destinations) {
+        this.items = order.destinations;
+        this.pendingOrder = order;
+        // this.items.forEach(item => {
+        //   if (item.buyedTickets <= 0 || item.buyedTickets == null) {
+        //     item.buyedTickets = 1;
+        //   }
+        // });
         this.getTotalPrice();
-      } else {
-        this.items = [];
       }
-  
+      // else {
+      //   this.items = [];
+      // }
       this.loading = false;
     });
   }
-  
 
   ngDoCheck() {
-    this.getTotalPrice();
-    console.log('ngDoCheck cart', this.items);
+    // this.getTotalPrice();
+    // console.log('ngDoCheck cart', this.items);
   }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // FUNZIONI PER LA GESTIONE DEGLI ITEMS 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
 
   createNewOrder() {
     // Se non ci sono elementi nel carrello non posso procedere
@@ -55,7 +60,7 @@ export class CartComponent implements OnInit {
       destinationID: item.id,
       buyedTickets: item.buyedTickets
     }));
-    
+
     this.apiService.createOrder(userID, itemsPayload).subscribe({
       next: (response) => {
         console.log('Nuovo ordine inserito:', response);
@@ -65,6 +70,48 @@ export class CartComponent implements OnInit {
       },
     });
   }
+
+  removeItem(destinationId: number) {
+    if (!this.pendingOrder) return;
+    // Avvio la chiamata per rimuovere l'item dall'ordine pending
+    this.apiService.updateOrder(this.pendingOrder.id, { destinationId, buyedTickets: 0 }).subscribe(response => {
+        // Modifico l'ordine pending con la risposta del server
+        this.pendingOrder = response.order;
+        console.log('Ordine aggiornato:', this.pendingOrder);
+        // Aggiorno gli items nel carrello
+        this.items = this.pendingOrder.items;
+
+        // Informo l'utente che l'item è stato rimosso
+        window['Swal'].fire({
+          text: 'Il viaggio è stato rimosso dal carrello',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }, error => {
+        // In caso di errore
+        console.error(`Errore nella rimozione dell'item:`, error);
+      });
+  }
+
+  updateItemQuantity(id: number, quantity: number) {
+    if (quantity <= 0) {
+      this.cartService.removeItem(id);
+    }
+    else {
+      this.cartService.updateItemQuantity(id, quantity);
+      this.items = this.cartService.getItems();
+      this.getTotalPrice();
+    }
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // FUNZIONI PER LA GESTIONE DEL PAGAMENTO
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
 
   getTotalPrice(): number {
     let total: number = 0;
@@ -80,17 +127,6 @@ export class CartComponent implements OnInit {
     return total;
   }
 
-  updateItemQuantity(id: number, quantity: number) {
-    if (quantity <= 0) {
-      this.cartService.removeItem(id);
-    }
-    else {
-      this.cartService.updateItemQuantity(id, quantity);
-      this.items = this.cartService.getItems();
-      this.getTotalPrice();
-    }
-  }
-
   onPaymentMethodChange(): void {
     if (this.savePaymentData) {
       this.user.paymentMethod = this.paymentMethod;
@@ -100,18 +136,5 @@ export class CartComponent implements OnInit {
     }
   }
 
-  removeItem(id: number) {
-    this.cartService.removeItem(id);
-    this.items = this.cartService.getItems();
-    window['Swal'].fire({
-      text: 'Il viaggio è stato rimosso dal carrello',
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  }
 
-  clearCart() {
-    this.cartService.clearCart();
-  }
 }

@@ -18,22 +18,23 @@ export class CartService {
   addToCart(item: any) {
     // Ottengo i dati dell'utente loggato
     const storedUser = localStorage.getItem('user');
-    if (!storedUser) return; // Se non c'è un utente loggato, non possiamo procedere
+    if (!storedUser) return;
+    // Se non c'è un utente loggato, non posso procedere
     const userID = JSON.parse(storedUser).id;
-    // Ottengo l'ordine pending dell'utente loggato
-    // Se non c'è un ordine pending, lo creo nuovo
+    // Verifico se l'utente ha già un ordine pending
     this.apiService.getPendingOrderByUserId(userID).subscribe(order => {
+      const itemWrapped = {
+        destinationId: item.id,
+        buyedTickets: 1
+      };
+      // Inizio la lavoarazione dell'ordine
       if (order) {
-        // Ordine pending esiste già → aggiungiamo l'item
-        this.apiService.updateOrder(order.id, item).subscribe(() => {
-          this.pendingOrder = order; // aggiorno ordine locale
+        // Se esiste un ordine pending, lo aggiorno con il nuovo item
+        this.apiService.updateOrder(order.id, itemWrapped).subscribe(() => {
+          this.pendingOrder = order;
         });
       } else {
-        // Non esiste nessun ordine > Creo l'ordine e aggiungo un item
-        const itemWrapped = {
-          destinationId: item.id,
-          buyedTickets: 1
-        };
+        // Se non esiste un ordine pending, lo creo
         this.apiService.createOrder(userID, [itemWrapped]).subscribe(response => {
           this.pendingOrder = response.order;
           console.log('Nuovo ordine creato:', this.pendingOrder);
@@ -41,7 +42,7 @@ export class CartService {
       }
     });
   }
-
+  
   hasPendingOrder(): Observable<boolean> {
     const storedUser = localStorage.getItem('user');
     if (!storedUser) return of(false); // Se non c'è un utente loggato, non può avere un ordine in sospeso

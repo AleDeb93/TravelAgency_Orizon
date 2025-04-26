@@ -37,7 +37,7 @@ const orderController = {
             // Creo nuovo ordine già completato
             const order = await Orders.create({
                 user: userId,
-                status: 'pending', 
+                status: 'pending',
                 totalAmount: totalAmount,
             });
             // Aggiungo gli items all'ordine
@@ -48,7 +48,7 @@ const orderController = {
                     destination: item.destinationId,
                     buyedTickets: item.buyedTickets,
                 }))
-            );                 
+            );
 
             res.status(201).json({
                 message: 'Ordine completato con successo',
@@ -116,7 +116,7 @@ const orderController = {
                 ]
             });
             // Se l'ordine non esiste
-            if (!order) 
+            if (!order)
                 return res.status(404).json({ error: 'Ordine non trovato' });
             const result = {
                 ...order.toJSON(),
@@ -230,6 +230,24 @@ const orderController = {
             res.status(500).json({ error: `Errore durante la chiamta completeOrder` });
         }
     },
+
+    // DELETE /api/v2/orders/:id
+    deleteOrder: async (req, res) => {
+        const { orderId } = req.params;
+        try {
+            const order = await Orders.findByPk(orderId);
+            if (!order)
+                return res.status(404).json({ error: 'Ordine non trovato' });
+            // Se l'ordine è già completato, non posso eliminarlo
+            if (order.status === 'completed')
+                return res.status(400).json({ error: 'Impossibile eliminare un ordine già completato' });
+            // Elimino l'ordine
+            await order.destroy();
+            res.status(200).json({ message: 'Ordine eliminato' });
+        } catch (error) {
+            res.status(500).json({ error: 'Errore durante la chiamata deleteOrder' });
+        }
+    }
 };
 
 

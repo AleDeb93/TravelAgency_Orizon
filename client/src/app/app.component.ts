@@ -24,10 +24,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    if (this.authService.isTokenExpired()) {
-      console.log('Token scaduto');
-      this.apiService.logoutUser();
-    }
   }
 
 

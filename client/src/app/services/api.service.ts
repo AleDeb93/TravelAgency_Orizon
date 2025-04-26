@@ -45,6 +45,7 @@ export class ApiService {
   // Chiamata per recuperare un record usando un id
   // Inizialmente pensata per una chiamata generale, serarchRecord è usata ormai solo per le destinazioni
   // Questo mi permette di dividere le dipendenze e le chiamate in base al controller 
+  // Possibilità futura, implementare un service per ogni controller del backend
   searchRecord(arg: number, id: string): Observable<any> {
     const url = `${this.url}${this.arguments[arg]}/${id}`;
     const headers = this.getHeaders();
@@ -127,7 +128,7 @@ export class ApiService {
 
   // Chiamata per creare un nuovo ordine
   createOrder(userID: number, items: any[]): Observable<any> {
-    const url = `${this.url}orders`;
+    const url = `${this.url}orders/items`;
     const headers = this.getHeaders();
     return this.http.post<any>(url, { userId: userID, items }, { headers });
   }
@@ -145,6 +146,30 @@ export class ApiService {
     const headers = this.getHeaders();
     return this.http.put<any>(url, item, { headers });
   }
+
+  // Chiamata per ottenre un ordine tramite id
+  getOrderById(orderId: number): Observable<any> {
+    const url = `${this.url}orders/${orderId}`;
+    const headers = this.getHeaders();
+    return this.http.get<any>(url, { headers });
+  }
+
+  // Chiamata per completare un ordine
+  // Questa chiamata cambia lo stato dell'ordine da "pending" a "completed"
+  completeOrder(orderId: number): Observable<any> {
+    const url = `${this.url}orders/${orderId}`;
+    const headers = this.getHeaders();
+    return this.http.patch<any>(url, {}, { headers });
+  }
+
+  // Chiamata per eliminare un ordine
+  // NOTA: Il backend non permette di eliminare un ordine se è in stato "completed"
+  deleteOrder(orderId: number): Observable<any> {
+    const url = `${this.url}orders/${orderId}`;
+    const headers = this.getHeaders();
+    return this.http.delete<any>(url, { headers });
+  }
+
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------
   // GESTIONI ESTERNE RIMOSSE
