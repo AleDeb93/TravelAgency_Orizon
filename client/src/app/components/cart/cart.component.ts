@@ -79,7 +79,18 @@ export class CartComponent implements OnInit {
         this.pendingOrder = response.order;
         console.log('Ordine aggiornato:', this.pendingOrder);
         // Aggiorno gli items nel carrello
-        this.items = this.pendingOrder.items;
+        // this.items = this.pendingOrder.items;
+        this.cartService.getPendingOrder().subscribe(order => {
+          if (order && order.destinations) {
+            this.items = order.destinations;
+            this.pendingOrder = order;
+            // this.items.forEach(item => {
+            //   if (item.buyedTickets <= 0 || item.buyedTickets == null) {
+            //     item.buyedTickets = 1;
+            //   }
+            // });
+            this.getTotalPrice();
+          }});
 
         // Informo l'utente che l'item è stato rimosso
         window['Swal'].fire({
