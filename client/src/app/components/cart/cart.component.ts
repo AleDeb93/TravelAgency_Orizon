@@ -71,7 +71,6 @@ export class CartComponent implements OnInit {
     this.apiService.updateOrder(this.pendingOrder.id, { destinationId, buyedTickets: 0 }).subscribe(response => {
       // Modifico l'ordine pending con la risposta del server
       this.pendingOrder = response.order;
-      console.log('Ordine aggiornato:', this.pendingOrder);
       // Aggiorno gli items nel carrello
       this.reloadPage();
 
@@ -90,7 +89,7 @@ export class CartComponent implements OnInit {
 
   updateItemQuantity(id: number, quantity: number) {
     if (quantity <= 0) {
-      this.cartService.removeItem(id);
+      this.removeItem(id);
     }
     else {
       this.cartService.updateItemQuantity(id, quantity);

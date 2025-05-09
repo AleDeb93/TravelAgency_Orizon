@@ -31,8 +31,11 @@ const orderController = {
                     return res.status(400).json({ error: `Numero di biglietti non valido per la destinazione ${item.destinationId}` });
                 }
 
-                totalAmount += destination.price * item.buyedTickets;
-                totalTickets += item.buyedTickets;
+                const price = parseFloat(destination.price);
+                const discount = destination.discount ? parseFloat(destination.discount) : 0;
+                const finalPrice = price - (price * discount / 100);
+                totalAmount += finalPrice * item.buyedTickets;
+
             }
             // Creo nuovo ordine già completato
             const order = await Orders.create({
@@ -158,8 +161,11 @@ const orderController = {
                 if (buyedTickets === 0) {
                     await item.destroy();
                     // Aggiorno i totali dell'ordine
-                    order.buyedTickets -= item.buyedTickets;
-                    order.totalAmount -= destination.price * item.buyedTickets;
+                    const price = parseFloat(destination.price);
+                    const discount = destination.discount ? parseFloat(destination.discount) : 0;
+                    const finalPrice = price - (price * discount / 100);
+                    order.totalAmount -= finalPrice * item.buyedTickets;
+
                     await order.save();
 
                     return res.status(200).json({
@@ -171,8 +177,11 @@ const orderController = {
                 item.buyedTickets = buyedTickets;
                 await item.save();
                 // Aggiorno i totali dell'ordine
-                order.buyedTickets += ticketDiff;
-                order.totalAmount += destination.price * ticketDiff;
+                const price = parseFloat(destination.price);
+                const discount = destination.discount ? parseFloat(destination.discount) : 0;
+                const finalPrice = price - (price * discount / 100);
+                order.totalAmount += finalPrice * ticketDiff;
+
                 await order.save();
 
                 return res.status(200).json({
@@ -190,9 +199,13 @@ const orderController = {
                         buyedTickets
                     });
 
-                    // Aggiorno l’ordine
-                    order.buyedTickets += buyedTickets;
-                    order.totalAmount += destination.price * buyedTickets;
+                    // Calcolo prezzo scontato
+                    const price = parseFloat(destination.price);
+                    const discount = destination.discount ? parseFloat(destination.discount) : 0;
+                    const finalPrice = price - (price * discount / 100);
+
+                    // Aggiorno il totale
+                    order.totalAmount += finalPrice * item.buyedTickets;
                     await order.save();
 
                     return res.status(201).json({

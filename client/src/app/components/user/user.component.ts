@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -9,17 +10,12 @@ import { ApiService } from '../../services/api.service';
 export class UserComponent {
   logOff: boolean = true;
   user: any = {};
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
-    this.isUserLogged();
-  }
-
-  async isUserLogged(): Promise<void> {
-    if (localStorage.getItem('token') != null && localStorage.getItem('token') != '') {
-      // Recuperare i dati dell'utente loggato
-      // TODO
-      // Fare la GetUserByID non basarsi sullo storage (al massimo lo storage lo aggiorno dopo)
+    // this.isUserLogged();
+    if(this.authService.canActivate())
+    {
       const storedUser = localStorage.getItem('user');
       if (storedUser){
         const parsedUser = JSON.parse(storedUser)
