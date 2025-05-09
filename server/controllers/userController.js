@@ -32,6 +32,24 @@ const userController = {
             res.status(500).json({ error: 'Errore durante la chiamata getUserByID' });
         }
     },
+
+    // GET /api/v2/users/verify-token
+    verifyToken: async (req, res) => {
+        console.log('Verifica token in corso...');
+        const authHeader = req.headers.authorization;
+        if(!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'Token non fornito' });
+        }
+        const token = authHeader.split(' ')[1];
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            return res.status(200).json({ message: 'Token valido', userId: decoded.id });
+          } catch (error) {
+            console.error('Errore verifica token:', error.message);
+            return res.status(401).json({ error: 'Token non valido o scaduto' });
+          }
+    },
+
     // POST /api/v2/users
     createUser: async (req, res) => {
         try {

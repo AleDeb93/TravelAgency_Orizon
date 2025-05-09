@@ -23,20 +23,10 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadPage();
-    // this.cartService.getPendingOrder().subscribe(order => {
-    //   if (order && order.destinations) {
-    //     this.items = order.destinations;
-    //     this.pendingOrder = order;
-    //     this.getTotalPrice();
-    //   }
-    //   this.loading = false;
-    // });
     this.loading = false;
   }
 
   ngDoCheck() {
-    // this.getTotalPrice();
-    // console.log('ngDoCheck cart', this.items);
   }
 
   reloadPage() {
@@ -84,13 +74,6 @@ export class CartComponent implements OnInit {
       console.log('Ordine aggiornato:', this.pendingOrder);
       // Aggiorno gli items nel carrello
       this.reloadPage();
-      // this.cartService.getPendingOrder().subscribe(order => {
-      //   if (order && order.destinations) {
-      //     this.items = order.destinations;
-      //     this.pendingOrder = order;
-      //     this.getTotalPrice();
-      //   }
-      // });
 
       // Informo l'utente che l'item è stato rimosso
       window['Swal'].fire({
@@ -111,10 +94,7 @@ export class CartComponent implements OnInit {
     }
     else {
       this.cartService.updateItemQuantity(id, quantity);
-      // this.items = this.cartService.getItems();
-      // this.getTotalPrice();
     }
-    // this.reloadPage();
   }
 
   clearCart() {
@@ -147,6 +127,4 @@ export class CartComponent implements OnInit {
       console.log('Dati di pagamento salvati');
     }
   }
-
-
 }

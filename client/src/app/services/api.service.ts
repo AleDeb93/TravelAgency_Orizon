@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable, catchError, throwError, tap, of, map } from 'rxjs';
+import { Observable, catchError, throwError, tap, of, map, retry } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -51,6 +51,27 @@ export class ApiService {
     const headers = this.getHeaders();
     return this.http.get<any>(url, { headers }).pipe(
       catchError(this.errorHandling)
+    );
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // API VERIFICA TOKEN
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // Chiamata per verificare se il token è valido
+  // Questa chiamata viene fatta quando l'utente accede ad alcune pagine protette
+  // verifyToken(): Observable<any> {
+  //   return this.http.get('localhost:3000/api/v2/users/verify-token', {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`
+  //     }
+  //   });
+  // }
+  verifyToken(): Observable<any> {
+    const url = `${this.url}users/verify-token`;
+    const headers = this.getHeaders();
+    return this.http.get<any>(url, { headers }).pipe(
+      catchError(this.errorHandling),
     );
   }
 

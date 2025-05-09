@@ -4,6 +4,7 @@ const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddlewares');
 
 // Rotte per gestire gli utenti
+router.get('/verify-token', userController.verifyToken);
 router.get('/', userController.getAllUsers);
 router.get('/:id', authMiddleware, userController.getUserByID);
 router.post('/', userController.createUser);

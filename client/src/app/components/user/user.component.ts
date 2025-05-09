@@ -22,7 +22,6 @@ export class UserComponent {
       // Fare la GetUserByID non basarsi sullo storage (al massimo lo storage lo aggiorno dopo)
       const storedUser = localStorage.getItem('user');
       if (storedUser){
-        console.log(storedUser);
         const parsedUser = JSON.parse(storedUser)
         try{
           const data = await this.apiService.getUser(parsedUser.id).toPromise()

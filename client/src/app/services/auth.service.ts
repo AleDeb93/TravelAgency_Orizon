@@ -1,35 +1,29 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { ApiService } from './api.service';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements CanActivate {
 
-  constructor(private apiSerice: ApiService, private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
-  canActivate(): boolean {
+  canActivate(): Observable<boolean | UrlTree> {
     const token = localStorage.getItem('token');
-    if (token) {	
-      return true;
-    } else {
-      this.router.navigate(['/account']);
-      return false;
+    if (!token) {
+      return of(this.router.createUrlTree(['/account']));
     }
-  }
-
-  // La logica è duplicata client/server per evitare chiamate API inutili 
-  // Un ulteriore controllo sul token da parte del server viene fatto passando per la pagina dell'account utente
-  isTokenExpired(): boolean {
-    const tokenDate = localStorage.getItem('tokenDate');
-    if (!tokenDate)
-      return true;
-    const now = new Date().getTime();
-    const expiryTime = parseInt(tokenDate, 10) + 24 * 60 * 60 * 1000; // 24 ore
-    if (now > expiryTime) 
-      return true;
-    else
-      return false;
+  
+    return this.apiService.verifyToken().pipe(
+      map(() => true),
+      catchError(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('tokenDate');
+        return of(this.router.createUrlTree(['/account']));
+      })
+    );
   }
 }
