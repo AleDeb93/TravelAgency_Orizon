@@ -42,7 +42,7 @@ export class CartService {
       }
     });
   }
-  
+
   hasPendingOrder(): Observable<boolean> {
     const storedUser = localStorage.getItem('user');
     if (!storedUser) return of(false); // Se non c'è un utente loggato, non può avere un ordine in sospeso
@@ -99,5 +99,13 @@ export class CartService {
   }
 
   clearCart() {
+    this.apiService.deleteOrder(this.pendingOrder.id).subscribe(
+      response => {
+        console.log('Carrello svuotato con successo', response);
+      },
+      error => {
+        console.error('Errore durante lo svuotamento del carrello', error);
+      }
+    );
   }
 }

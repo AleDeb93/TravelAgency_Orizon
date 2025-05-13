@@ -98,7 +98,17 @@ export class CartComponent implements OnInit {
 
   clearCart() {
     this.cartService.clearCart();
+    window['Swal'].fire({
+      text: 'Carrello svuotato con successo',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    this.pendingOrder = null;
+    this.items = [];  
+    this.reloadPage();
   }
+
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------
   // FUNZIONI PER LA GESTIONE DEL PAGAMENTO

@@ -154,36 +154,65 @@ const orderController = {
                     destination: destinationId
                 }
             });
+
             if (item) {
                 // Caso 1: Aggiornamento quantità
-                const ticketDiff = buyedTickets - item.buyedTickets;
                 // Se la nuova quantità è 0, rimuovo l'item
                 if (buyedTickets === 0) {
                     await item.destroy();
-                    // Aggiorno i totali dell'ordine
+                    // Calcolo il prezzo scontato
                     const price = parseFloat(destination.price);
                     const discount = destination.discount ? parseFloat(destination.discount) : 0;
                     const finalPrice = price - (price * discount / 100);
+                    // Rimuovo l'ammontare precedente dall'ordine
+                    order.totalAmount = parseFloat(order.totalAmount); 
                     order.totalAmount -= finalPrice * item.buyedTickets;
+                    // Log di debug
+                    console.log(`[DEBUG] -${finalPrice * item.buyedTickets} rimosso per ${destination.name}`);
+                    console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
+                    console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
 
+                    // Salvo l'ordine
                     await order.save();
-
                     return res.status(200).json({
                         message: 'Item rimosso con successo',
                         order
                     });
                 }
+
                 // Altrimenti aggiorno la quantità
-                item.buyedTickets = buyedTickets;
-                await item.save();
-                // Aggiorno i totali dell'ordine
+                // Log di debug
+                console.log(`[DEBUG] Item vecchio: ${item.buyedTickets} biglietti per ${destination.name}`);
+                console.log(`[DEBUG] Item aggiornato: ${buyedTickets} biglietti per ${destination.name}`);
+
+                // Calcolo il prezzo scontato
                 const price = parseFloat(destination.price);
                 const discount = destination.discount ? parseFloat(destination.discount) : 0;
                 const finalPrice = price - (price * discount / 100);
-                order.totalAmount += finalPrice * ticketDiff;
 
+                // Calcolo la differenza di ammontare tra la nuova quantità e la vecchia
+                const previousAmount = item.buyedTickets * finalPrice;
+                const newAmount = buyedTickets * finalPrice;
+                const diffAmount = newAmount - previousAmount;
+
+                // Assicuriamoci che `order.totalAmount` sia trattato come un numero
+                order.totalAmount = parseFloat(order.totalAmount);
+
+                // Aggiungo/subtrae questa differenza al totale dell'ordine
+                order.totalAmount += diffAmount;
+                // Log di debug
+                console.log(`[DEBUG] +${diffAmount} aggiunto per ${destination.name}`);
+                console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
+                console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
+                // Aggiorno i tickets
+                item.buyedTickets = buyedTickets;   
+                // Salvo l'item e l'ordine
+                await item.save();             
                 await order.save();
 
+                // Log di debug
+                console.log(`[DEBUG] Ora i buyedTickets sono: ${item.buyedTickets} biglietti per ${destination.name}`);
+                
                 return res.status(200).json({
                     message: 'Item aggiornato con successo',
                     order,
@@ -199,13 +228,21 @@ const orderController = {
                         buyedTickets
                     });
 
-                    // Calcolo prezzo scontato
+                    // Calcolo il prezzo scontato
                     const price = parseFloat(destination.price);
                     const discount = destination.discount ? parseFloat(destination.discount) : 0;
                     const finalPrice = price - (price * discount / 100);
+                    // Aggiungo il totale dell'ordine con il nuovo item
+                    order.totalAmount = parseFloat(order.totalAmount); // Converto a numero
+                    order.totalAmount += finalPrice * item.buyedTickets;
+                    // Arrotondo il totale
+                    order.totalAmount = parseFloat(order.totalAmount.toFixed(2));
+
+                    console.log(`[DEBUG] +${finalPrice * item.buyedTickets} aggiunto per ${destination.name}`);
+                    console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
+                    console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
 
                     // Aggiorno il totale
-                    order.totalAmount += finalPrice * item.buyedTickets;
                     await order.save();
 
                     return res.status(201).json({
@@ -217,7 +254,6 @@ const orderController = {
                     return res.status(400).json({ error: 'La quantità di biglietti deve essere maggiore di 0' });
                 }
             }
-
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: `Errore durante l'aggiunta o aggiornamento dell'item nell'ordine` });
