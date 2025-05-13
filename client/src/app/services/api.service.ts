@@ -21,7 +21,6 @@ export class ApiService {
   // Headers e gestione degli errori per chiamate alle API
   getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    console.log('Token:', this.token);
     if (this.token && this.token.trim() !== '') { headers = headers.set('Authorization', `${this.token}`) }
     return headers;
   }
@@ -179,6 +178,7 @@ export class ApiService {
   // Questa chiamata cambia lo stato dell'ordine da "pending" a "completed"
   completeOrder(orderId: number): Observable<any> {
     const url = `${this.url}orders/${orderId}`;
+    console.log(`Invio richiesta PATCH a ${url}`);
     const headers = this.getHeaders();
     return this.http.patch<any>(url, {}, { headers });
   }

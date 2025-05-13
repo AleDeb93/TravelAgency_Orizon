@@ -165,7 +165,7 @@ const orderController = {
                     const discount = destination.discount ? parseFloat(destination.discount) : 0;
                     const finalPrice = price - (price * discount / 100);
                     // Rimuovo l'ammontare precedente dall'ordine
-                    order.totalAmount = parseFloat(order.totalAmount); 
+                    order.totalAmount = parseFloat(order.totalAmount);
                     order.totalAmount -= finalPrice * item.buyedTickets;
                     // Log di debug
                     console.log(`[DEBUG] -${finalPrice * item.buyedTickets} rimosso per ${destination.name}`);
@@ -205,14 +205,14 @@ const orderController = {
                 console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
                 console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
                 // Aggiorno i tickets
-                item.buyedTickets = buyedTickets;   
+                item.buyedTickets = buyedTickets;
                 // Salvo l'item e l'ordine
-                await item.save();             
+                await item.save();
                 await order.save();
 
                 // Log di debug
                 console.log(`[DEBUG] Ora i buyedTickets sono: ${item.buyedTickets} biglietti per ${destination.name}`);
-                
+
                 return res.status(200).json({
                     message: 'Item aggiornato con successo',
                     order,
@@ -260,7 +260,7 @@ const orderController = {
         }
     },
 
-    // PUT /api/v2/orders/:orderId
+    // PATCH /api/v2/orders/:orderId
     completeOrder: async (req, res) => {
         try {
             const { orderId } = req.params;
@@ -270,8 +270,13 @@ const orderController = {
             if (!order) {
                 return res.status(404).json({ error: 'Ordine non trovato' });
             }
+            // Log di debug
+            console.log(`[DEBUG] Ordine ${orderId} trovato: ${order.status}`);
             // Cambio lo stato dell'ordine a 'completed'
             order.status = 'completed';
+            // Log di debug
+            console.log(`[DEBUG] Ordine ${orderId} completato con successo: ${order.status}`);
+
             await order.save();
             res.status(200).json(order);
         } catch (error) {

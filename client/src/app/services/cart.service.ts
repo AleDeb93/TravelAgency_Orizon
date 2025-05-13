@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -66,11 +66,11 @@ export class CartService {
 
   // TODO ELIMINA
   getItems() {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      this.items = JSON.parse(storedCart);
-    }
-    return this.items;
+    // const storedCart = localStorage.getItem('cart');
+    // if (storedCart) {
+    //   this.items = JSON.parse(storedCart);
+    // }
+    // return this.items;
   }
 
   removeItem(destinationId: number) {
@@ -107,5 +107,20 @@ export class CartService {
         console.error('Errore durante lo svuotamento del carrello', error);
       }
     );
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // CHECKOUT DELL ORDINE
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  completeOrder(id: number) {
+    return this.apiService.completeOrder(id).subscribe(
+      response => {
+        console.log('Ordine completato con successo', response);
+      }),
+      catchError(error => {
+        console.error('Errore durante il completamento dell\'ordine', error);
+        return throwError(() => error);
+      })
   }
 }

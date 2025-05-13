@@ -43,26 +43,29 @@ export class CartComponent implements OnInit {
   // FUNZIONI PER LA GESTIONE DEGLI ITEMS 
   //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-  createNewOrder() {
-    // Se non ci sono elementi nel carrello non posso procedere
-    if (!this.items || this.items.length === 0)
-      return;
-    // Recupero i dati dell'utente loggato
-    const userID = this.user.id;
-    // Mappo gli oggetti per creare il payload da inviare al server
-    const itemsPayload = this.items.map(item => ({
-      destinationID: item.id,
-      buyedTickets: item.buyedTickets
-    }));
-
-    this.apiService.createOrder(userID, itemsPayload).subscribe({
-      next: (response) => {
-        console.log('Nuovo ordine inserito:', response);
-      },
-      error: (error) => {
-        console.error(`Errore nella creazione dell'ordine: `, error);
-      },
-    });
+  completeOrder() {
+    console.log(this.pendingOrder.id);
+    try {
+      this.cartService.completeOrder(this.pendingOrder.id);
+      window['Swal'].fire({
+        text: 'Checkout completato con successo',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    catch (error) {
+      console.error(`Errore durante il completamento dell'ordine:`, error);
+      window['Swal'].fire({
+        text: `Errore durante il completamento dell'ordine`,
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    this.pendingOrder = null;
+    this.items = [];
+    this.reloadPage();
   }
 
   removeItem(destinationId: number) {
@@ -105,7 +108,7 @@ export class CartComponent implements OnInit {
       timer: 1500,
     });
     this.pendingOrder = null;
-    this.items = [];  
+    this.items = [];
     this.reloadPage();
   }
 
