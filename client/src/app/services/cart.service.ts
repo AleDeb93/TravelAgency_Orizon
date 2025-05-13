@@ -37,7 +37,7 @@ export class CartService {
         // Se non esiste un ordine pending, lo creo
         this.apiService.createOrder(userID, [itemWrapped]).subscribe(response => {
           this.pendingOrder = response.order;
-          console.log('Nuovo ordine creato:', this.pendingOrder);
+          console.log(`[${new Date().toLocaleString()}] Nuovo ordine creato:`, this.pendingOrder);
         });
       }
     });
@@ -101,10 +101,10 @@ export class CartService {
   clearCart() {
     this.apiService.deleteOrder(this.pendingOrder.id).subscribe(
       response => {
-        console.log('Carrello svuotato con successo', response);
+        console.log(`[${new Date().toLocaleString()}] Carrello svuotato con successo`, response);
       },
       error => {
-        console.error('Errore durante lo svuotamento del carrello', error);
+        console.error(`[${new Date().toLocaleString()}] Errore durante lo svuotamento del carrello`, error);
       }
     );
   }
@@ -116,10 +116,10 @@ export class CartService {
   completeOrder(id: number) {
     return this.apiService.completeOrder(id).subscribe(
       response => {
-        console.log('Ordine completato con successo', response);
+        console.log(`[${new Date().toLocaleString()}] Ordine completato con successo`, response);
       }),
       catchError(error => {
-        console.error('Errore durante il completamento dell\'ordine', error);
+        console.error(`[${new Date().toLocaleString()}] Errore durante il completamento dell'ordine`, error);
         return throwError(() => error);
       })
   }

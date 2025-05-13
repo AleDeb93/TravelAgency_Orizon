@@ -194,7 +194,6 @@ export class ApiService {
   // Questa chiamata cambia lo stato dell'ordine da "pending" a "completed"
   completeOrder(orderId: number): Observable<any> {
     const url = `${this.url}orders/${orderId}`;
-    console.log(`Invio richiesta PATCH a ${url}`);
     const headers = this.getHeaders();
     return this.http.patch<any>(url, {}, { headers });
   }

@@ -10,8 +10,8 @@ const authMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET);
 
-        console.log("Token verificato:", decoded);  // Log di test per scadenza token
-        console.log("Data di scadenza:", new Date(decoded.exp * 1000));
+        console.log(`[${new Date().toLocaleString()}] Token verificato:`, decoded);  // Log di test per scadenza token
+        console.log(`[${new Date().toLocaleString()}] Data di scadenza:`, new Date(decoded.exp * 1000));
 
         req.user = decoded;
         next();

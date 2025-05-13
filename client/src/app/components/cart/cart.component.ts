@@ -44,7 +44,6 @@ export class CartComponent implements OnInit {
   //-------------------------------------------------------------------------------------------------------------------------------------------------
 
   completeOrder() {
-    console.log(this.pendingOrder.id);
     try {
       this.cartService.completeOrder(this.pendingOrder.id);
       window['Swal'].fire({

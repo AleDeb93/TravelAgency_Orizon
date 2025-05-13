@@ -35,7 +35,7 @@ const userController = {
 
     // GET /api/v2/users/verify-token
     verifyToken: async (req, res) => {
-        console.log('Verifica token in corso...');
+        console.log(`[${new Date().toLocaleString()}] Verifica token in corso`);
         const authHeader = req.headers.authorization;
         if(!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({ error: 'Token non fornito' });

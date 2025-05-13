@@ -29,24 +29,24 @@ app.use('/destinationsIMG', express.static(path.join(__dirname, '../docs/destina
 // Test connessione al database
 sequelize.authenticate()
     .then(() => {
-        console.log(`Connessione al database riuscita!`);
+        console.log(`[${new Date().toLocaleString()}] Connessione al database riuscita!`);
     })
     .catch(error => {
-        console.log(`Impossibile connettersi al database:`, error);
+        console.log(`[${new Date().toLocaleString()}] Impossibile connettersi al database:`, error);
     });
 
 // Sincronizzazione del database
 sequelize.sync({ force: false, alter: true })
     .then(() => {
-        console.log(`Sincronizzazione effettuata!`);
+        console.log(`[${new Date().toLocaleString()}] Sincronizzazione effettuata!`);
     })
     .catch(err => {
-        console.error(`Errore durante la sincronizzazione:`, err);
+        console.error(`[${new Date().toLocaleString()}] Errore durante la sincronizzazione:`, err);
     });
 
 // Avvio del server
 const port = 3000;
 
 app.listen(port, () => {
-    console.log(`Server in ascolto alla porta ${port}`);
+    console.log(`[${new Date().toLocaleString()}] Server in ascolto alla porta ${port}`);
 });

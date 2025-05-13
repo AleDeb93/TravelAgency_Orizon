@@ -26,7 +26,12 @@ export class UserComponent {
           this.logOff = false;
           const orderData = await this.apiService.getOrderByUserId(parsedUser.id).toPromise()
           this.orders = orderData;
-          console.log('Ordini ricevuti:', this.orders);
+          // Ordino per primo l'ordine con status 'pending' se presente
+          this.orders.sort((a: { status: string; }, b: { status: string; }) => {
+            if (a.status === 'pending') return -1;
+            if (b.status === 'pending') return 1;
+            return 0;
+          });
         }
         catch (error) {
           console.error('Non è stato possibile ottenere i dati richiesti');
@@ -56,7 +61,6 @@ export class UserComponent {
     this.apiService.getOrderByUserId(this.user.id).subscribe({
       next: response => {
         this.orders = response;
-        console.log('Ordini ricevuti:', response);
       },
       error: err => {
         console.error('Errore nella getUserOrdres:', err);
@@ -64,16 +68,13 @@ export class UserComponent {
     });
   }
 
-
   //-------------------------------------------------------------------------------------------------------------------------------------------------
   // FUNZIONE PER LOGOUT
   //-------------------------------------------------------------------------------------------------------------------------------------------------
 
   logOut(): void {
     this.apiService.logoutUser();
-    console.log('Logged out');
+    console.log(`[${new Date().toLocaleString()}] Logged out`);
     window.location.reload();
   }
-
-
 }

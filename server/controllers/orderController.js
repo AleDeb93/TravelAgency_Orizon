@@ -18,8 +18,6 @@ const orderController = {
             let totalAmount = 0;
             let totalTickets = 0;
             // Calcolo totale e verifico le destinazioni
-            console.log(items);  // Aggiungi questo per vedere cosa viene passato
-
             for (const item of items) {
                 const destination = await Destinations.findByPk(item.destinationId);
                 if (!destination) {
@@ -168,9 +166,9 @@ const orderController = {
                     order.totalAmount = parseFloat(order.totalAmount);
                     order.totalAmount -= finalPrice * item.buyedTickets;
                     // Log di debug
-                    console.log(`[DEBUG] -${finalPrice * item.buyedTickets} rimosso per ${destination.name}`);
-                    console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
-                    console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
+                    console.log(`[${new Date().toLocaleString()}]  -${finalPrice * item.buyedTickets} rimosso per ${destination.name}`);
+                    console.log(`[${new Date().toLocaleString()}]  Totale aggiornato: ${order.totalAmount}`);
+                    console.log(`[${new Date().toLocaleString()}]  Tipo di totalAmount:`, typeof order.totalAmount, order.totalAmount);
 
                     // Salvo l'ordine
                     await order.save();
@@ -182,8 +180,8 @@ const orderController = {
 
                 // Altrimenti aggiorno la quantità
                 // Log di debug
-                console.log(`[DEBUG] Item vecchio: ${item.buyedTickets} biglietti per ${destination.name}`);
-                console.log(`[DEBUG] Item aggiornato: ${buyedTickets} biglietti per ${destination.name}`);
+                console.log(`[${new Date().toLocaleString()}]  Item vecchio: ${item.buyedTickets} biglietti per ${destination.name}`);
+                console.log(`[${new Date().toLocaleString()}]  Item aggiornato: ${buyedTickets} biglietti per ${destination.name}`);
 
                 // Calcolo il prezzo scontato
                 const price = parseFloat(destination.price);
@@ -201,9 +199,9 @@ const orderController = {
                 // Aggiungo/subtrae questa differenza al totale dell'ordine
                 order.totalAmount += diffAmount;
                 // Log di debug
-                console.log(`[DEBUG] +${diffAmount} aggiunto per ${destination.name}`);
-                console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
-                console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
+                console.log(`[${new Date().toLocaleString()}]  +${diffAmount} aggiunto per ${destination.name}`);
+                console.log(`[${new Date().toLocaleString()}]  Totale aggiornato: ${order.totalAmount}`);
+                console.log('[${new Date().toLocaleString()}]  Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
                 // Aggiorno i tickets
                 item.buyedTickets = buyedTickets;
                 // Salvo l'item e l'ordine
@@ -211,7 +209,7 @@ const orderController = {
                 await order.save();
 
                 // Log di debug
-                console.log(`[DEBUG] Ora i buyedTickets sono: ${item.buyedTickets} biglietti per ${destination.name}`);
+                console.log(`[${new Date().toLocaleString()}]  Ora i buyedTickets sono: ${item.buyedTickets} biglietti per ${destination.name}`);
 
                 return res.status(200).json({
                     message: 'Item aggiornato con successo',
@@ -238,9 +236,9 @@ const orderController = {
                     // Arrotondo il totale
                     order.totalAmount = parseFloat(order.totalAmount.toFixed(2));
 
-                    console.log(`[DEBUG] +${finalPrice * item.buyedTickets} aggiunto per ${destination.name}`);
-                    console.log(`[DEBUG] Totale aggiornato: ${order.totalAmount}`);
-                    console.log('[DEBUG] Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
+                    console.log(`[${new Date().toLocaleString()}]  +${finalPrice * item.buyedTickets} aggiunto per ${destination.name}`);
+                    console.log(`[${new Date().toLocaleString()}]  Totale aggiornato: ${order.totalAmount}`);
+                    console.log('[${new Date().toLocaleString()}]  Tipo di totalAmount:', typeof order.totalAmount, order.totalAmount);
 
                     // Aggiorno il totale
                     await order.save();
@@ -271,11 +269,11 @@ const orderController = {
                 return res.status(404).json({ error: 'Ordine non trovato' });
             }
             // Log di debug
-            console.log(`[DEBUG] Ordine ${orderId} trovato: ${order.status}`);
+            console.log(`[${new Date().toLocaleString()}]  Ordine ${orderId} trovato: ${order.status}`);
             // Cambio lo stato dell'ordine a 'completed'
             order.status = 'completed';
             // Log di debug
-            console.log(`[DEBUG] Ordine ${orderId} completato con successo: ${order.status}`);
+            console.log(`[${new Date().toLocaleString()}]  Ordine ${orderId} completato con successo: ${order.status}`);
 
             await order.save();
             res.status(200).json(order);
