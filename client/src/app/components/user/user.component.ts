@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -10,19 +11,22 @@ import { AuthService } from '../../services/auth.service';
 export class UserComponent {
   logOff: boolean = true;
   user: any = {};
+  orders: any = [];
   constructor(private apiService: ApiService, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
     // this.isUserLogged();
-    if(this.authService.canActivate())
-    {
+    if (this.authService.canActivate()) {
       const storedUser = localStorage.getItem('user');
-      if (storedUser){
+      if (storedUser) {
         const parsedUser = JSON.parse(storedUser)
-        try{
-          const data = await this.apiService.getUser(parsedUser.id).toPromise()
-          this.user = data;
+        try {
+          const userData = await this.apiService.getUser(parsedUser.id).toPromise()
+          this.user = userData;
           this.logOff = false;
+          const orderData = await this.apiService.getOrderByUserId(parsedUser.id).toPromise()
+          this.orders = orderData;
+          console.log('Ordini ricevuti:', this.orders);
         }
         catch (error) {
           console.error('Non è stato possibile ottenere i dati richiesti');
@@ -34,11 +38,9 @@ export class UserComponent {
     }
   }
 
-  logOut(): void {
-    this.apiService.logoutUser();
-    console.log('Logged out');
-    window.location.reload();
-  }
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // FUNZIONI PER LA GESTIONE DEI DATI UTENTE E PERSONALIZZAIONE PAGINA
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
 
   getUserAvatar(gender: string): string {
     const avatars: Record<string, string> = {
@@ -49,5 +51,29 @@ export class UserComponent {
 
     return avatars[gender] ?? 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png'; // Default avatar
   }
+
+  getUserOrdres() {
+    this.apiService.getOrderByUserId(this.user.id).subscribe({
+      next: response => {
+        this.orders = response;
+        console.log('Ordini ricevuti:', response);
+      },
+      error: err => {
+        console.error('Errore nella getUserOrdres:', err);
+      }
+    });
+  }
+
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // FUNZIONE PER LOGOUT
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  logOut(): void {
+    this.apiService.logoutUser();
+    console.log('Logged out');
+    window.location.reload();
+  }
+
 
 }

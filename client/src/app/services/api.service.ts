@@ -157,9 +157,25 @@ export class ApiService {
     const url = `${this.url}orders?userId=${userId}&status=pending`;
     const headers = this.getHeaders();
     return this.http.get<any[]>(url, { headers }).pipe(
-      map(orders => orders.length > 0 ? orders[0] : null)
+      map(orders => orders.length > 0 ? orders[0] : null),
+      catchError(error => {
+        console.error('Errore nel recupero ordini:', error);
+        return throwError(() => error);
+      })
     );
   }
+  // Chiamata per verificare se l'utente ha un ordine in corso (carrello)
+  getOrderByUserId(userId: number): Observable<any[]> {
+    const url = `${this.url}orders?userId=${userId}`;
+    const headers = this.getHeaders();
+    return this.http.get<any[]>(url, { headers }).pipe(
+      catchError(error => {
+        console.error('Errore nel recupero ordini:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
   // Chiamata per aggiornare l'ordine pending
   updateOrder(orderId: number, item: { destinationId: number, buyedTickets: number }): Observable<any> {
     const url = `${this.url}orders/${orderId}`;

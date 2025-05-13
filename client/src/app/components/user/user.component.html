@@ -1,115 +1,64 @@
 <div class="spacer"></div>
 
-<!-- Se utente non loginato -->
-<div class="login" *ngIf="logOff">
-  <div class="p-5 text-center bg-body-tertiary rounded-3">
-    <svg class="bi mt-4 mb-3" style="color: var(--bs-indigo);" width="100" height="100">
-      <use xlink:href="#bootstrap"></use>
-    </svg>
-    <h1 class="text-body-emphasis">Accedi o registrati</h1>
-    <p class="col-lg-8 mx-auto fs-5 text-muted">Accedi al tuo account o creane uno per continuare</p>
-    <div class="d-inline-flex gap-2 mb-5">
-      <button class="d-inline-flex align-items-center btn btn-success btn-lg px-4 rounded-pill" type="button"
-        routerLink="login" [queryParams]="{ action: 'login' }">Accedi</button>
-      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button" routerLink="login"
-        [queryParams]="{ action: 'register' }">Registrati</button>
+<!-- Se l'utente NON è loggato -->
+<div class="login-container" *ngIf="logOff">
+  <div class="login-box">
+    <h1>Benvenuto!</h1>
+    <p>Accedi o registrati per gestire i tuoi viaggi e ordini</p>
+    <div class="login-actions">
+      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login" [queryParams]="{ action: 'login' }">Accedi</button>
+      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login" [queryParams]="{ action: 'register' }">Registrati</button>
     </div>
   </div>
 </div>
 
-<!-- Se utente loginato -->
-<section style="background-color: #eee;" *ngIf="!logOff">
-  <div class="container py-5">
+<!-- Se l'utente È loggato -->
+<div class="user-page" *ngIf="!logOff">
+  <div class="user-wrapper">
 
-    <div class="row">
-      <div class="col-lg-4">
-        <div class="card mb-4">
-          <div class="card-body text-center">
-            <img [src]="getUserAvatar(user.gender)" alt="avatar" style="width: 150px;">
-            <h5 class="my-3">{{user.name}} {{user.surname}}</h5>
-            <p class="text-muted mb-1">Codice cliente: {{user.id}}</p>
-            <p class="text-muted mb-4">{{user.city}} {{user.street}}, {{user.country}}</p>
-            <div class="d-flex justify-content-center mb-2">
-              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
-                (click)="logOut()">Logout</button>
-              <button type="button" data-mdb-button-init data-mdb-ripple-init
-                class="btn btn-outline-primary ms-1">Aggiorna i tuoi dati</button>
-            </div>
-          </div>
+    <!-- CARD PROFILO E INFO PERSONALI SU STESSA RIGA -->
+    <div class="profile-info-wrapper">
+      
+      <!-- CARD PROFILO -->
+      <div class="user-profile">
+        <img [src]="getUserAvatar(user.gender)" alt="Avatar" />
+        <h2>{{user.name}} {{user.surname}}</h2>
+        <p class="userid">Codice utente: {{user.id}}</p>
+        <p class="location">{{user.city}}, {{user.country}}</p>
+        <div class="profile-buttons">
+          <button (click)="logOut()">Logout</button>
+          <button class="outline">Modifica profilo</button>
         </div>
       </div>
-      <!-- Riepilogo dei dati -->
-      <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Nome completo</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.name}} {{user.surname}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Email</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.email}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Nazione</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.country}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Città</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.city}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Indirizzo</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.street}}</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Metodo di pagamento</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{user.paymentMethod}}</p>
-              </div>
-            </div>
-          </div>
+
+      <!-- INFO PERSONALI -->
+      <div class="user-details">
+        <h3>Informazioni personali</h3>
+        <ul>
+          <li><strong>Email:</strong> {{user.email}}</li>
+          <li><strong>Indirizzo:</strong> {{user.street}}</li>
+          <li><strong>Nazione:</strong> {{user.country}}</li>
+          <li><strong>Città:</strong> {{user.city}}</li>
+          <li><strong>Metodo di pagamento:</strong> {{user.paymentMethod}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ORDINI -->
+    <div class="user-orders">
+      <h3>I tuoi ordini</h3>
+
+      <div class="order-card" *ngFor="let order of orders">
+        <div class="order-header">
+          <span class="order-id">#{{order.id}}</span>
+          <span class="order-status" [ngClass]="order.status">{{order.status}}</span>
+        </div>
+        <div class="order-body">
+          <p><strong>Data:</strong> {{order.orderDate | date:'dd/MM/yyyy'}}</p>
+          <p><strong>Totale:</strong> €{{order.totalAmount}}</p>
+          <p><strong>Destinazioni:</strong> {{order.destinations?.length}}</p>
         </div>
       </div>
     </div>
   </div>
-  <!-- Riepilogo degli ordini -->
-  <h3>I tuoi ordini</h3>
-  <div class="card mb-4 mb-lg-0">
-    <div class="card-body p-0">
-      <ul class="list-group list-group-flush rounded-3">
-        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-          <i class="fas fa-globe fa-lg text-warning"></i>
-          <p class="mb-0">user.orders</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
+</div>
