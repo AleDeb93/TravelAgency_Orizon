@@ -6,8 +6,10 @@
     <h1>Benvenuto!</h1>
     <p>Accedi o registrati per gestire i tuoi viaggi e ordini</p>
     <div class="login-actions">
-      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login" [queryParams]="{ action: 'login' }">Accedi</button>
-      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login" [queryParams]="{ action: 'register' }">Registrati</button>
+      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login"
+        [queryParams]="{ action: 'login' }">Accedi</button>
+      <button class="w-100 mb-2 btn btn-lg rounded-3 btn-success" routerLink="login"
+        [queryParams]="{ action: 'register' }">Registrati</button>
     </div>
   </div>
 </div>
@@ -18,7 +20,7 @@
 
     <!-- CARD PROFILO E INFO PERSONALI SU STESSA RIGA -->
     <div class="profile-info-wrapper">
-      
+
       <!-- CARD PROFILO -->
       <div class="user-profile">
         <img [src]="getUserAvatar(user.gender)" alt="Avatar" />
@@ -50,15 +52,23 @@
 
       <div class="order-card" *ngFor="let order of orders">
         <div class="order-header">
-          <span class="order-id">#{{order.id}}</span>
+          <span class="order-id"><strong>Nr. Ord.</strong>: {{order.id}}</span>
           <span class="order-status" [ngClass]="order.status">{{order.status}}</span>
         </div>
         <div class="order-body">
           <p><strong>Data:</strong> {{order.orderDate | date:'dd/MM/yyyy'}}</p>
           <p><strong>Totale:</strong> €{{order.totalAmount}}</p>
-          <p><strong>Destinazioni:</strong> {{order.destinations?.length}}</p>
+
+          <!-- Mostra le destinazioni -->
+          <div *ngIf="order.destinations?.length > 0">
+            <strong>Destinazioni:</strong>
+            <ul>
+              <li *ngFor="let destination of order.destinations">
+                <p><strong>Città:</strong> {{destination.name}}</p>
+                <p><strong>Ticket acquistati:</strong> {{destination.buyedTickets}}</p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
