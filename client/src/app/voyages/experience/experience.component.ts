@@ -9,6 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class ExperienceComponent {
   showQuestionnaire: boolean = false;
   currentStep = 1;
+  userPreferences: string[] = [];
 
   startQuestionnaire() {
     this.showQuestionnaire = true;
@@ -28,10 +29,17 @@ export class ExperienceComponent {
     const options = target.parentElement?.querySelectorAll('button');
     options?.forEach(btn => btn.classList.remove('selected'));
     target.classList.add('selected');
+    console.log(`${new Date().toLocaleString()}] Hai selezionato: ${target.textContent}`);
+    this.userPreferences[this.currentStep - 1] = target.textContent ?? '';
   }
 
   // TODO Al finish del questionario implementare una funzione che salva le preferenze dell'utente
   finish() {
-    alert('Le tue preferenze sono state salvate!');
+    window['Swal'].fire({
+      text: `Le tue preferenze sono state salvate ${this.userPreferences}`,
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
