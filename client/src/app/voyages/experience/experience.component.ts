@@ -29,7 +29,7 @@ export class ExperienceComponent {
     const options = target.parentElement?.querySelectorAll('button');
     options?.forEach(btn => btn.classList.remove('selected'));
     target.classList.add('selected');
-    console.log(`${new Date().toLocaleString()}] Hai selezionato: ${target.textContent}`);
+    console.log(`[${new Date().toLocaleString()}] Hai selezionato: ${target.textContent}`);
     this.userPreferences[this.currentStep - 1] = target.textContent ?? '';
   }
 

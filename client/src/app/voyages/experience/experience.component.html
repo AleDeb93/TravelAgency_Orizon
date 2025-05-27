@@ -63,7 +63,7 @@
 
   <div id="step4" class="step" [class.active]="currentStep === 4">
     <h2>Hai un budget prefissato?</h2>
-    <input type="number" placeholder="Inserisci il budget" style="width: 100%; padding: 10px; margin-top: 10px;">
+    <input #budgetInput type="number" placeholder="Inserisci il budget" style="width: 100%; padding: 10px; margin-top: 10px;">
     <button class="btn btn-secondary" (click)="stepsMng('prev')">Indietro</button>
     <button class="btn btn-primary" (click)="finish()">Termina</button>
   </div>
