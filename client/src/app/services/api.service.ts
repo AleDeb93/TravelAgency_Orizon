@@ -91,6 +91,10 @@ export class ApiService {
     const url = `${this.url}users/${user.id}`;
     const headers = this.getHeaders();
     return this.http.put<any>(url, user, { headers }).pipe(
+      // // Aggiorno i dati dell'utente in localStorage
+      // tap(response => {
+      //   localStorage.setItem('user', JSON.stringify(response.user));
+      // }),
       catchError(this.errorHandling)
     );
   }
@@ -217,7 +221,7 @@ export class ApiService {
     location?: string;
     discounted?: boolean;
   }): Observable<any> {
-    const url = `${this.url}destinations/filter`;
+    const url = `${this.url}destinations/filters`;
     const headers = this.getHeaders();
     let params = new HttpParams();
 

@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Rotte per le destinazioni
 router.get('/', destinationController.getAllDestinations); 
-router.get('/filters', authMiddleware, destinationController.getDestinationsByPreferences);
+router.get('/filters', authMiddleware, destinationController.getDestinationsByPreferences); //authMiddleware
 router.get('/:id', destinationController.getDestinationByID); 
 
 module.exports = router;

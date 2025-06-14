@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +10,11 @@ import { catchError, throwError } from 'rxjs';
 export class UserComponent {
   logOff: boolean = true;
   user: any = {};
+  // copia dell'utente per la modifica
+  editedUser: any = {};
   orders: any = [];
+  isEditModalOpen: boolean = false;
+
   constructor(private apiService: ApiService, private authService: AuthService) { }
 
   async ngOnInit(): Promise<void> {
@@ -66,6 +69,33 @@ export class UserComponent {
         console.error('Errore nella getUserOrdres:', err);
       }
     });
+  }
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // FUNZIONI PER LA GESTIONE DEL MODALE DI MODIFICA PROFILO
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  openEditModal() {
+    // Copio i dati dell'utente originale nella variabile editedUser
+    this.editedUser = { ...this.user };
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal() {
+    this.isEditModalOpen = false;
+  }
+
+  async onSubmit() {
+    try {
+      await this.apiService.updateUser(this.editedUser).toPromise();
+      // Aggiorno l'utente con i dati modificati
+      this.user = { ...this.editedUser };
+      localStorage.setItem('user', JSON.stringify(this.user)); 
+
+      this.closeEditModal();
+    } catch (error) {
+      console.error('Errore durante laggiornamento del profilo:', error);
+    }
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------

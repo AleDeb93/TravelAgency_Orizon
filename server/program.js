@@ -36,7 +36,7 @@ sequelize.authenticate()
     });
 
 // Sincronizzazione del database
-sequelize.sync({ force: false, alter: true })
+sequelize.sync({ force: false, alter: false })
     .then(() => {
         console.log(`[${new Date().toLocaleString()}] Sincronizzazione effettuata!`);
     })

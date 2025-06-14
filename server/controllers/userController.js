@@ -43,7 +43,7 @@ const userController = {
         const token = authHeader.split(' ')[1];
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(`[${new Date().toLocaleString()}] Token verificato`);
+            console.log(`[${new Date().toLocaleString()}] Token valido per l'utente con ID: ${decoded.id}`);
             return res.status(200).json({ message: 'Token valido', userId: decoded.id });
           } catch (error) {
             console.error('Errore verifica token:', error.message);

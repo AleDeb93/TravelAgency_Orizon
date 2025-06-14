@@ -29,7 +29,7 @@
         <p class="location">{{user.city}}, {{user.country}}</p>
         <div class="profile-buttons">
           <button (click)="logOut()">Logout</button>
-          <button class="outline">Modifica profilo</button>
+          <button class="outline" (click)="openEditModal()">Modifica profilo</button>
         </div>
       </div>
 
@@ -41,8 +41,57 @@
           <li><strong>Indirizzo:</strong> {{user.street}}</li>
           <li><strong>Nazione:</strong> {{user.country}}</li>
           <li><strong>Città:</strong> {{user.city}}</li>
+          <li><strong>Preferenze di viaggio:</strong> {{user.preferences}}</li>
           <li><strong>Metodo di pagamento:</strong> {{user.paymentMethod}}</li>
         </ul>
+      </div>
+    </div>
+
+    <!-- MODALE PER MODIFICARE IL PROFILO -->
+    <div *ngIf="isEditModalOpen" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Modifica Profilo</h2>
+          <span class="close" (click)="closeEditModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()">
+            <label for="name">Nome:</label>
+            <input id="name" type="text" [(ngModel)]="editedUser.name" name="name" required>
+
+            <label for="surname">Cognome:</label>
+            <input id="surname" type="text" [(ngModel)]="editedUser.surname" name="surname" required>
+
+            <label for="email">Email:</label>
+            <input id="email" type="email" [(ngModel)]="editedUser.email" name="email" required>
+
+            <label for="street">Indirizzo:</label>
+            <input id="street" type="text" [(ngModel)]="editedUser.street" name="street" required>
+
+            <label for="city">Città:</label>
+            <input id="city" type="text" [(ngModel)]="editedUser.city" name="city" required>
+
+            <label for="country">Nazione:</label>
+            <input id="country" type="text" [(ngModel)]="editedUser.country" name="country" required>
+
+            <!-- <label for="preferences">Preferenze di viaggio:</label>
+            <input id="preferences" type="text" [(ngModel)]="editedUser.preferences" name="preferences"> -->
+
+            <div class="mb-4 pb-2">
+              <label for="paymentMethod">Metodo di pagamento:</label>
+              <select id="paymentMethod" [(ngModel)]="editedUser.paymentMethod" name="paymentMethod"
+                class="form-select">
+                <option value="credit_card">Carta di pagamento</option>
+                <option value="paypal">PayPal</option>
+                <option value="bank_transfer">Bonifico bancario</option>
+              </select>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit">Salva Modifiche</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 

@@ -10,6 +10,9 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
+
+  constructor(private apiService: ApiService, private cartService: CartService) { }
+
   loading: boolean = true;
   pendingOrder: any = null; // Ordine pending dell'utente loggato
   items: any[] = [];
@@ -19,9 +22,9 @@ export class CartComponent implements OnInit {
   paymentMethod: string = this.user.paymentMethod || '';
   savePaymentData: boolean = false;
 
-  constructor(private apiService: ApiService, private cartService: CartService) { }
 
   ngOnInit(): void {
+    //console.log(this.user);
     this.reloadPage();
     this.loading = false;
   }
