@@ -41,8 +41,18 @@
           <li><strong>Indirizzo:</strong> {{user.street}}</li>
           <li><strong>Nazione:</strong> {{user.country}}</li>
           <li><strong>Città:</strong> {{user.city}}</li>
-          <li><strong>Preferenze di viaggio:</strong> {{user.preferences}}</li>
           <li><strong>Metodo di pagamento:</strong> {{user.paymentMethod}}</li>
+          <li>
+            <h3 *ngIf="user.preferences != null">Preferenze di viaggio:</h3>
+            <ul class="sub-preferences" *ngIf="user.preferences">
+              <li *ngIf="user.preferences.activity"><strong>Attività:</strong> {{ user.preferences.activity }}</li>
+              <li *ngIf="user.preferences.theme"><strong>Tema:</strong> {{ user.preferences.theme }}</li>
+              <li *ngIf="user.preferences.location"><strong>Luogo:</strong> {{ user.preferences.location }}</li>
+              <li *ngIf="user.preferences.discounted !== undefined">
+                <strong>Offerte:</strong> {{ user.preferences.discounted ? 'Sì' : 'No' }}
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>

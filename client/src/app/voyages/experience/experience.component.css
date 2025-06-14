@@ -25,6 +25,18 @@ body {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+.myContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 2rem; 
+}
+.myContainer .col {
+  max-width: 25vw;
+  flex: 1 1 300px;
+}
+
 .step {
   display: none;
 }
