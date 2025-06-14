@@ -206,6 +206,30 @@ export class ApiService {
     return this.http.delete<any>(url, { headers });
   }
 
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+  // INIZIO API USER PREFERENCES
+  //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+  // Chiamata per ottenere una lista di destinazioni in base ai filtri dell'utente
+  getDestinationsByPreferences(preferences: {
+    activity?: string;
+    theme?: string;
+    location?: string;
+    discounted?: boolean;
+  }): Observable<any> {
+    const url = `${this.url}destinations/filter`;
+    const headers = this.getHeaders();
+    let params = new HttpParams();
+
+    if (preferences.activity) params = params.set('activity', preferences.activity);
+    if (preferences.theme) params = params.set('theme', preferences.theme);
+    if (preferences.location) params = params.set('location', preferences.location);
+    if (preferences.discounted) params = params.set('discounted', 'true');
+
+    return this.http.get<any[]>(url, { headers, params }).pipe(
+      catchError(this.errorHandling)
+    );
+  }
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------
   // GESTIONI ESTERNE RIMOSSE

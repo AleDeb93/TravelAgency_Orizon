@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');  
+const { Op } = require('sequelize');
 const Destinations = require('../models/Destinations');
 
 const destinationController = {
@@ -26,14 +26,19 @@ const destinationController = {
     },
     // GET api/vs/destinations/filters
     getDestinationsByPreferences: async (req, res) => {
-        const { activity, theme, maxPrice } = req.query;
-        console.log(`[${new Date().toLocaleString()}] Query Sequelize:`, { activity, theme, maxPrice });
+        const { activity, theme, location, discounted } = req.query;
+        console.log(`[${new Date().toLocaleString()}] Query Sequelize:`, { activity, theme, location, discounted });
         try {
             const whereClause = {};
             // Applico filtri se presenti nella query
             if (activity) whereClause.activity = activity;
             if (theme) whereClause.theme = theme;
-            if (maxPrice) whereClause.price = { [Op.lte]: parseFloat(maxPrice) };
+            if (location) whereClause.location = location;
+            if (discounted === 'true') {
+                whereClause.discount = {
+                    [Op.gt]: 0
+                };
+            }
             // Destinations in base ai filtri
             console.log(`[${new Date().toLocaleString()}] Query Sequelize WHERE CLAUSE:`, whereClause);
             const destinations = await Destinations.findAll({ where: whereClause });

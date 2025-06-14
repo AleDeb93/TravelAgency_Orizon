@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-experience',
@@ -10,6 +11,9 @@ export class ExperienceComponent {
   showQuestionnaire: boolean = false;
   currentStep = 1;
   userPreferences: string[] = [];
+
+  constructor(private apiService: ApiService) { }
+
 
   startQuestionnaire() {
     this.showQuestionnaire = true;
@@ -35,11 +39,35 @@ export class ExperienceComponent {
 
   // TODO Al finish del questionario implementare una funzione che salva le preferenze dell'utente
   finish() {
-    window['Swal'].fire({
-      text: `Le tue preferenze sono state salvate ${this.userPreferences}`,
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500,
+    const [activity, theme, location, discountedRaw] = this.userPreferences;
+    const discounted = discountedRaw === 'Si';
+
+    this.apiService.getDestinationsByPreferences({
+      activity,
+      theme,
+      location,
+      discounted
+    }).subscribe({
+      next: (destinations: any) => {
+        console.log('Destinazioni trovate:', destinations);
+
+        window['Swal'].fire({
+          text: `Trovate ${destinations.length} destinazioni in base alle tue preferenze!`,
+          icon: 'success',
+          showConfirmButton: true,
+        });
+
+        // Qui salvare i dati o navigare a una pagina con i risultati
+      },
+      error: (err: any) => {
+        console.error('Errore nella chiamata:', err);
+
+        window['Swal'].fire({
+          text: 'Nessuna destinazione trovata o errore nel server.',
+          icon: 'error',
+          showConfirmButton: true,
+        });
+      }
     });
   }
 }
